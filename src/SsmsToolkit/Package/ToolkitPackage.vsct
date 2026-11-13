@@ -11,6 +11,13 @@
           <ButtonText>SsmsToolkit</ButtonText>
         </Strings>
       </Menu>
+      <!-- "Copy As" submenu in the SSMS results grid context menu. -->
+      <Menu guid="guidToolkitCmdSet" id="GridCopyAsMenu" priority="0x0100" type="Menu">
+        <Parent guid="guidToolkitCmdSet" id="GridContextGroup" />
+        <Strings>
+          <ButtonText>Copy As (SsmsToolkit)</ButtonText>
+        </Strings>
+      </Menu>
     </Menus>
 
     <Groups>
@@ -24,6 +31,13 @@
       </Group>
       <!-- Query editor context menu group; placed below. -->
       <Group guid="guidToolkitCmdSet" id="EditorContextGroup" priority="0x0100" />
+      <!-- SSMS results grid context menu group; the commands live in the Copy As submenu. -->
+      <Group guid="guidToolkitCmdSet" id="GridContextGroup" priority="0x0600">
+        <Parent guid="guidSqlEditorMenus" id="IDM_SQL_RESULTS_GRID_CONTEXT" />
+      </Group>
+      <Group guid="guidToolkitCmdSet" id="GridCopyAsGroup" priority="0x0100">
+        <Parent guid="guidToolkitCmdSet" id="GridCopyAsMenu" />
+      </Group>
     </Groups>
 
     <Buttons>
@@ -55,6 +69,56 @@
           <ButtonText>About SsmsToolkit</ButtonText>
         </Strings>
       </Button>
+      <Button guid="guidToolkitCmdSet" id="GridCopyCsvCommand" priority="0x0100" type="Button">
+        <Parent guid="guidToolkitCmdSet" id="GridCopyAsGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>CSV</ButtonText>
+          <CanonicalName>SsmsToolkit.GridCopyAsCsv</CanonicalName>
+          <LocCanonicalName>SsmsToolkit.GridCopyAsCsv</LocCanonicalName>
+        </Strings>
+      </Button>
+      <Button guid="guidToolkitCmdSet" id="GridCopyJsonCommand" priority="0x0101" type="Button">
+        <Parent guid="guidToolkitCmdSet" id="GridCopyAsGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>JSON</ButtonText>
+          <CanonicalName>SsmsToolkit.GridCopyAsJson</CanonicalName>
+          <LocCanonicalName>SsmsToolkit.GridCopyAsJson</LocCanonicalName>
+        </Strings>
+      </Button>
+      <Button guid="guidToolkitCmdSet" id="GridCopyMarkdownCommand" priority="0x0102" type="Button">
+        <Parent guid="guidToolkitCmdSet" id="GridCopyAsGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>Markdown Table</ButtonText>
+          <CanonicalName>SsmsToolkit.GridCopyAsMarkdown</CanonicalName>
+          <LocCanonicalName>SsmsToolkit.GridCopyAsMarkdown</LocCanonicalName>
+        </Strings>
+      </Button>
+      <Button guid="guidToolkitCmdSet" id="GridCopyInsertCommand" priority="0x0103" type="Button">
+        <Parent guid="guidToolkitCmdSet" id="GridCopyAsGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>INSERT Statements</ButtonText>
+          <CanonicalName>SsmsToolkit.GridCopyAsInsert</CanonicalName>
+          <LocCanonicalName>SsmsToolkit.GridCopyAsInsert</LocCanonicalName>
+        </Strings>
+      </Button>
+      <Button guid="guidToolkitCmdSet" id="GridCopyInListCommand" priority="0x0104" type="Button">
+        <Parent guid="guidToolkitCmdSet" id="GridCopyAsGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>IN (...) List</ButtonText>
+          <CanonicalName>SsmsToolkit.GridCopyAsInList</CanonicalName>
+          <LocCanonicalName>SsmsToolkit.GridCopyAsInList</LocCanonicalName>
+        </Strings>
+      </Button>
     </Buttons>
   </Commands>
 
@@ -72,7 +136,7 @@
       <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN" />
     </CommandPlacement>
     <CommandPlacement guid="guidToolkitCmdSet" id="EditorContextGroup" priority="0x0100">
-      <Parent guid="guidSqlQueryEditorContext" id="IDM_SQL_QUERY_EDITOR_CONTEXT" />
+      <Parent guid="guidSqlEditorMenus" id="IDM_SQL_QUERY_EDITOR_CONTEXT" />
     </CommandPlacement>
     <CommandPlacement guid="guidToolkitCmdSet" id="InspectTableCommand" priority="0x0100">
       <Parent guid="guidToolkitCmdSet" id="EditorContextGroup" />
@@ -96,10 +160,23 @@
       <IDSymbol name="OpenLogFolderCommand" value="0x0101" />
       <IDSymbol name="AboutCommand" value="0x0102" />
       <IDSymbol name="InspectTableCommand" value="0x0200" />
+      <IDSymbol name="GridContextGroup" value="0x1005" />
+      <IDSymbol name="GridCopyAsMenu" value="0x1006" />
+      <IDSymbol name="GridCopyAsGroup" value="0x1007" />
+      <IDSymbol name="GridCopyCsvCommand" value="0x0300" />
+      <IDSymbol name="GridCopyJsonCommand" value="0x0301" />
+      <IDSymbol name="GridCopyMarkdownCommand" value="0x0302" />
+      <IDSymbol name="GridCopyInsertCommand" value="0x0303" />
+      <IDSymbol name="GridCopyInListCommand" value="0x0304" />
     </GuidSymbol>
-    <!-- SSMS query editor context menu (used by other SSMS extensions; verified by the manual test). -->
-    <GuidSymbol name="guidSqlQueryEditorContext" value="{33F13AC3-80BB-4ECB-85BC-225435603A5E}">
+    <!--
+      SSMS query editor menus (SQLWorkbenchCommands.GUID_SQLEditorGroup in SQLEditors.dll, SSMS 22.12; undocumented).
+      Ids read from the SQLEditors IL: SqlScriptEditorControl.ScriptEditorContextMenuID = 0x50 (IDM_VS_CTXT_CODEWIN
+      while debugging), DisplaySqlResultsTabControl.WndProc shows 0x70 for the results grid.
+    -->
+    <GuidSymbol name="guidSqlEditorMenus" value="{33F13AC3-80BB-4ECB-85BC-225435603A5E}">
       <IDSymbol name="IDM_SQL_QUERY_EDITOR_CONTEXT" value="0x0050" />
+      <IDSymbol name="IDM_SQL_RESULTS_GRID_CONTEXT" value="0x0070" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>

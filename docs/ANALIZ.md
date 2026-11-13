@@ -142,7 +142,11 @@ Ctrl+Sol Tık (SQL editörü)
 - Seçimde toplam, ortalama, min/max, adet (durum çubuğunda)
 - Seçili kolon değerine göre **Table Inspector'ı açma**: bir FK değerinden ilgili satıra gitmek
 
-Teknik not: Grid'e erişim `Microsoft.SqlServer.GridControl` ve yansıma (reflection) ile olur. SSMSPlus bunu SSMS 22'de yapıyor. Bu kısım en kırılgan alan olduğu için ayrı bir özellik modülü olur ve varsayılan olarak kapalı başlar.
+Teknik not (Faz 3.1'de SQLEditors.dll incelenerek doğrulandı, SSMS 22.12):
+- Grid bir `Microsoft.SqlServer.Management.UI.Grid.GridControl` (public tip). Odaklanmış WinForms kontrolünden yukarı yürüyerek bulunur; SSMS'in private alanlarına yansıma gerekmez.
+- `GridControl.SelectedCells` depolama kolon indekslerini verir (kolonlar yeniden sıralansa da doğru). Grid modunda 0. kolon satır numarasıdır.
+- Hücre değeri ve kolon tipi: grid'in depolaması public `IGridResultSet` arayüzünü uygular (`GetCellData`, `GetSchemaRow`, `ColumnNames`).
+- Sağ tık menüsü: `{33F13AC3-80BB-4ECB-85BC-225435603A5E}` / `0x70` (`DisplaySqlResultsTabControl.WndProc`). Sorgu editörü menüsü aynı GUID ile `0x50`. Bu ID'ler belgelenmemiştir; özellik bu yüzden varsayılan olarak kapalıdır.
 
 ### 5.1 Kendi sonuç grid'imiz (tasarım — **ertelendi**, 2026-11-13)
 
@@ -160,7 +164,7 @@ Teknik not: Grid'e erişim `Microsoft.SqlServer.GridControl` ve yansıma (reflec
   - Mesajlar ve execution plan SSMS'te kalır.
 - **Düzenleme:** Ayrı karar gerektirir, çünkü salt-okunur kuralını değiştirir. Koşullar: varsayılan kapalı, üretim sunucularında engelli, tek tablo + PK zorunlu, SQL önizlemesi gösterilir, değişiklikler tek transaction'da uygulanır.
 - **Önerilen sıra:** 3a sonuç sekmesi → 3b FK navigasyonu ve gruplama → 3c düzenleme.
-- **Durum:** Kullanıcı kararıyla ertelendi; önce Faz 2 yapılacak.
+- **Durum:** Kullanıcı kararıyla (2026-11-13) Faz 3.1'den (SSMS grid'ine kopyalama + seçim istatistikleri) sonra 3a ile başlanacak.
 
 ---
 
@@ -187,7 +191,8 @@ Teknik not: Grid'e erişim `Microsoft.SqlServer.GridControl` ve yansıma (reflec
 | **0 — Spike (doğrulama)** | Boş paket SSMS 22.12'de yükleniyor mu? SQL editöründe mouse processor tetikleniyor mu (content type)? Aktif bağlantı ve DB okunabiliyor mu (SQL login + Windows auth)? Doküman alanında tool window açılıyor mu? | 4 sorunun hepsine "evet" ise devam edilir. Değilse alternatif yol (ör. sadece sağ tık/kısayol) değerlendirilir. **1–2 gün** |
 | **1 — Altyapı + Table Inspector MVP** | Feature registry, ayarlar penceresi, log; Ctrl+Tık + sağ tık + kısayol; sekmeler: Özet, Kolonlar, İndeksler, FK, Veri, DDL | `FMS - Test` üzerinde `PersonelCardDetails` tıklanınca detay ekranı açılıyor. |
 | **2 — Zenginleştirme** | Hover alt çizgi, Trigger ve Bağımlılık sekmeleri, Object Explorer sağ tık menüsünde "Inspect Table" (+ OE seçiliyken kısayol), koyu temada scrollbar'lar | Test listesi: `docs/testing/phase2-enrichment.md` |
-| **3 — Result Grid modülü** | Kopyalama formatları, seçim istatistikleri | Varsayılan kapalı özellik olarak gelir. |
+| **3.1 — SSMS grid araçları** | SSMS sonuç grid'inin sağ tık menüsünde "Copy As": CSV, JSON, Markdown, INSERT, `IN (...)`; seçimde adet / farklı / toplam / ortalama / min / maks (durum çubuğu) | Varsayılan kapalı özellik. Test listesi: `docs/testing/phase3-grid-tools.md` |
+| **3a–c — Kendi grid'imiz** | §5.1: sonuç sekmesi → FK navigasyonu ve gruplama → düzenleme | 3.1 doğrulandıktan sonra; her alt faz ayrı onayla. |
 | **Sürekli** | SSMS güncellemesi sonrası smoke test listesi | |
 
 ---

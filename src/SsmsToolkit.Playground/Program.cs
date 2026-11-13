@@ -65,7 +65,7 @@ namespace SsmsToolkit.Playground
             var features = new[]
             {
                 new FeatureItemViewModel("table-inspector", Strings.Get("Feature_TableInspector_Name"), Strings.Get("Feature_TableInspector_Description"), true, ti),
-                new FeatureItemViewModel("result-grid", "Result Grid Tools", "(Phase 3 placeholder)", false, null),
+                new FeatureItemViewModel("result-grid", Strings.Get("Feature_ResultGrid_Name"), Strings.Get("Feature_ResultGrid_Description"), false, null),
             };
             var vm = new SettingsViewModel(features, s => null, () => { })
             {

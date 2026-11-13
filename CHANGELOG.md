@@ -4,6 +4,14 @@ All notable changes to this project are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning: [SemVer](https://semver.org/).
 
 ## [Unreleased]
+### Added
+- **Result Grid Tools** (Phase 3.1, off by default; turn on in Settings): right-click the SSMS results grid >
+  *Copy As (SsmsToolkit)* to copy the selection as CSV, JSON, Markdown, INSERT statements (1000 rows per
+  statement, rowversion skipped) or a distinct `IN (...)` list. Selecting several cells shows count, distinct,
+  sum, average, min and max in the status bar.
+
+### Changed
+- The editor context menu id used for "Inspect Table" (`0x50`) is now confirmed from SSMS 22.12's SQLEditors.dll.
 
 ## [0.2.0] - 2026-11-13
 ### Added

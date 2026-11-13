@@ -145,4 +145,17 @@ MIT Lisansı</value></data>
   <data name="Dep_Hint" xml:space="preserve"><value>sys.sql_expression_dependencies kaynaklı; dinamik SQL izlenmez. İncelemek için tablo veya view adına tıklayın.</value></data>
   <data name="Dep_Missing" xml:space="preserve"><value>(bulunamadı)</value></data>
   <data name="Dep_NoDefinition" xml:space="preserve"><value>tanım yok (modül değil, şifreli veya VIEW DEFINITION yetkisi yok)</value></data>
+  <data name="Feature_ResultGrid_Name" xml:space="preserve"><value>Sonuç Grid Araçları</value></data>
+  <data name="Feature_ResultGrid_Description" xml:space="preserve"><value>SSMS sonuç grid'inde sağ tık &gt; Copy As (SsmsToolkit) ile seçimi CSV, JSON, Markdown, INSERT ifadeleri veya IN (...) listesi olarak kopyalayın. Birden çok hücre seçince durum çubuğunda adet, farklı, toplam, ortalama, min ve maks görünür.</value></data>
+  <data name="Stats_Count" xml:space="preserve"><value>Adet</value></data>
+  <data name="Stats_Distinct" xml:space="preserve"><value>Farklı</value></data>
+  <data name="Stats_Sum" xml:space="preserve"><value>Toplam</value></data>
+  <data name="Stats_Average" xml:space="preserve"><value>Ort.</value></data>
+  <data name="Stats_Min" xml:space="preserve"><value>Min</value></data>
+  <data name="Stats_Max" xml:space="preserve"><value>Maks</value></data>
+  <data name="Stats_Truncated" xml:space="preserve"><value>(ilk {0} hücre)</value></data>
+  <data name="Msg_GridCopied" xml:space="preserve"><value>{0} satır {1} olarak kopyalandı.</value></data>
+  <data name="Msg_GridNoSelection" xml:space="preserve"><value>Önce bir sonuç grid'inde hücre seçin.</value></data>
+  <data name="Msg_GridTooLarge" xml:space="preserve"><value>Seçim kopyalamak için çok büyük ({0} hücre; sınır {1}).</value></data>
+  <data name="Msg_GridCopyFailed" xml:space="preserve"><value>Kopyalama başarısız; SsmsToolkit log'una bakın.</value></data>
 </root>

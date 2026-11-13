@@ -145,4 +145,17 @@ MIT License</value></data>
   <data name="Dep_Hint" xml:space="preserve"><value>From sys.sql_expression_dependencies; dynamic SQL is not tracked. Click a table or view to inspect it.</value></data>
   <data name="Dep_Missing" xml:space="preserve"><value>(not found)</value></data>
   <data name="Dep_NoDefinition" xml:space="preserve"><value>no definition (not a module, encrypted, or no VIEW DEFINITION permission)</value></data>
+  <data name="Feature_ResultGrid_Name" xml:space="preserve"><value>Result Grid Tools</value></data>
+  <data name="Feature_ResultGrid_Description" xml:space="preserve"><value>Right-click the SSMS results grid &gt; Copy As (SsmsToolkit) to copy the selection as CSV, JSON, Markdown, INSERT statements or an IN (...) list. Selecting several cells shows count, distinct, sum, average, min and max in the status bar.</value></data>
+  <data name="Stats_Count" xml:space="preserve"><value>Count</value></data>
+  <data name="Stats_Distinct" xml:space="preserve"><value>Distinct</value></data>
+  <data name="Stats_Sum" xml:space="preserve"><value>Sum</value></data>
+  <data name="Stats_Average" xml:space="preserve"><value>Avg</value></data>
+  <data name="Stats_Min" xml:space="preserve"><value>Min</value></data>
+  <data name="Stats_Max" xml:space="preserve"><value>Max</value></data>
+  <data name="Stats_Truncated" xml:space="preserve"><value>(first {0} cells)</value></data>
+  <data name="Msg_GridCopied" xml:space="preserve"><value>Copied {0} row(s) as {1}.</value></data>
+  <data name="Msg_GridNoSelection" xml:space="preserve"><value>Select cells in a results grid first.</value></data>
+  <data name="Msg_GridTooLarge" xml:space="preserve"><value>The selection is too large to copy ({0} cells; limit {1}).</value></data>
+  <data name="Msg_GridCopyFailed" xml:space="preserve"><value>Copy failed; see the SsmsToolkit log.</value></data>
 </root>
