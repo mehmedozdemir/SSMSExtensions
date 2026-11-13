@@ -122,6 +122,24 @@ namespace SsmsToolkit.Data.Sql
             return sb.ToString();
         }
 
+        /// <summary>The trigger's own CREATE TRIGGER text, plus DISABLE TRIGGER when it is disabled.</summary>
+        public static string Trigger(ResolvedObject table, TriggerInfo t)
+        {
+            if (string.IsNullOrEmpty(t.Definition))
+            {
+                return "-- The definition of " + Q(t.Name) + " is not available (encrypted, or no VIEW DEFINITION permission).";
+            }
+
+            // Module text often starts with blank lines (whatever preceded CREATE in the original batch).
+            var sb = new StringBuilder(t.Definition.Trim());
+            if (t.IsDisabled)
+            {
+                sb.Append(NewLine).Append("GO").Append(NewLine)
+                  .Append("DISABLE TRIGGER ").Append(Q(table.Schema)).Append('.').Append(Q(t.Name)).Append(" ON ").Append(Table(table)).Append(';');
+            }
+            return sb.ToString();
+        }
+
         public static string ForeignKey(ForeignKeyInfo fk)
         {
             var parent = TwoPart(fk.ParentTable);

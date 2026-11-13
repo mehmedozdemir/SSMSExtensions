@@ -63,6 +63,9 @@ namespace SsmsToolkit.Presentation.TableInspector
 
         public string SelectedScript => Selected?.Script;
 
+        /// <summary>Note above the script; scripts generated from metadata say what they omit. Null hides it.</summary>
+        public virtual string ScriptNote => Strings.Get("Script_Note");
+
         public ICommand CopyScriptCommand { get; }
 
         public ICommand OpenScriptCommand { get; }
@@ -410,6 +413,142 @@ namespace SsmsToolkit.Presentation.TableInspector
                 }
             }
             Count = list.Count;
+        }
+    }
+
+    public sealed class TriggerRow : IScriptRow
+    {
+        public TriggerRow(ResolvedObject table, TriggerInfo t)
+        {
+            Name = t.Name;
+            Timing = t.IsInsteadOf ? "INSTEAD OF" : "AFTER";
+            Events = t.Events;
+            IsDisabled = t.IsDisabled;
+            Script = ScriptBuilder.Trigger(table, t);
+        }
+
+        public string Name { get; }
+        public string Timing { get; }
+        public string Events { get; }
+        public bool IsDisabled { get; }
+        public string Script { get; }
+    }
+
+    public sealed class TriggersTab : ScriptListTab
+    {
+        private readonly ITableMetadataSource _source;
+
+        /// <summary>Scripts here are the server-side definitions, not generated.</summary>
+        public override string ScriptNote => null;
+
+        public TriggersTab(ResolvedObject obj, ITableMetadataSource source, IInspectorHost host, CancellationToken lifetime, Action<string, Exception> onError)
+            : base(Strings.Get("Tab_Triggers"), obj, host, lifetime, onError)
+        {
+            _source = source;
+        }
+
+        public ObservableCollection<TriggerRow> Items { get; } = new ObservableCollection<TriggerRow>();
+
+        protected override async Task LoadCoreAsync(CancellationToken ct)
+        {
+            var list = await _source.GetTriggersAsync(Object, ct);
+            Selected = null;
+            Items.Clear();
+            foreach (var t in list)
+            {
+                Items.Add(new TriggerRow(Object, t));
+            }
+        }
+    }
+
+    public sealed class DependencyRow : IScriptRow
+    {
+        public DependencyRow(DependencyInfo d, string currentDatabase)
+        {
+            Target = d.Name;
+            IsTableOrView = d.IsTableOrView;
+            bool otherDb = d.Name.Database != null && !string.Equals(d.Name.Database, currentDatabase, StringComparison.OrdinalIgnoreCase);
+            Display = (otherDb ? d.Name.Database + "." : string.Empty) + (d.Name.Schema == null ? string.Empty : d.Name.Schema + ".") + d.Name.Name;
+            Type = d.TypeDescription ?? Strings.Get("Dep_Missing");
+            Script = string.IsNullOrEmpty(d.Definition)
+                ? "-- " + Display + " (" + Type + "): " + Strings.Get("Dep_NoDefinition")
+                : d.Definition.Trim();
+        }
+
+        public ObjectName Target { get; }
+
+        public string Display { get; }
+
+        public string Type { get; }
+
+        /// <summary>Tables and views open in a new inspector when clicked.</summary>
+        public bool IsTableOrView { get; }
+
+        public string Script { get; }
+    }
+
+    public sealed class DependenciesTab : ScriptListTab
+    {
+        private readonly ITableMetadataSource _source;
+        private DependencyRow _selectedUsedBy;
+        private DependencyRow _selectedUses;
+
+        /// <summary>Scripts here are the server-side definitions, not generated.</summary>
+        public override string ScriptNote => null;
+
+        public DependenciesTab(ResolvedObject obj, ITableMetadataSource source, IInspectorHost host, CancellationToken lifetime, Action<string, Exception> onError)
+            : base(Strings.Get("Tab_Dependencies"), obj, host, lifetime, onError)
+        {
+            _source = source;
+            OpenTableCommand = new AsyncCommand(
+                p => p is DependencyRow row && row.IsTableOrView ? host.OpenTableAsync(row.Target) : Task.CompletedTask,
+                ex => onError?.Invoke("Open table", ex));
+        }
+
+        public ObservableCollection<DependencyRow> UsedBy { get; } = new ObservableCollection<DependencyRow>();
+
+        public ObservableCollection<DependencyRow> Uses { get; } = new ObservableCollection<DependencyRow>();
+
+        public ICommand OpenTableCommand { get; }
+
+        public DependencyRow SelectedUsedBy
+        {
+            get => _selectedUsedBy;
+            set
+            {
+                if (Set(ref _selectedUsedBy, value) && value != null)
+                {
+                    Selected = value;
+                    SelectedUses = null;
+                }
+            }
+        }
+
+        public DependencyRow SelectedUses
+        {
+            get => _selectedUses;
+            set
+            {
+                if (Set(ref _selectedUses, value) && value != null)
+                {
+                    Selected = value;
+                    SelectedUsedBy = null;
+                }
+            }
+        }
+
+        protected override async Task LoadCoreAsync(CancellationToken ct)
+        {
+            var list = await _source.GetDependenciesAsync(Object, ct);
+            Selected = null;
+            SelectedUsedBy = null;
+            SelectedUses = null;
+            UsedBy.Clear();
+            Uses.Clear();
+            foreach (var d in list)
+            {
+                (d.Direction == DependencyDirection.UsedBy ? UsedBy : Uses).Add(new DependencyRow(d, Object.Database));
+            }
         }
     }
 

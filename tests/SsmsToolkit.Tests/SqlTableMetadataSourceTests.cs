@@ -154,6 +154,50 @@ namespace SsmsToolkit.Tests
         }
 
         [LocalDbFact]
+        public async Task Triggers()
+        {
+            var order = await Resolve("sales", "Order");
+            var t = (await Source().GetTriggersAsync(order, CancellationToken.None)).Single();
+            Assert.Equal("trg_Order_Audit", t.Name);
+            Assert.Equal("INSERT, UPDATE", t.Events);
+            Assert.True(t.IsDisabled);
+            Assert.False(t.IsInsteadOf);
+            Assert.Contains("CREATE TRIGGER", t.Definition);
+
+            var script = ScriptBuilder.Trigger(order, t);
+            Assert.StartsWith("CREATE TRIGGER", script);
+            Assert.EndsWith("DISABLE TRIGGER [sales].[trg_Order_Audit] ON [sales].[Order];", script);
+
+            Assert.Empty(await Source().GetTriggersAsync(await Resolve("dbo", "Customer"), CancellationToken.None));
+        }
+
+        [LocalDbFact]
+        public async Task Dependencies_used_by_includes_one_part_name_references()
+        {
+            var deps = await Source().GetDependenciesAsync(await Resolve("dbo", "Customer"), CancellationToken.None);
+            var usedBy = deps.Where(d => d.Direction == DependencyDirection.UsedBy).ToList();
+
+            var view = usedBy.Single(d => d.Name.Name == "vCustomer");
+            Assert.Equal("V", view.TypeCode);
+            Assert.True(view.IsTableOrView);
+            Assert.Contains("CREATE VIEW", view.Definition);
+
+            var proc = usedBy.Single(d => d.Name.Name == "GetCustomers");
+            Assert.Equal("P", proc.TypeCode);
+            Assert.Equal("dbo", proc.Name.Schema);
+            Assert.Equal(_db.Database, proc.Name.Database);
+        }
+
+        [LocalDbFact]
+        public async Task Dependencies_uses_lists_view_base_tables()
+        {
+            var deps = await Source().GetDependenciesAsync(await Resolve("dbo", "vCustomer"), CancellationToken.None);
+            var uses = deps.Single(d => d.Direction == DependencyDirection.Uses);
+            Assert.Equal("Customer", uses.Name.Name);
+            Assert.Equal("U", uses.TypeCode);
+        }
+
+        [LocalDbFact]
         public async Task Foreign_keys_outgoing_incoming_and_self()
         {
             var fks = await Source().GetForeignKeysAsync(await Resolve("sales", "Order"), CancellationToken.None);
@@ -213,7 +257,9 @@ namespace SsmsToolkit.Tests
                 return; // SMO not available on this machine (no SSMS): nothing to verify.
             }
 
-            var ddl = await Source().GetDdlAsync(await Resolve("sales", "Order"), CancellationToken.None);
+            // SMO's catalog queries need a memory grant; LocalDB on a busy dev machine can wait well past 15 s.
+            var smo = new SqlTableMetadataSource(_db.Target, new MetadataOptions { CommandTimeoutSeconds = 120 });
+            var ddl = await smo.GetDdlAsync(await Resolve("sales", "Order"), CancellationToken.None);
             Assert.Contains("CREATE TABLE [sales].[Order]", ddl);
             Assert.Contains("FK_Order_Customer", ddl);
             Assert.Contains("IX_Order_Customer", ddl);

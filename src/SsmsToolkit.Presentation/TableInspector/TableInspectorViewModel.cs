@@ -39,10 +39,12 @@ namespace SsmsToolkit.Presentation.TableInspector
             Keys = new KeysTab(obj, source, host, token, onError);
             Indexes = new IndexesTab(obj, source, host, token, onError);
             Constraints = new ConstraintsTab(obj, source, host, token, onError);
+            Triggers = new TriggersTab(obj, source, host, token, onError);
+            Dependencies = new DependenciesTab(obj, source, host, token, onError);
             ForeignKeys = new ForeignKeysTab(obj, source, host, token, onError);
             Data = new DataTab(obj, source, host, options, token, onError);
             Ddl = new DdlTab(obj, source, host, token, onError);
-            Tabs = new InspectorTab[] { Summary, Columns, Keys, Indexes, Constraints, ForeignKeys, Data, Ddl };
+            Tabs = new InspectorTab[] { Summary, Columns, Keys, Indexes, Constraints, ForeignKeys, Triggers, Dependencies, Data, Ddl };
 
             foreach (var t in Tabs)
             {
@@ -73,6 +75,8 @@ namespace SsmsToolkit.Presentation.TableInspector
         public KeysTab Keys { get; }
         public IndexesTab Indexes { get; }
         public ConstraintsTab Constraints { get; }
+        public TriggersTab Triggers { get; }
+        public DependenciesTab Dependencies { get; }
         public ForeignKeysTab ForeignKeys { get; }
         public DataTab Data { get; }
         public DdlTab Ddl { get; }

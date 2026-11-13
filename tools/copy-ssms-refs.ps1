@@ -35,6 +35,7 @@ $assemblies = @(
     'Microsoft.SqlServer.Smo.dll',
     'Microsoft.SqlServer.Management.Sdk.Sfc.dll',
     'Microsoft.SqlServer.SqlEnum.dll',
+    'Microsoft.SqlServer.Management.Sdk.SqlStudio.dll',
     'Microsoft.Data.SqlClient.dll',
     'Extensions\Application\SQLEditors.dll',
     'Extensions\Application\Microsoft.SqlServer.TransactSql.ScriptDom.dll'

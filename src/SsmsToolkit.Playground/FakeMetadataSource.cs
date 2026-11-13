@@ -96,6 +96,33 @@ namespace SsmsToolkit.Playground
             };
         }
 
+        public async Task<IReadOnlyList<TriggerInfo>> GetTriggersAsync(ResolvedObject obj, CancellationToken ct)
+        {
+            await Task.Delay(_delayMs, ct);
+            return new[]
+            {
+                new TriggerInfo
+                {
+                    Name = "trg_" + obj.Name + "_Audit",
+                    Events = "INSERT, UPDATE",
+                    Definition = "CREATE TRIGGER [" + obj.Schema + "].[trg_" + obj.Name + "_Audit] ON [" + obj.Schema + "].[" + obj.Name + "]\r\nAFTER INSERT, UPDATE\r\nAS\r\nBEGIN\r\n    SET NOCOUNT ON;\r\n    INSERT INTO log.CardLog (DetailId, ChangedAt)\r\n    SELECT i.Id, SYSUTCDATETIME() FROM inserted i;\r\nEND",
+                },
+                new TriggerInfo { Name = "trg_" + obj.Name + "_NoDelete", Events = "DELETE", IsInsteadOf = true, IsDisabled = true },
+            };
+        }
+
+        public async Task<IReadOnlyList<DependencyInfo>> GetDependenciesAsync(ResolvedObject obj, CancellationToken ct)
+        {
+            await Task.Delay(_delayMs, ct);
+            return new[]
+            {
+                new DependencyInfo { Direction = DependencyDirection.UsedBy, Name = new ObjectName(null, Database, "dbo", "usp_GetActiveCards"), TypeCode = "P", TypeDescription = "SQL_STORED_PROCEDURE", Definition = "CREATE PROCEDURE dbo.usp_GetActiveCards\r\nAS\r\nSELECT * FROM PersonelCardDetails WHERE IsActive = 1;" },
+                new DependencyInfo { Direction = DependencyDirection.UsedBy, Name = new ObjectName(null, Database, "rpt", "vCardSummary"), TypeCode = "V", TypeDescription = "VIEW", Definition = "CREATE VIEW rpt.vCardSummary AS SELECT PersonelId, COUNT(*) AS Cards FROM dbo.PersonelCardDetails GROUP BY PersonelId;" },
+                new DependencyInfo { Direction = DependencyDirection.UsedBy, Name = new ObjectName(null, Database, "dbo", "fn_CardCount"), TypeCode = "FN", TypeDescription = "SQL_SCALAR_FUNCTION", Definition = "CREATE FUNCTION dbo.fn_CardCount(@p int) RETURNS int AS BEGIN RETURN (SELECT COUNT(*) FROM dbo.PersonelCardDetails WHERE PersonelId = @p) END" },
+                new DependencyInfo { Direction = DependencyDirection.Uses, Name = new ObjectName(null, Database, "dbo", "fn_IsValidCard"), TypeCode = "FN", TypeDescription = "SQL_SCALAR_FUNCTION", Definition = "CREATE FUNCTION dbo.fn_IsValidCard(@n varchar(32)) RETURNS bit AS BEGIN RETURN CASE WHEN LEN(@n) >= 8 THEN 1 ELSE 0 END END" },
+            };
+        }
+
         public async Task<IReadOnlyList<ForeignKeyInfo>> GetForeignKeysAsync(ResolvedObject obj, CancellationToken ct)
         {
             await Task.Delay(_delayMs, ct);

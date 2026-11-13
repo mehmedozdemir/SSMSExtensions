@@ -129,6 +129,13 @@ CREATE SYNONYM dbo.Cust FOR dbo.Customer;
 GO
 CREATE PROCEDURE dbo.DoNothing AS RETURN 0;
 GO
+-- One-part name: caller-dependent reference (referenced_id is NULL in sys.sql_expression_dependencies).
+CREATE PROCEDURE dbo.GetCustomers AS SELECT Id, Name FROM Customer;
+GO
+CREATE TRIGGER sales.trg_Order_Audit ON sales.[Order] AFTER INSERT, UPDATE AS SET NOCOUNT ON;
+GO
+DISABLE TRIGGER sales.trg_Order_Audit ON sales.[Order];
+GO
 INSERT dbo.Customer (Name, Email, Balance, Photo) VALUES (N'Ada', 'ada@example.com', 10.5, 0x0102), (N'Linus', NULL, 0, NULL), (N'Grace', 'g@example.com', 99.99, NULL);
 INSERT sales.[Order] (Id, CustomerId, ParentOrderId, Total) VALUES (1, 1, NULL, 5), (2, 1, 1, 0), (3, 2, NULL, 7);
 ";

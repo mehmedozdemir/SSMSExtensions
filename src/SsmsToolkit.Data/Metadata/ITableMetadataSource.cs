@@ -25,6 +25,11 @@ namespace SsmsToolkit.Data.Metadata
         /// <summary>CHECK and DEFAULT constraints.</summary>
         Task<IReadOnlyList<ConstraintInfo>> GetConstraintsAsync(ResolvedObject obj, CancellationToken ct);
 
+        Task<IReadOnlyList<TriggerInfo>> GetTriggersAsync(ResolvedObject obj, CancellationToken ct);
+
+        /// <summary>Objects that use this one and objects this one uses (sys.sql_expression_dependencies).</summary>
+        Task<IReadOnlyList<DependencyInfo>> GetDependenciesAsync(ResolvedObject obj, CancellationToken ct);
+
         Task<IReadOnlyList<ForeignKeyInfo>> GetForeignKeysAsync(ResolvedObject obj, CancellationToken ct);
 
         Task<DataPage> GetDataAsync(DataQuery query, CancellationToken ct);

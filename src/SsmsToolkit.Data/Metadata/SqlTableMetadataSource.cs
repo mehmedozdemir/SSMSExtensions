@@ -241,6 +241,48 @@ namespace SsmsToolkit.Data.Metadata
             });
         }
 
+        public Task<IReadOnlyList<TriggerInfo>> GetTriggersAsync(ResolvedObject obj, CancellationToken ct)
+        {
+            return QueryAsync<IReadOnlyList<TriggerInfo>>(obj, MetadataQueries.Triggers, ct, r =>
+            {
+                var list = new List<TriggerInfo>();
+                while (r.Read())
+                {
+                    list.Add(new TriggerInfo
+                    {
+                        Name = r.GetString(0),
+                        IsDisabled = r.GetBoolean(1),
+                        IsInsteadOf = r.GetBoolean(2),
+                        Events = r.IsDBNull(3) ? string.Empty : r.GetString(3),
+                        Definition = r.IsDBNull(4) ? null : r.GetString(4),
+                    });
+                }
+                return list;
+            });
+        }
+
+        public Task<IReadOnlyList<DependencyInfo>> GetDependenciesAsync(ResolvedObject obj, CancellationToken ct)
+        {
+            return QueryAsync<IReadOnlyList<DependencyInfo>>(obj, MetadataQueries.Dependencies, ct, r =>
+            {
+                var list = new List<DependencyInfo>();
+                while (r.Read())
+                {
+                    var db = r.IsDBNull(1) ? obj.Database : r.GetString(1);
+                    var schema = r.IsDBNull(2) ? null : r.GetString(2);
+                    list.Add(new DependencyInfo
+                    {
+                        Direction = r.GetInt32(0) == 0 ? DependencyDirection.UsedBy : DependencyDirection.Uses,
+                        Name = new ObjectName(null, db, schema, r.GetString(3)),
+                        TypeCode = r.IsDBNull(4) ? null : r.GetString(4),
+                        TypeDescription = r.IsDBNull(5) ? null : r.GetString(5),
+                        Definition = r.IsDBNull(6) ? null : r.GetString(6),
+                    });
+                }
+                return list;
+            });
+        }
+
         public Task<IReadOnlyList<ForeignKeyInfo>> GetForeignKeysAsync(ResolvedObject obj, CancellationToken ct)
         {
             return QueryAsync<IReadOnlyList<ForeignKeyInfo>>(obj, MetadataQueries.ForeignKeys, ct, r =>

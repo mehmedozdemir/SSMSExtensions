@@ -51,6 +51,7 @@ namespace SsmsToolkit.UI
 
             var view = new SettingsView { DataContext = vm };
             VsTheme.UseVsControlStyles(view);
+            VsTheme.UseVsScrollBars(view);
             Caption = Strings.Get("Settings_Title");
             _host.Content = view;
         }

@@ -42,6 +42,13 @@ namespace SsmsToolkit.UI
             ThemeKeys.TabSelectedForeground = EnvironmentColors.FileTabSelectedTextBrushKey;
         }
 
+        /// <summary>Themes every scroll bar inside <paramref name="element"/> (dark scroll bars in the dark theme).</summary>
+        public static void UseVsScrollBars(FrameworkElement element)
+        {
+            // Only ScrollBar: a ScrollViewer style could interfere with DataGrid/TextBox templates.
+            TryAdd(element, typeof(System.Windows.Controls.Primitives.ScrollBar), VsResourceKeys.ScrollBarStyleKey);
+        }
+
         /// <summary>Uses VS-themed styles for controls our own dictionary does not style (ComboBox, CheckBox).</summary>
         public static void UseVsControlStyles(FrameworkElement element)
         {

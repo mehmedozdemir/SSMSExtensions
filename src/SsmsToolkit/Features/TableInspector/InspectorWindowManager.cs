@@ -61,6 +61,7 @@ namespace SsmsToolkit.Features.TableInspector
                 IsProduction = isProduction,
             });
             var view = new TableInspectorView { DataContext = vm };
+            UI.VsTheme.UseVsScrollBars(view);
 
             if (settings.OpenMode == InspectorOpenMode.Popup)
             {

@@ -49,6 +49,7 @@ namespace SsmsToolkit.Package
                 VsTheme.Apply();
                 await ToolkitCommands.InitializeAsync(this);
                 await Features.ApplyAsync(settings);
+                ObjectExplorerInterop.RegisterContextMenu(OnObjectExplorerInspect);
 
                 Instance = this;
                 Logger.Info("Package loaded.\r\n" + EnvironmentReport.Build());
@@ -106,6 +107,18 @@ namespace SsmsToolkit.Package
                 Logger.Error("Saving settings failed", ex);
                 return ex.Message;
             }
+        }
+
+        private void OnObjectExplorerInspect(ObjectExplorerTarget target)
+        {
+            if (!Features.IsActive(TableInspectorFeature.FeatureId))
+            {
+                return;
+            }
+
+#pragma warning disable VSSDK007 // Fire-and-forget; InspectObjectExplorerAsync catches and reports everything.
+            _ = JoinableTaskFactory.RunAsync(() => Launcher.InspectObjectExplorerAsync(target));
+#pragma warning restore VSSDK007
         }
 
         private void OnFeatureAutoDisabled(IFeature feature)

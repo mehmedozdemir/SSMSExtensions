@@ -136,4 +136,13 @@ MIT Lisansı</value></data>
   <data name="Script_Title" xml:space="preserve"><value>SQL</value></data>
   <data name="Script_Hint" xml:space="preserve"><value>SQL scriptini görmek için bir satır seçin.</value></data>
   <data name="Script_Note" xml:space="preserve"><value>Depolama seçenekleri (FILLFACTOR, sıkıştırma, filegroup) yok; tablonun tam scripti DDL sekmesinde.</value></data>
+  <data name="Tab_Triggers" xml:space="preserve"><value>Trigger'lar</value></data>
+  <data name="Tab_Dependencies" xml:space="preserve"><value>Bağımlılıklar</value></data>
+  <data name="Col_Timing" xml:space="preserve"><value>Zamanlama</value></data>
+  <data name="Col_Events" xml:space="preserve"><value>Olaylar</value></data>
+  <data name="Dep_UsedBy" xml:space="preserve"><value>Bunu kullananlar</value></data>
+  <data name="Dep_Uses" xml:space="preserve"><value>Bunun kullandıkları</value></data>
+  <data name="Dep_Hint" xml:space="preserve"><value>sys.sql_expression_dependencies kaynaklı; dinamik SQL izlenmez. İncelemek için tablo veya view adına tıklayın.</value></data>
+  <data name="Dep_Missing" xml:space="preserve"><value>(bulunamadı)</value></data>
+  <data name="Dep_NoDefinition" xml:space="preserve"><value>tanım yok (modül değil, şifreli veya VIEW DEFINITION yetkisi yok)</value></data>
 </root>
