@@ -51,6 +51,16 @@
           <LocCanonicalName>SsmsToolkit.InspectTable</LocCanonicalName>
         </Strings>
       </Button>
+      <Button guid="guidToolkitCmdSet" id="DatabaseDashboardCommand" priority="0x0101" type="Button">
+        <Parent guid="guidToolkitCmdSet" id="ToolkitFeatureGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>Database Dashboard</ButtonText>
+          <CanonicalName>SsmsToolkit.DatabaseDashboard</CanonicalName>
+          <LocCanonicalName>SsmsToolkit.DatabaseDashboard</LocCanonicalName>
+        </Strings>
+      </Button>
       <Button guid="guidToolkitCmdSet" id="SettingsCommand" priority="0x0100" type="Button">
         <Parent guid="guidToolkitCmdSet" id="ToolkitMenuGroup" />
         <Strings>
@@ -160,6 +170,7 @@
       <IDSymbol name="OpenLogFolderCommand" value="0x0101" />
       <IDSymbol name="AboutCommand" value="0x0102" />
       <IDSymbol name="InspectTableCommand" value="0x0200" />
+      <IDSymbol name="DatabaseDashboardCommand" value="0x0201" />
       <IDSymbol name="GridContextGroup" value="0x1005" />
       <IDSymbol name="GridCopyAsMenu" value="0x1006" />
       <IDSymbol name="GridCopyAsGroup" value="0x1007" />

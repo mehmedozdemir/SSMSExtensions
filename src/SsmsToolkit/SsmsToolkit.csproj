@@ -64,6 +64,8 @@
     <Compile Include="SsmsInterop\ResultGridInterop.cs" />
     <Compile Include="SsmsInterop\QueryWindowService.cs" />
     <Compile Include="SsmsInterop\SsmsConnectionProvider.cs" />
+    <Compile Include="Features\Dashboard\DashboardToolWindow.cs" />
+    <Compile Include="Features\Dashboard\DatabaseDashboardFeature.cs" />
     <Compile Include="Features\ResultGrid\ResultGridFeature.cs" />
     <Compile Include="Features\TableInspector\InspectorWindowManager.cs" />
     <Compile Include="Features\TableInspector\LinkHoverAdornment.cs" />

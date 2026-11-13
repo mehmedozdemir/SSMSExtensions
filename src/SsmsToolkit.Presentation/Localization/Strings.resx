@@ -185,4 +185,103 @@ MIT License</value></data>
   <data name="Insert_TooLargeForEditor" xml:space="preserve"><value>The script is too large for a query window; use Save to File.</value></data>
   <data name="Insert_Failed" xml:space="preserve"><value>Failed: {0}</value></data>
   <data name="Insert_FileFilter" xml:space="preserve"><value>SQL files (*.sql)|*.sql|All files (*.*)|*.*</value></data>
+  <data name="Common_No" xml:space="preserve"><value>No</value></data>
+  <data name="Feature_Dashboard_Name" xml:space="preserve"><value>Database Dashboard</value></data>
+  <data name="Feature_Dashboard_Description" xml:space="preserve"><value>Right-click a database in Object Explorer &gt; Database Dashboard (or Extensions &gt; SsmsToolkit &gt; Database Dashboard for the active query window's database): size and files, largest tables, growth from backup history, health checks and recently changed objects. Read-only.</value></data>
+  <data name="Dash_Title" xml:space="preserve"><value>{0} — Dashboard</value></data>
+  <data name="Dash_Updated" xml:space="preserve"><value>Updated {0}</value></data>
+  <data name="Dash_Failed" xml:space="preserve"><value>Could not load: {0}</value></data>
+  <data name="Dash_Tab_Overview" xml:space="preserve"><value>Overview</value></data>
+  <data name="Dash_Tab_Storage" xml:space="preserve"><value>Storage</value></data>
+  <data name="Dash_Tab_Health" xml:space="preserve"><value>Health</value></data>
+  <data name="Dash_Tab_Objects" xml:space="preserve"><value>Objects</value></data>
+  <data name="Dash_Card_Size" xml:space="preserve"><value>Total size</value></data>
+  <data name="Dash_Card_Files" xml:space="preserve"><value>{0} file(s)</value></data>
+  <data name="Dash_Card_Data" xml:space="preserve"><value>Data files</value></data>
+  <data name="Dash_Card_Log" xml:space="preserve"><value>Log</value></data>
+  <data name="Dash_Card_UsedOf" xml:space="preserve"><value>{0} of {1} used</value></data>
+  <data name="Dash_Card_Recovery" xml:space="preserve"><value>Recovery model</value></data>
+  <data name="Dash_Card_Compat" xml:space="preserve"><value>Compatibility level</value></data>
+  <data name="Dash_Card_ServerCompat" xml:space="preserve"><value>server supports {0}</value></data>
+  <data name="Dash_Card_Health" xml:space="preserve"><value>Health</value></data>
+  <data name="Dash_Health_Summary" xml:space="preserve"><value>{0} critical, {1} warnings</value></data>
+  <data name="Dash_Health_AllGood" xml:space="preserve"><value>No issues</value></data>
+  <data name="Dash_Health_Open" xml:space="preserve"><value>Show details</value></data>
+  <data name="Dash_Files" xml:space="preserve"><value>Files</value></data>
+  <data name="Dash_Properties" xml:space="preserve"><value>Properties</value></data>
+  <data name="Dash_Col_File" xml:space="preserve"><value>File</value></data>
+  <data name="Dash_Col_Size" xml:space="preserve"><value>Size</value></data>
+  <data name="Dash_Col_Used" xml:space="preserve"><value>Used</value></data>
+  <data name="Dash_Col_Growth" xml:space="preserve"><value>Growth</value></data>
+  <data name="Dash_Col_Max" xml:space="preserve"><value>Max size</value></data>
+  <data name="Dash_Col_Path" xml:space="preserve"><value>Path</value></data>
+  <data name="Dash_NoGrowth" xml:space="preserve"><value>none</value></data>
+  <data name="Dash_Unlimited" xml:space="preserve"><value>unlimited</value></data>
+  <data name="Dash_Prop_State" xml:space="preserve"><value>State</value></data>
+  <data name="Dash_Prop_Owner" xml:space="preserve"><value>Owner</value></data>
+  <data name="Dash_Prop_Created" xml:space="preserve"><value>Created</value></data>
+  <data name="Dash_Prop_UserAccess" xml:space="preserve"><value>User access</value></data>
+  <data name="Dash_Prop_ReadOnly" xml:space="preserve"><value>Read-only</value></data>
+  <data name="Dash_Prop_AutoStats" xml:space="preserve"><value>Auto create / update statistics</value></data>
+  <data name="Dash_Tables" xml:space="preserve"><value>Largest tables</value></data>
+  <data name="Dash_TablesNote" xml:space="preserve"><value>top {0} by reserved space; row counts are approximate; click a name to inspect</value></data>
+  <data name="Dash_Col_Rows" xml:space="preserve"><value>Rows</value></data>
+  <data name="Dash_Col_Reserved" xml:space="preserve"><value>Reserved (MB)</value></data>
+  <data name="Dash_Col_Data" xml:space="preserve"><value>Data (MB)</value></data>
+  <data name="Dash_Col_Index" xml:space="preserve"><value>Indexes (MB)</value></data>
+  <data name="Dash_Col_Unused" xml:space="preserve"><value>Unused (MB)</value></data>
+  <data name="Dash_History" xml:space="preserve"><value>Size over time (full backups, last 365 days)</value></data>
+  <data name="Dash_HistoryEmpty" xml:space="preserve"><value>No full backups in the last 365 days.</value></data>
+  <data name="Dash_HistoryRange" xml:space="preserve"><value>From {0} to {1} ({2} backup days). Hover a bar for the date.</value></data>
+  <data name="Dash_HistoryUnavailable" xml:space="preserve"><value>Backup history (msdb) is not readable: {0}</value></data>
+  <data name="Dash_ObjectCounts" xml:space="preserve"><value>Object counts</value></data>
+  <data name="Dash_Recent" xml:space="preserve"><value>Recently changed objects</value></data>
+  <data name="Dash_Col_Modified" xml:space="preserve"><value>Modified</value></data>
+  <data name="Dash_Col_Created" xml:space="preserve"><value>Created</value></data>
+  <data name="Dash_Details" xml:space="preserve"><value>Details</value></data>
+  <data name="Health_Unavailable" xml:space="preserve"><value>Could not check: {0}</value></data>
+  <data name="Health_More" xml:space="preserve"><value>+ {0} more</value></data>
+  <data name="Health_Backups" xml:space="preserve"><value>Backups</value></data>
+  <data name="Health_Backups_NoFull" xml:space="preserve"><value>No full backup on record in msdb.</value></data>
+  <data name="Health_Backups_Old" xml:space="preserve"><value>The last full/differential backup is {0} old.</value></data>
+  <data name="Health_Backups_Ok" xml:space="preserve"><value>Last full/differential backup {0} ago.</value></data>
+  <data name="Health_Backups_NoLog" xml:space="preserve"><value>Recovery model is {0} but there is no log backup; the log will keep growing.</value></data>
+  <data name="Health_Backups_OldLog" xml:space="preserve"><value>Recovery model is {0}; the last log backup is {1} old.</value></data>
+  <data name="Health_Backups_NotApplicable" xml:space="preserve"><value>Not applicable to tempdb.</value></data>
+  <data name="Health_Log" xml:space="preserve"><value>Transaction log</value></data>
+  <data name="Health_Log_FullAndWaiting" xml:space="preserve"><value>The log is {0}% full and cannot be reused: {1}.</value></data>
+  <data name="Health_Log_Waiting" xml:space="preserve"><value>Log reuse is waiting on {0} ({1}% used).</value></data>
+  <data name="Health_Log_Ok" xml:space="preserve"><value>The log is {0}% used.</value></data>
+  <data name="Health_Vlf" xml:space="preserve"><value>Virtual log files (VLF)</value></data>
+  <data name="Health_Vlf_High" xml:space="preserve"><value>{0} VLFs: slows recovery and restores. Grow the log in larger steps.</value></data>
+  <data name="Health_Vlf_Elevated" xml:space="preserve"><value>{0} VLFs.</value></data>
+  <data name="Health_Vlf_Ok" xml:space="preserve"><value>{0} VLFs.</value></data>
+  <data name="Health_Settings" xml:space="preserve"><value>Database settings</value></data>
+  <data name="Health_Settings_Issues" xml:space="preserve"><value>{0} setting(s) worth a look.</value></data>
+  <data name="Health_Settings_Ok" xml:space="preserve"><value>No unusual settings.</value></data>
+  <data name="Health_Files" xml:space="preserve"><value>File growth and limits</value></data>
+  <data name="Health_Files_Issues" xml:space="preserve"><value>{0} file setting(s) worth a look.</value></data>
+  <data name="Health_Files_Ok" xml:space="preserve"><value>Growth settings look fine.</value></data>
+  <data name="Health_Identity" xml:space="preserve"><value>Identity columns</value></data>
+  <data name="Health_Identity_Near" xml:space="preserve"><value>{0} identity column(s) are above 80% of their type's maximum.</value></data>
+  <data name="Health_Identity_Ok" xml:space="preserve"><value>All identity columns are far from their maximum.</value></data>
+  <data name="Health_NoPrimaryKey" xml:space="preserve"><value>Tables without a primary key</value></data>
+  <data name="Health_NoPrimaryKey_Found" xml:space="preserve"><value>{0} table(s) have no primary key.</value></data>
+  <data name="Health_NoPrimaryKey_Ok" xml:space="preserve"><value>Every table has a primary key.</value></data>
+  <data name="Health_Heaps" xml:space="preserve"><value>Heaps (no clustered index)</value></data>
+  <data name="Health_Heaps_Found" xml:space="preserve"><value>{0} table(s) are heaps.</value></data>
+  <data name="Health_Heaps_Ok" xml:space="preserve"><value>No heaps.</value></data>
+  <data name="Health_Untrusted" xml:space="preserve"><value>Untrusted or disabled constraints</value></data>
+  <data name="Health_Untrusted_Found" xml:space="preserve"><value>{0} FK/CHECK constraint(s) are not trusted or disabled; the optimizer cannot rely on them.</value></data>
+  <data name="Health_Untrusted_Ok" xml:space="preserve"><value>All constraints are trusted.</value></data>
+  <data name="Health_StaleStats" xml:space="preserve"><value>Statistics</value></data>
+  <data name="Health_StaleStats_Found" xml:space="preserve"><value>{0} statistic(s) on tables with 1000+ rows have more than 20% of rows changed since the last update.</value></data>
+  <data name="Health_StaleStats_Ok" xml:space="preserve"><value>No stale statistics on large tables.</value></data>
+  <data name="Health_Orphaned" xml:space="preserve"><value>Orphaned users</value></data>
+  <data name="Health_Orphaned_Found" xml:space="preserve"><value>{0} user(s) have no matching server login.</value></data>
+  <data name="Health_Orphaned_Ok" xml:space="preserve"><value>No orphaned users.</value></data>
+  <data name="Msg_NoDatabase" xml:space="preserve"><value>Select a database in Object Explorer or open a connected query window first.</value></data>
+  <data name="Dash_Age_Days" xml:space="preserve"><value>{0} days</value></data>
+  <data name="Dash_Age_Hours" xml:space="preserve"><value>{0} hours</value></data>
+  <data name="Dash_Age_Minutes" xml:space="preserve"><value>{0} minutes</value></data>
 </root>

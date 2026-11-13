@@ -18,6 +18,7 @@ namespace SsmsToolkit.Package
         public const int OpenLogFolderCommand = 0x0101;
         public const int AboutCommand = 0x0102;
         public const int InspectTableCommand = 0x0200;
+        public const int DatabaseDashboardCommand = 0x0201;
         public const int GridCopyCsvCommand = 0x0300;
         public const int GridCopyJsonCommand = 0x0301;
         public const int GridCopyMarkdownCommand = 0x0302;
