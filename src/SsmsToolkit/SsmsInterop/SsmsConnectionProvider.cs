@@ -138,7 +138,8 @@ namespace SsmsToolkit.SsmsInterop
             info.OwnConnectionString = BuildOwnConnectionString(info, ui, ssmsBuilder);
         }
 
-        private static string BuildOwnConnectionString(EditorConnection info, UIConnectionInfo ui, SqlConnectionStringBuilder ssmsBuilder)
+        /// <summary>Also used for Object Explorer connections (ui = null).</summary>
+        internal static string BuildOwnConnectionString(EditorConnection info, UIConnectionInfo ui, SqlConnectionStringBuilder ssmsBuilder)
         {
             try
             {

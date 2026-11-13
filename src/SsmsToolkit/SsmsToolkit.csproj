@@ -60,6 +60,7 @@
     <Compile Include="Core\ToolkitSettings.cs" />
     <Compile Include="SsmsInterop\ActiveEditor.cs" />
     <Compile Include="SsmsInterop\EditorConnection.cs" />
+    <Compile Include="SsmsInterop\ObjectExplorerInterop.cs" />
     <Compile Include="SsmsInterop\QueryWindowService.cs" />
     <Compile Include="SsmsInterop\SsmsConnectionProvider.cs" />
     <Compile Include="Features\TableInspector\InspectorWindowManager.cs" />
@@ -129,6 +130,14 @@
     </Reference>
     <Reference Include="Microsoft.Data.SqlClient">
       <HintPath>$(SsmsRefDir)Microsoft.Data.SqlClient.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc">
+      <HintPath>$(SsmsRefDir)Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.Sdk.SqlStudio">
+      <HintPath>$(SsmsRefDir)Microsoft.SqlServer.Management.Sdk.SqlStudio.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

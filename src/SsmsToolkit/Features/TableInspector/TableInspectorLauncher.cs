@@ -67,6 +67,25 @@ namespace SsmsToolkit.Features.TableInspector
             }
         }
 
+        /// <summary>Object Explorer: context menu item or Inspect Table command while Object Explorer has focus.</summary>
+        public async Task InspectObjectExplorerAsync(ObjectExplorerTarget target)
+        {
+            try
+            {
+                if (target?.Connection == null)
+                {
+                    await Notifications.StatusAsync(Strings.Get("Msg_NoName"));
+                    return;
+                }
+
+                await InspectAsync(target.Connection, new[] { target.Name }, target.Name.ToString());
+            }
+            catch (Exception ex)
+            {
+                _registry.ReportFailure(TableInspectorFeature.FeatureId, "InspectObjectExplorer", ex);
+            }
+        }
+
         /// <summary>Resolves the candidates on the editor's server and opens the first table/view found.</summary>
         public async Task InspectAsync(EditorConnection connection, IReadOnlyList<ObjectName> candidates, string displayName)
         {

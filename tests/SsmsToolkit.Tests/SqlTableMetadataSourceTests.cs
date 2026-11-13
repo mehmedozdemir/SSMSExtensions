@@ -257,7 +257,9 @@ namespace SsmsToolkit.Tests
                 return; // SMO not available on this machine (no SSMS): nothing to verify.
             }
 
-            var ddl = await Source().GetDdlAsync(await Resolve("sales", "Order"), CancellationToken.None);
+            // SMO's catalog queries need a memory grant; LocalDB on a busy dev machine can wait well past 15 s.
+            var smo = new SqlTableMetadataSource(_db.Target, new MetadataOptions { CommandTimeoutSeconds = 120 });
+            var ddl = await smo.GetDdlAsync(await Resolve("sales", "Order"), CancellationToken.None);
             Assert.Contains("CREATE TABLE [sales].[Order]", ddl);
             Assert.Contains("FK_Order_Customer", ddl);
             Assert.Contains("IX_Order_Customer", ddl);

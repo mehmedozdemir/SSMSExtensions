@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="SsmsToolkit.dccfa801-0732-4486-98f0-95a35a612588" Version="0.1.0" Language="en-US" Publisher="SsmsToolkit" />
+    <Identity Id="SsmsToolkit.dccfa801-0732-4486-98f0-95a35a612588" Version="0.2.0" Language="en-US" Publisher="SsmsToolkit" />
     <DisplayName>SsmsToolkit</DisplayName>
     <Description xml:space="preserve">Toggleable, multi-feature extension for SQL Server Management Studio 22. Table Inspector: Ctrl+Click a table name to see its columns, indexes, foreign keys, data and DDL.</Description>
     <License>LICENSE</License>

@@ -5,6 +5,10 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning: [S
 
 ## [Unreleased]
 ### Added
+- **Phase 2:** Triggers and Dependencies tabs (definitions in the script panel; tables/views open in a new
+  inspector); link-style underline and hand cursor on the identifier under the mouse while Ctrl is held;
+  Object Explorer "Inspect Table" context menu item for tables and views, and Ctrl+K, Ctrl+T while
+  Object Explorer has focus; themed scroll bars.
 - **Table Inspector** (Phase 1): Ctrl+Click a table/view name (or alias) in the query editor, the editor
   context menu "Inspect Table", or Ctrl+K, Ctrl+T opens a details tab with Summary, Columns,
   Keys (PK/UNIQUE), Indexes, Constraints (CHECK/DEFAULT), Foreign Keys (click to navigate), Data (read-only TOP N, server-side sort, validated

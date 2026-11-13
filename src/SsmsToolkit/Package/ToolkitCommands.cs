@@ -77,6 +77,18 @@ namespace SsmsToolkit.Package
         {
             try
             {
+                // Object Explorer (or another tool window) has focus: use the selected table/view node.
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                if (ObjectExplorerInterop.IsToolWindowActive())
+                {
+                    var target = await ObjectExplorerInterop.GetSelectedTableAsync(package);
+                    if (target != null)
+                    {
+                        await package.Launcher.InspectObjectExplorerAsync(target);
+                        return;
+                    }
+                }
+
                 var view = await ActiveEditor.GetActiveSqlViewAsync(package);
                 if (view == null)
                 {
