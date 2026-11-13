@@ -1,0 +1,24 @@
+# Build output
+bin/
+obj/
+artifacts/
+*.vsix
+packages/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.rsuser
+TestResults/
+
+# SSMS / Microsoft reference assemblies — never commit (copied locally by tools/copy-ssms-refs.ps1)
+lib/ssms22/
+
+# Logs
+*.log
+
+# Local bootstrap archive
+SsmsToolkit-baslangic.zip
