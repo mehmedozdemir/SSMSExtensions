@@ -21,7 +21,7 @@
 |---|---|---|---|
 | 1 | Boş paket SSMS 22.12'de yükleniyor mu? | Menü + log'da `Package loaded.` | ✅ VSIXInstaller manifest'i kabul etti, paket yüklendi. |
 | 2 | SQL editöründe mouse processor tetikleniyor mu (content type)? | `Text view created` / `Ctrl+Click` log satırları | ✅ Content type **`SQL`**. Ctrl+Tık `Cards` adını yakaladı. |
-| 3 | Aktif bağlantı ve DB okunabiliyor mu (SQL login + Windows auth)? | Rapor sekmesi + `Own connection: OK` | ✅ SQL login: `ISqlEditorService` yeterli (yedek yol gerekmedi), DB=`FMS`, kendi bağlantı 89 ms, `OBJECT_ID` → `U`. ⏳ Windows auth. |
+| 3 | Aktif bağlantı ve DB okunabiliyor mu (SQL login + Windows auth)? | Rapor sekmesi + `Own connection: OK` | ✅ SQL login: `ISqlEditorService` yeterli (yedek yol gerekmedi), DB=`FMS`, kendi bağlantı 89 ms, `OBJECT_ID` → `U`. Editörde DB değiştirilince yeni DB okunuyor ✅. ⏳ Windows auth. |
 | 4 | Doküman alanında tool window açılıyor mu? | *Spike: Open Test Window* | ✅ Rapor sekmesi açıldı. |
 
 ## İlk testten öğrenilenler
