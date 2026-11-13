@@ -12,9 +12,13 @@ namespace SsmsToolkit.UI
     [Guid("5d0f7a7e-3c1b-4f5e-9a6f-2b9c8e1d4a73")]
     public sealed class SettingsToolWindow : ToolWindowPane
     {
+        // Content must be non-null while VS creates the frame (see TableInspectorToolWindow).
+        private readonly System.Windows.Controls.ContentControl _host = new System.Windows.Controls.ContentControl();
+
         public SettingsToolWindow() : base(null)
         {
             Caption = "SsmsToolkit";
+            Content = _host;
         }
 
         internal void Load(FeatureRegistry registry, Func<ToolkitSettings, string> saveAndApply, Action openLogFolder)
@@ -48,7 +52,7 @@ namespace SsmsToolkit.UI
             var view = new SettingsView { DataContext = vm };
             VsTheme.UseVsControlStyles(view);
             Caption = Strings.Get("Settings_Title");
-            Content = view;
+            _host.Content = view;
         }
     }
 }
