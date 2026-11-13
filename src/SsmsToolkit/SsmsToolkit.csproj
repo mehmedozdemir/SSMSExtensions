@@ -63,6 +63,7 @@
     <Compile Include="SsmsInterop\QueryWindowService.cs" />
     <Compile Include="SsmsInterop\SsmsConnectionProvider.cs" />
     <Compile Include="Features\TableInspector\InspectorWindowManager.cs" />
+    <Compile Include="Features\TableInspector\LinkHoverAdornment.cs" />
     <Compile Include="Features\TableInspector\TableInspectorFeature.cs" />
     <Compile Include="Features\TableInspector\TableInspectorLauncher.cs" />
     <Compile Include="Features\TableInspector\TableInspectorMouseProcessor.cs" />
