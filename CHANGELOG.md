@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning: [SemVer](https://semver.org/).
 
 ## [Unreleased]
+
+## [0.3.0] - 2026-11-13
 ### Added
 - **Result Grid Tools** (Phase 3.1, off by default; turn on in Settings): right-click the SSMS results grid >
   *Copy As (SsmsToolkit)* to copy the selection as CSV, JSON, Markdown or a distinct `IN (...)` list.
