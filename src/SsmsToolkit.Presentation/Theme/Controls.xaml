@@ -1,0 +1,220 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:t="clr-namespace:SsmsToolkit.Presentation.Theme"
+                    xmlns:l="clr-namespace:SsmsToolkit.Presentation.Localization">
+    <!--
+        Implicit styles for every control the views use. Colors come only from ThemeKeys so the host
+        (SSMS theme or Playground light/dark) decides them, and theme switches apply live.
+    -->
+    <t:BoolToVisibilityConverter x:Key="BoolToVisibility" />
+    <t:HasValueToVisibilityConverter x:Key="HasValueToVisibility" />
+    <t:BoolToMarkConverter x:Key="BoolToMark" />
+
+    <Style TargetType="TextBlock">
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <Style x:Key="MutedText" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static t:ThemeKeys.MutedForeground}}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <Style x:Key="SectionHeader" TargetType="TextBlock">
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Margin" Value="0,8,0,4" />
+    </Style>
+
+    <Style TargetType="TextBox">
+        <Setter Property="Background" Value="{DynamicResource {x:Static t:ThemeKeys.InputBackground}}" />
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static t:ThemeKeys.InputForeground}}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static t:ThemeKeys.InputBorder}}" />
+        <Setter Property="CaretBrush" Value="{DynamicResource {x:Static t:ThemeKeys.InputForeground}}" />
+        <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static t:ThemeKeys.SelectionBackground}}" />
+        <Setter Property="Padding" Value="3,2" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <!-- Read-only, selectable text (errors, DDL). -->
+    <Style x:Key="ReadOnlyText" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static t:ThemeKeys.Foreground}}" />
+        <Setter Property="VerticalContentAlignment" Value="Top" />
+    </Style>
+
+    <Style x:Key="CodeText" TargetType="TextBox" BasedOn="{StaticResource ReadOnlyText}">
+        <Setter Property="FontFamily" Value="Consolas, Courier New" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+        <Setter Property="AcceptsReturn" Value="True" />
+        <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="Padding" Value="8" />
+    </Style>
+
+    <Style TargetType="Button">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static t:ThemeKeys.InputForeground}}" />
+        <Setter Property="Background" Value="{DynamicResource {x:Static t:ThemeKeys.InputBackground}}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static t:ThemeKeys.InputBorder}}" />
+        <Setter Property="Padding" Value="10,3" />
+        <Setter Property="Margin" Value="4,0,0,0" />
+        <Setter Property="MinWidth" Value="64" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static t:ThemeKeys.HoverBackground}}" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource {x:Static t:ThemeKeys.SelectionBackground}}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.45" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Hyperlink-looking button (foreign key target tables). -->
+    <Style x:Key="LinkButton" TargetType="Button">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static t:ThemeKeys.Link}}" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <TextBlock x:Name="Text" Text="{TemplateBinding Content}" TextDecorations="Underline" Background="Transparent" />
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Text" Property="Foreground" Value="{DynamicResource {x:Static t:ThemeKeys.LinkHover}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- DataGrid -->
+    <Style TargetType="DataGrid">
+        <Setter Property="Background" Value="{DynamicResource {x:Static t:ThemeKeys.Background}}" />
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static t:ThemeKeys.Foreground}}" />
+        <Setter Property="RowBackground" Value="{DynamicResource {x:Static t:ThemeKeys.Background}}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static t:ThemeKeys.Border}}" />
+        <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource {x:Static t:ThemeKeys.GridLine}}" />
+        <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource {x:Static t:ThemeKeys.GridLine}}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="CanUserDeleteRows" Value="False" />
+        <Setter Property="CanUserResizeRows" Value="False" />
+        <Setter Property="SelectionMode" Value="Extended" />
+        <Setter Property="SelectionUnit" Value="CellOrRowHeader" />
+        <Setter Property="ClipboardCopyMode" Value="ExcludeHeader" />
+        <Setter Property="EnableRowVirtualization" Value="True" />
+        <Setter Property="EnableColumnVirtualization" Value="True" />
+        <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
+        <Setter Property="GridLinesVisibility" Value="All" />
+    </Style>
+
+    <Style TargetType="DataGridColumnHeader">
+        <Setter Property="Background" Value="{DynamicResource {x:Static t:ThemeKeys.GridHeaderBackground}}" />
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static t:ThemeKeys.GridHeaderForeground}}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static t:ThemeKeys.GridLine}}" />
+        <Setter Property="BorderThickness" Value="0,0,1,1" />
+        <Setter Property="Padding" Value="6,3" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <Style TargetType="DataGridCell">
+        <Setter Property="Padding" Value="6,2" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DataGridCell">
+                    <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                        <ContentPresenter VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{DynamicResource {x:Static t:ThemeKeys.SelectionBackground}}" />
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static t:ThemeKeys.SelectionForeground}}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Tabs -->
+    <Style TargetType="TabControl">
+        <Setter Property="Background" Value="{DynamicResource {x:Static t:ThemeKeys.Background}}" />
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static t:ThemeKeys.Foreground}}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static t:ThemeKeys.Border}}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabControl">
+                    <DockPanel>
+                        <Border DockPanel.Dock="Top" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0,0,0,1">
+                            <TabPanel IsItemsHost="True" Margin="8,0,8,0" />
+                        </Border>
+                        <ContentPresenter ContentSource="SelectedContent" Margin="{TemplateBinding Padding}" />
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="TabItem">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static t:ThemeKeys.Foreground}}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabItem">
+                    <Border x:Name="Bd" Background="Transparent" Padding="12,6" Cursor="Hand">
+                        <ContentPresenter ContentSource="Header" TextElement.Foreground="{TemplateBinding Foreground}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static t:ThemeKeys.HoverBackground}}" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static t:ThemeKeys.TabSelectedBackground}}" />
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static t:ThemeKeys.TabSelectedForeground}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Body of an inspector tab: content + loading overlay + error text. DataContext is the InspectorTab. -->
+    <Style x:Key="TabBody" TargetType="ContentControl">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ContentControl">
+                    <Grid>
+                        <ContentPresenter />
+                        <Border Background="{DynamicResource {x:Static t:ThemeKeys.Background}}" Opacity="0.85"
+                                Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}">
+                            <TextBlock Text="{l:Loc Common_Loading}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" />
+                        </Border>
+                        <Border Background="{DynamicResource {x:Static t:ThemeKeys.Background}}"
+                                Visibility="{Binding HasError, Converter={StaticResource BoolToVisibility}}">
+                            <TextBox Style="{StaticResource ReadOnlyText}" Text="{Binding ErrorMessage, Mode=OneWay}" Foreground="#E05252" Margin="12" />
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

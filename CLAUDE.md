@@ -26,12 +26,13 @@ Microsoft does not officially support SSMS extensions. Everything that touches u
 - Active connection: `ISqlEditorService` (service type `SSqlEditorService`) first, `ServiceCache.ScriptFactory.CurrentlyActiveWndConnectionInfo` as fallback — both only inside `SsmsInterop/`.
 - SSMS install root: `C:\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE`.
 
-## Layout (target)
+## Layout
 ```
-src/SsmsToolkit/            VSIX project (Package/, Core/, SsmsInterop/, Features/, UI/)
-src/SsmsToolkit.Data/       SSMS-independent metadata & data queries (unit-testable)
-src/SsmsToolkit.Playground/ WPF app to iterate on UI without SSMS
-tests/SsmsToolkit.Tests/
+src/SsmsToolkit/              VSIX project (Package/, Core/, SsmsInterop/, Features/, UI/) — the only project referencing VS/SSMS
+src/SsmsToolkit.Data/         SSMS-independent metadata & data queries, ScriptDom name resolver (unit-testable)
+src/SsmsToolkit.Presentation/ SSMS-independent WPF views/view models + TR/EN strings (Localization/*.resx)
+src/SsmsToolkit.Playground/   WPF app to iterate on UI without SSMS (sample data or --cs "<connection string>")
+tests/SsmsToolkit.Tests/      xUnit; metadata tests run against LocalDB and are skipped without it
 lib/ssms22/                 reference DLLs copied from SSMS (git-ignored)
 tools/                      scripts (copy refs, install/uninstall VSIX)
 docs/                       analysis, manual test checklists
@@ -42,6 +43,11 @@ docs/                       analysis, manual test checklists
 - Install for testing (SSMS closed): `"C:\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE\VSIXInstaller.exe" /quiet <path>\SsmsToolkit.vsix`
 - Uninstall: `VSIXInstaller.exe /uninstall:<VsixId>`
 - Debug: start external program `SSMS.exe`, attach VS debugger.
+- Install/uninstall shortcut: `tools/install-vsix.ps1 [-Configuration Debug] [-Uninstall]` (refuses while SSMS runs).
+- Tests: `dotnet test tests/SsmsToolkit.Tests/SsmsToolkit.Tests.csproj`.
+- UI without SSMS: `src/SsmsToolkit.Playground/bin/<cfg>/net48/SsmsToolkit.Playground.exe [--dark] [--lang tr|en] [--tab N] [--settings]`.
+- Theming: views use only `ThemeKeys` (Presentation); `UI/VsTheme.cs` maps them to VS theme keys inside SSMS.
+- Our own DLLs (Data, Presentation) ship in the VSIX and load through `[ProvideBindingPath]`; SSMS DLLs never ship.
 - Logs: `%LocalAppData%\SsmsToolkit\logs`. Settings: `%LocalAppData%\SsmsToolkit\settings.json`.
 - You (Claude Code) cannot click inside SSMS. At the end of each task, write/refresh a short manual test checklist in `docs/testing/` for the user.
 

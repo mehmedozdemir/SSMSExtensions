@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    SSMS-independent WPF views and view models (Table Inspector, Settings) and localized strings.
+    Hosted by the VSIX inside SSMS and by SsmsToolkit.Playground without SSMS. No VS/SSMS references here.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>SsmsToolkit.Presentation</RootNamespace>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SsmsToolkit.Data\SsmsToolkit.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Both languages live in the main assembly (no satellite assemblies to deploy/probe inside SSMS). -->
+    <EmbeddedResource Update="Localization\Strings.resx" WithCulture="false" />
+    <EmbeddedResource Update="Localization\StringsTurkish.resx" WithCulture="false" />
+  </ItemGroup>
+</Project>

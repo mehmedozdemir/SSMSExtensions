@@ -14,8 +14,9 @@ namespace SsmsToolkit.Package
 
     internal static class PackageIds
     {
-        public const int ShowConnectionCommand = 0x0100;
-        public const int OpenTestWindowCommand = 0x0101;
-        public const int OpenLogFolderCommand = 0x0102;
+        public const int SettingsCommand = 0x0100;
+        public const int OpenLogFolderCommand = 0x0101;
+        public const int AboutCommand = 0x0102;
+        public const int InspectTableCommand = 0x0200;
     }
 }

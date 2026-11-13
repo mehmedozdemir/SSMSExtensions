@@ -22,3 +22,6 @@ lib/ssms22/
 
 # Local bootstrap archive
 SsmsToolkit-baslangic.zip
+
+# Test results / local tooling
+*.trx

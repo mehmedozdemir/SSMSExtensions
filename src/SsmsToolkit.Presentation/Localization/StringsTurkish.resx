@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Tab_Summary" xml:space="preserve"><value>Özet</value></data>
+  <data name="Tab_Columns" xml:space="preserve"><value>Kolonlar</value></data>
+  <data name="Tab_Keys" xml:space="preserve"><value>Anahtarlar</value></data>
+  <data name="Tab_Indexes" xml:space="preserve"><value>İndeksler</value></data>
+  <data name="Tab_Constraints" xml:space="preserve"><value>Constraint'ler</value></data>
+  <data name="Tab_ForeignKeys" xml:space="preserve"><value>Foreign Key'ler</value></data>
+  <data name="Tab_Data" xml:space="preserve"><value>Veri</value></data>
+  <data name="Tab_Ddl" xml:space="preserve"><value>DDL</value></data>
+  <data name="Common_Loading" xml:space="preserve"><value>Yükleniyor…</value></data>
+  <data name="Common_Cancel" xml:space="preserve"><value>İptal</value></data>
+  <data name="Common_Refresh" xml:space="preserve"><value>Yenile</value></data>
+  <data name="Common_Copy" xml:space="preserve"><value>Kopyala</value></data>
+  <data name="Common_OpenInQuery" xml:space="preserve"><value>Yeni Sorguda Aç</value></data>
+  <data name="Common_Cancelled" xml:space="preserve"><value>İptal edildi.</value></data>
+  <data name="Common_Yes" xml:space="preserve"><value>Evet</value></data>
+  <data name="Header_Table" xml:space="preserve"><value>Tablo</value></data>
+  <data name="Header_View" xml:space="preserve"><value>View</value></data>
+  <data name="Header_ProductionWarning" xml:space="preserve"><value>ÜRETİM SUNUCUSU: {0}</value></data>
+  <data name="Prop_Server" xml:space="preserve"><value>Sunucu</value></data>
+  <data name="Prop_Database" xml:space="preserve"><value>Veritabanı</value></data>
+  <data name="Prop_Schema" xml:space="preserve"><value>Şema</value></data>
+  <data name="Prop_Name" xml:space="preserve"><value>Ad</value></data>
+  <data name="Prop_Type" xml:space="preserve"><value>Tip</value></data>
+  <data name="Prop_Rows" xml:space="preserve"><value>Satır sayısı (yaklaşık)</value></data>
+  <data name="Prop_TotalSize" xml:space="preserve"><value>Ayrılan alan</value></data>
+  <data name="Prop_UsedSize" xml:space="preserve"><value>Kullanılan alan</value></data>
+  <data name="Prop_ColumnCount" xml:space="preserve"><value>Kolon sayısı</value></data>
+  <data name="Prop_IndexCount" xml:space="preserve"><value>İndeks sayısı</value></data>
+  <data name="Prop_Created" xml:space="preserve"><value>Oluşturulma</value></data>
+  <data name="Prop_Modified" xml:space="preserve"><value>Değiştirilme</value></data>
+  <data name="Prop_Description" xml:space="preserve"><value>Açıklama</value></data>
+  <data name="Prop_Synonym" xml:space="preserve"><value>Synonym üzerinden açıldı</value></data>
+  <data name="Col_Property" xml:space="preserve"><value>Özellik</value></data>
+  <data name="Col_Value" xml:space="preserve"><value>Değer</value></data>
+  <data name="Col_Name" xml:space="preserve"><value>Ad</value></data>
+  <data name="Col_Type" xml:space="preserve"><value>Tip</value></data>
+  <data name="Col_Nullable" xml:space="preserve"><value>Null</value></data>
+  <data name="Col_PrimaryKey" xml:space="preserve"><value>PK</value></data>
+  <data name="Col_Identity" xml:space="preserve"><value>Identity</value></data>
+  <data name="Col_Default" xml:space="preserve"><value>Varsayılan</value></data>
+  <data name="Col_Computed" xml:space="preserve"><value>Hesaplanan</value></data>
+  <data name="Col_Collation" xml:space="preserve"><value>Collation</value></data>
+  <data name="Col_Description" xml:space="preserve"><value>Açıklama</value></data>
+  <data name="Col_Kind" xml:space="preserve"><value>Tür</value></data>
+  <data name="Col_IndexType" xml:space="preserve"><value>İndeks tipi</value></data>
+  <data name="Col_KeyColumns" xml:space="preserve"><value>Anahtar kolonlar</value></data>
+  <data name="Col_IncludedColumns" xml:space="preserve"><value>Include kolonlar</value></data>
+  <data name="Col_Filter" xml:space="preserve"><value>Filtre</value></data>
+  <data name="Col_Disabled" xml:space="preserve"><value>Kapalı</value></data>
+  <data name="Col_Columns" xml:space="preserve"><value>Kolonlar</value></data>
+  <data name="Col_Table" xml:space="preserve"><value>Tablo</value></data>
+  <data name="Col_ReferencedColumns" xml:space="preserve"><value>Referans kolonlar</value></data>
+  <data name="Col_OnDelete" xml:space="preserve"><value>Silinince</value></data>
+  <data name="Col_OnUpdate" xml:space="preserve"><value>Güncellenince</value></data>
+  <data name="Col_State" xml:space="preserve"><value>Durum</value></data>
+  <data name="Fk_Outgoing" xml:space="preserve"><value>Referans verdiği tablolar (giden)</value></data>
+  <data name="Fk_Incoming" xml:space="preserve"><value>Bu tabloya referans verenler (gelen)</value></data>
+  <data name="Fk_OpenHint" xml:space="preserve"><value>İncelemek için tablo adına tıklayın.</value></data>
+  <data name="Fk_None" xml:space="preserve"><value>Yok</value></data>
+  <data name="Fk_NotTrusted" xml:space="preserve"><value>güvenilmez (not trusted)</value></data>
+  <data name="Fk_Disabled" xml:space="preserve"><value>kapalı</value></data>
+  <data name="Data_Where" xml:space="preserve"><value>WHERE</value></data>
+  <data name="Data_Top" xml:space="preserve"><value>Satır</value></data>
+  <data name="Data_Run" xml:space="preserve"><value>Çalıştır</value></data>
+  <data name="Data_Info" xml:space="preserve"><value>{0} satır · {1} ms</value></data>
+  <data name="Data_LimitReached" xml:space="preserve"><value>{0} satır (limite ulaşıldı) · {1} ms</value></data>
+  <data name="Data_SortHint" xml:space="preserve"><value>Sunucuda sıralamak için kolon başlığına tıklayın. Salt okunur.</value></data>
+  <data name="Data_ReadUncommitted" xml:space="preserve"><value>READ UNCOMMITTED</value></data>
+  <data name="Data_InvalidTop" xml:space="preserve"><value>Satır limiti 1 ile {0} arasında olmalı.</value></data>
+  <data name="Ddl_NotLoaded" xml:space="preserve"><value>Script bu sekme açılınca üretilir.</value></data>
+  <data name="Settings_Title" xml:space="preserve"><value>SsmsToolkit Ayarları</value></data>
+  <data name="Settings_Features" xml:space="preserve"><value>Özellikler</value></data>
+  <data name="Settings_General" xml:space="preserve"><value>Genel</value></data>
+  <data name="Settings_Save" xml:space="preserve"><value>Kaydet</value></data>
+  <data name="Settings_Saved" xml:space="preserve"><value>Ayarlar kaydedildi.</value></data>
+  <data name="Settings_SaveFailed" xml:space="preserve"><value>Ayarlar kaydedilemedi: {0}</value></data>
+  <data name="Settings_Enabled" xml:space="preserve"><value>Açık</value></data>
+  <data name="Settings_LogLevel" xml:space="preserve"><value>Log seviyesi</value></data>
+  <data name="Settings_ProductionPatterns" xml:space="preserve"><value>Üretim sunucusu adı kalıpları (; ile ayırın, * joker karakter)</value></data>
+  <data name="Settings_Language" xml:space="preserve"><value>Dil</value></data>
+  <data name="Settings_LanguageNote" xml:space="preserve"><value>Kaydettikten sonra açılan pencerelerde geçerli olur.</value></data>
+  <data name="Settings_NoFeatureSettings" xml:space="preserve"><value>Bu özelliğin ayarı yok.</value></data>
+  <data name="Settings_OpenLogFolder" xml:space="preserve"><value>Log klasörünü aç</value></data>
+  <data name="Lang_Auto" xml:space="preserve"><value>Otomatik (SSMS dili)</value></data>
+  <data name="Lang_English" xml:space="preserve"><value>English</value></data>
+  <data name="Lang_Turkish" xml:space="preserve"><value>Türkçe</value></data>
+  <data name="LogLevel_Error" xml:space="preserve"><value>Sadece hatalar</value></data>
+  <data name="LogLevel_Warning" xml:space="preserve"><value>Uyarılar</value></data>
+  <data name="LogLevel_Info" xml:space="preserve"><value>Bilgi</value></data>
+  <data name="LogLevel_Debug" xml:space="preserve"><value>Debug</value></data>
+  <data name="Feature_TableInspector_Name" xml:space="preserve"><value>Table Inspector</value></data>
+  <data name="Feature_TableInspector_Description" xml:space="preserve"><value>Sorgu editöründe bir tablo adına Ctrl+Tık yaparak yapısını, indekslerini, foreign key'lerini, verisini ve DDL'ini görün.</value></data>
+  <data name="TI_RowLimit" xml:space="preserve"><value>Veri sekmesi satır limiti</value></data>
+  <data name="TI_Timeout" xml:space="preserve"><value>Sorgu zaman aşımı (saniye)</value></data>
+  <data name="TI_OpenMode" xml:space="preserve"><value>Açılış şekli</value></data>
+  <data name="TI_OpenMode_Tab" xml:space="preserve"><value>Yeni doküman sekmesi</value></data>
+  <data name="TI_OpenMode_Popup" xml:space="preserve"><value>Yüzen pencere</value></data>
+  <data name="TI_Trigger" xml:space="preserve"><value>Fare tetikleyicisi</value></data>
+  <data name="TI_Trigger_CtrlClick" xml:space="preserve"><value>Ctrl + Tık</value></data>
+  <data name="TI_Trigger_CtrlAltClick" xml:space="preserve"><value>Ctrl + Alt + Tık</value></data>
+  <data name="TI_Trigger_Disabled" xml:space="preserve"><value>Kapalı (yalnızca sağ tık menüsü ve kısayol)</value></data>
+  <data name="TI_ReadUncommitted" xml:space="preserve"><value>Veri sekmesinde READ UNCOMMITTED kullan (kirli okuma, paylaşımlı kilit yok)</value></data>
+  <data name="TI_ShortcutNote" xml:space="preserve"><value>Ayrıca: editör sağ tık menüsünde "Inspect Table" ve Ctrl+K, Ctrl+T (Tools &gt; Options &gt; Environment &gt; Keyboard, komut Extensions.SsmsToolkit.InspectTable).</value></data>
+  <data name="Msg_NoName" xml:space="preserve"><value>SsmsToolkit: imleçte tablo adı yok.</value></data>
+  <data name="Msg_Inspecting" xml:space="preserve"><value>SsmsToolkit: {0} inceleniyor…</value></data>
+  <data name="Msg_NotFound" xml:space="preserve"><value>SsmsToolkit: tablo veya view bulunamadı: {0}</value></data>
+  <data name="Msg_NotTable" xml:space="preserve"><value>SsmsToolkit: {0} bir tablo veya view değil ({1}).</value></data>
+  <data name="Msg_TempUnsupported" xml:space="preserve"><value>SsmsToolkit: temp tablolar ve table variable'lar desteklenmiyor.</value></data>
+  <data name="Msg_LinkedServerUnsupported" xml:space="preserve"><value>SsmsToolkit: linked server adları desteklenmiyor.</value></data>
+  <data name="Msg_Unsupported" xml:space="preserve"><value>SsmsToolkit: desteklenmiyor: {0}</value></data>
+  <data name="Msg_NoConnection" xml:space="preserve"><value>SsmsToolkit: sorgu editörü bir sunucuya bağlı değil.</value></data>
+  <data name="Msg_AuthUnsupported" xml:space="preserve"><value>SsmsToolkit: bu bağlantının kimlik doğrulama tipi henüz desteklenmiyor ({0}).</value></data>
+  <data name="Msg_Failed" xml:space="preserve"><value>SsmsToolkit: {0}</value></data>
+  <data name="Msg_FeatureDisabled" xml:space="preserve"><value>SsmsToolkit, tekrarlanan hatalar nedeniyle "{0}" özelliğini kapattı. Ayrıntılar log'da. Ayarlardan tekrar açabilirsiniz.</value></data>
+  <data name="Msg_OpenLog" xml:space="preserve"><value>Log'u aç</value></data>
+  <data name="Msg_OpenSettings" xml:space="preserve"><value>Ayarlar</value></data>
+  <data name="About_Text" xml:space="preserve"><value>SsmsToolkit {0}
+
+SQL Server Management Studio 22 için açılıp kapatılabilen, çok özellikli eklenti.
+Microsoft tarafından desteklenmez; belgelenmemiş SSMS iç API'lerini kullanır.
+
+Host: {1}
+Log'lar: {2}
+Ayarlar: {3}
+
+MIT Lisansı</value></data>
+  <data name="Col_Column" xml:space="preserve"><value>Kolon</value></data>
+  <data name="Col_Definition" xml:space="preserve"><value>Tanım</value></data>
+  <data name="Constraint_SystemNamed" xml:space="preserve"><value>sistem tarafından adlandırılmış</value></data>
+  <data name="Script_Title" xml:space="preserve"><value>SQL</value></data>
+  <data name="Script_Hint" xml:space="preserve"><value>SQL scriptini görmek için bir satır seçin.</value></data>
+  <data name="Script_Note" xml:space="preserve"><value>Depolama seçenekleri (FILLFACTOR, sıkıştırma, filegroup) yok; tablonun tam scripti DDL sekmesinde.</value></data>
+</root>

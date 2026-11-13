@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5" />
+    <!-- Same assembly version (6.0.0.0) SSMS 22 ships; needed at test runtime only. -->
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\SsmsToolkit.Data\SsmsToolkit.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Standalone assembly with no dependencies: safe to copy into the local test output (never shipped). -->
+    <Reference Include="Microsoft.SqlServer.TransactSql.ScriptDom">
+      <HintPath>$(SsmsRefDir)Microsoft.SqlServer.TransactSql.ScriptDom.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data" />
+  </ItemGroup>
+
+  <!--
+    SMO for the DDL (SmoScripter) tests: copied from the local SSMS install into the test output only
+    (never committed, never shipped). Without SSMS the DDL tests are skipped.
+  -->
+  <PropertyGroup>
+    <SsmsIdeDir Condition="'$(SsmsIdeDir)' == ''">C:\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE\</SsmsIdeDir>
+  </PropertyGroup>
+  <ItemGroup Condition="Exists('$(SsmsIdeDir)Microsoft.SqlServer.Smo.dll')">
+    <SmoRuntime Include="$(SsmsIdeDir)Microsoft.SqlServer.Smo.dll;$(SsmsIdeDir)Microsoft.SqlServer.ConnectionInfo.dll;$(SsmsIdeDir)Microsoft.SqlServer.Management.Sdk.Sfc.dll;$(SsmsIdeDir)Microsoft.SqlServer.SqlEnum.dll;$(SsmsIdeDir)Microsoft.SqlServer.Dmf.Common.dll;$(SsmsIdeDir)Microsoft.SqlServer.SqlClrProvider.dll;$(SsmsIdeDir)Microsoft.SqlServer.ServiceBrokerEnum.dll;$(SsmsIdeDir)Microsoft.SqlServer.Smo.Notebook.dll;$(SsmsIdeDir)Microsoft.SqlServer.Management.SqlParser.dll;$(SsmsIdeDir)Microsoft.SqlServer.PolicyEnum.dll;$(SsmsIdeDir)Microsoft.SqlServer.SmoExtended.dll" />
+    <None Include="@(SmoRuntime)" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+  </ItemGroup>
+</Project>

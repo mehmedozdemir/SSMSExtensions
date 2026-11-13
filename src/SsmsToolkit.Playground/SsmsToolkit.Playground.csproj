@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Small WPF app to iterate on SsmsToolkit UI without SSMS. Never shipped. -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>SsmsToolkit.Playground</RootNamespace>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SsmsToolkit.Data\SsmsToolkit.Data.csproj" />
+    <ProjectReference Include="..\SsmsToolkit.Presentation\SsmsToolkit.Presentation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Inside SSMS these come from SSMS; for the local Playground run we copy them next to the exe (never committed). -->
+    <Reference Include="Microsoft.SqlServer.TransactSql.ScriptDom">
+      <HintPath>$(SsmsRefDir)Microsoft.SqlServer.TransactSql.ScriptDom.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data" />
+  </ItemGroup>
+</Project>
