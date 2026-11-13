@@ -9,6 +9,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning: [S
   context menu "Inspect Table", or Ctrl+K, Ctrl+T opens a details tab with Summary, Columns,
   Keys (PK/UNIQUE), Indexes, Constraints (CHECK/DEFAULT), Foreign Keys (click to navigate), Data (read-only TOP N, server-side sort, validated
   WHERE filter, open as query) and DDL (SMO script, copy, open as query). Optional floating window.
+  Selecting a column, key, index, constraint or foreign key shows its CREATE/ALTER script in a resizable
+  panel below the list (copy / open in new query).
 - Feature registry with per-feature on/off switch; a feature that fails repeatedly turns itself off for the
   session and shows an info bar.
 - Settings window (Extensions > SsmsToolkit > Settings): trigger, open mode, row limit, timeout,

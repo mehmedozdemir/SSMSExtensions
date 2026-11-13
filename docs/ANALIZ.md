@@ -199,6 +199,7 @@ Teknik not: Grid'e erişim `Microsoft.SqlServer.GridControl` ve yansıma (reflec
 | 5 | Hedef sürüm | Yalnızca **SSMS 22** (`[22.0,23.0)`) |
 | 6 | Dağıtım | Şimdilik kişisel/ekip; **ileride açık kaynak**. Kod, yorum ve commit'ler İngilizce; kullanıcıya görünen metinler kaynak dosyasında (TR/EN eklenebilir). Lisans: **MIT** (değiştirilebilir) |
 | 7 | Repo | **GitHub public repo**; sürüm yönetimi orada (SemVer, tag + GitHub Release, VSIX release asset olarak) |
+| 9 | Nesne scriptleri | Kolon/anahtar/indeks/constraint/FK satırı seçilince altta SQL scripti (2026-11-13, Faz 1'e eklendi). Mevcut metadata'dan üretilir; depolama seçenekleri yok, tam script DDL sekmesinde |
 | 8 | Ortam | Visual Studio + "Visual Studio extension development" workload **kurulu** |
 
 ### Sürüm yönetimi

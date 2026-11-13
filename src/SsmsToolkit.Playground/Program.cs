@@ -46,7 +46,7 @@ namespace SsmsToolkit.Playground
                     : new SqlTableMetadataSource(new ConnectionTarget(cs, null, null), new MetadataOptions());
                 var host = new PlaygroundHost(source);
                 var table = Arg(args, "--table") ?? "dbo.PersonelCardDetails";
-                window = host.CreateWindow(table, int.TryParse(Arg(args, "--tab"), out var tab) ? tab : 1);
+                window = host.CreateWindow(table, int.TryParse(Arg(args, "--tab"), out var tab) ? tab : 1, args.Contains("--select"));
             }
 
             window.Background = (System.Windows.Media.Brush)app.Resources[ThemeKeys.Background];
@@ -83,7 +83,7 @@ namespace SsmsToolkit.Playground
                 _source = source;
             }
 
-            public Window CreateWindow(string tableName, int tabIndex)
+            public Window CreateWindow(string tableName, int tabIndex, bool selectFirstRow = false)
             {
                 var name = SqlNameResolver.ParseMultipartName(tableName) ?? new ObjectName(null, null, null, tableName);
                 var result = _source.ResolveAsync(new[] { name }, CancellationToken.None).GetAwaiter().GetResult();
@@ -106,13 +106,24 @@ namespace SsmsToolkit.Playground
                 {
                     vm.SelectedTab = vm.Tabs[Math.Max(0, Math.Min(vm.Tabs.Count - 1, tabIndex))];
                     await vm.StartAsync();
+                    if (selectFirstRow)
+                    {
+                        // Screenshot helper: show the script panel filled.
+                        switch (vm.SelectedTab)
+                        {
+                            case ColumnsTab c: c.Selected = c.Columns.FirstOrDefault(); break;
+                            case IndexListTab i: i.Selected = i.Items.FirstOrDefault(); break;
+                            case ConstraintsTab k: k.Selected = k.Items.FirstOrDefault(); break;
+                            case ForeignKeysTab f: f.SelectedOutgoing = f.Outgoing.FirstOrDefault(); break;
+                        }
+                    }
                 };
                 return window;
             }
 
             public Task OpenTableAsync(ObjectName name)
             {
-                var w = CreateWindow(name.ToString(), 1);
+                var w = CreateWindow(name.ToString(), 1, false);
                 w.Background = (System.Windows.Media.Brush)Application.Current.Resources[ThemeKeys.Background];
                 w.Show();
                 return Task.CompletedTask;

@@ -133,4 +133,7 @@ MIT License</value></data>
   <data name="Col_Column" xml:space="preserve"><value>Column</value></data>
   <data name="Col_Definition" xml:space="preserve"><value>Definition</value></data>
   <data name="Constraint_SystemNamed" xml:space="preserve"><value>system-generated name</value></data>
+  <data name="Script_Title" xml:space="preserve"><value>SQL</value></data>
+  <data name="Script_Hint" xml:space="preserve"><value>Select a row to see its SQL script.</value></data>
+  <data name="Script_Note" xml:space="preserve"><value>Storage options (FILLFACTOR, compression, filegroup) are omitted; the DDL tab has the full table script.</value></data>
 </root>

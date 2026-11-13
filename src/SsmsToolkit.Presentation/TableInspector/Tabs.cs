@@ -27,6 +27,60 @@ namespace SsmsToolkit.Presentation.TableInspector
         public string Value { get; }
     }
 
+    /// <summary>A grid row that has a SQL script for the bottom script panel.</summary>
+    public interface IScriptRow
+    {
+        string Script { get; }
+    }
+
+    /// <summary>A list tab whose selected row's script is shown in the script panel, with copy / open in new query.</summary>
+    public abstract class ScriptListTab : InspectorTab
+    {
+        private IScriptRow _selected;
+
+        protected ScriptListTab(string header, ResolvedObject obj, IInspectorHost host, CancellationToken lifetime, Action<string, Exception> onError)
+            : base(header, lifetime, onError)
+        {
+            Object = obj;
+            CopyScriptCommand = new RelayCommand(_ => host.CopyToClipboard(Selected?.Script), _ => Selected != null);
+            OpenScriptCommand = new AsyncCommand(_ => host.OpenQueryAsync(Selected?.Script, obj.Database), ex => onError?.Invoke("Open script", ex),
+                _ => Selected != null);
+        }
+
+        protected ResolvedObject Object { get; }
+
+        public IScriptRow Selected
+        {
+            get => _selected;
+            set
+            {
+                if (Set(ref _selected, value))
+                {
+                    OnPropertyChanged(nameof(SelectedScript));
+                }
+            }
+        }
+
+        public string SelectedScript => Selected?.Script;
+
+        public ICommand CopyScriptCommand { get; }
+
+        public ICommand OpenScriptCommand { get; }
+    }
+
+    public sealed class ColumnRow : IScriptRow
+    {
+        public ColumnRow(ResolvedObject table, ColumnInfo info)
+        {
+            Info = info;
+            Script = ScriptBuilder.Column(table, info);
+        }
+
+        public ColumnInfo Info { get; }
+
+        public string Script { get; }
+    }
+
     public sealed class SummaryTab : InspectorTab
     {
         private readonly ResolvedObject _obj;
@@ -84,35 +138,35 @@ namespace SsmsToolkit.Presentation.TableInspector
         }
     }
 
-    public sealed class ColumnsTab : InspectorTab
+    public sealed class ColumnsTab : ScriptListTab
     {
-        private readonly ResolvedObject _obj;
         private readonly ITableMetadataSource _source;
 
-        public ColumnsTab(ResolvedObject obj, ITableMetadataSource source, CancellationToken lifetime, Action<string, Exception> onError)
-            : base(Strings.Get("Tab_Columns"), lifetime, onError)
+        public ColumnsTab(ResolvedObject obj, ITableMetadataSource source, IInspectorHost host, CancellationToken lifetime, Action<string, Exception> onError)
+            : base(Strings.Get("Tab_Columns"), obj, host, lifetime, onError)
         {
-            _obj = obj;
             _source = source;
         }
 
-        public ObservableCollection<ColumnInfo> Columns { get; } = new ObservableCollection<ColumnInfo>();
+        public ObservableCollection<ColumnRow> Columns { get; } = new ObservableCollection<ColumnRow>();
 
         protected override async Task LoadCoreAsync(CancellationToken ct)
         {
-            var cols = await _source.GetColumnsAsync(_obj, ct);
+            var cols = await _source.GetColumnsAsync(Object, ct);
+            Selected = null;
             Columns.Clear();
             foreach (var c in cols)
             {
-                Columns.Add(c);
+                Columns.Add(new ColumnRow(Object, c));
             }
         }
     }
 
-    public sealed class IndexRow
+    public sealed class IndexRow : IScriptRow
     {
-        public IndexRow(IndexInfo i)
+        public IndexRow(ResolvedObject table, IndexInfo i)
         {
+            Script = i.IsConstraint ? ScriptBuilder.Key(table, i) : ScriptBuilder.Index(table, i);
             Name = i.Name;
             Kind = i.Kind;
             Type = i.TypeDescription;
@@ -129,23 +183,22 @@ namespace SsmsToolkit.Presentation.TableInspector
         public string IncludedColumns { get; }
         public string Filter { get; }
         public bool IsDisabled { get; }
+        public string Script { get; }
     }
 
     /// <summary>
     /// Indexes from sys.indexes, split in two tabs: <see cref="KeysTab"/> (PRIMARY KEY / UNIQUE constraints)
     /// and <see cref="IndexesTab"/> (all other indexes), so a constraint's backing index is not listed twice.
     /// </summary>
-    public abstract class IndexListTab : InspectorTab
+    public abstract class IndexListTab : ScriptListTab
     {
-        private readonly ResolvedObject _obj;
         private readonly ITableMetadataSource _source;
         private readonly bool _constraints;
 
-        protected IndexListTab(string header, bool constraints, ResolvedObject obj, ITableMetadataSource source,
+        protected IndexListTab(string header, bool constraints, ResolvedObject obj, ITableMetadataSource source, IInspectorHost host,
                                CancellationToken lifetime, Action<string, Exception> onError)
-            : base(header, lifetime, onError)
+            : base(header, obj, host, lifetime, onError)
         {
-            _obj = obj;
             _source = source;
             _constraints = constraints;
         }
@@ -154,35 +207,37 @@ namespace SsmsToolkit.Presentation.TableInspector
 
         protected override async Task LoadCoreAsync(CancellationToken ct)
         {
-            var list = await _source.GetIndexesAsync(_obj, ct);
+            var list = await _source.GetIndexesAsync(Object, ct);
+            Selected = null;
             Items.Clear();
             foreach (var i in list.Where(i => i.IsConstraint == _constraints))
             {
-                Items.Add(new IndexRow(i));
+                Items.Add(new IndexRow(Object, i));
             }
         }
     }
 
     public sealed class KeysTab : IndexListTab
     {
-        public KeysTab(ResolvedObject obj, ITableMetadataSource source, CancellationToken lifetime, Action<string, Exception> onError)
-            : base(Strings.Get("Tab_Keys"), true, obj, source, lifetime, onError)
+        public KeysTab(ResolvedObject obj, ITableMetadataSource source, IInspectorHost host, CancellationToken lifetime, Action<string, Exception> onError)
+            : base(Strings.Get("Tab_Keys"), true, obj, source, host, lifetime, onError)
         {
         }
     }
 
     public sealed class IndexesTab : IndexListTab
     {
-        public IndexesTab(ResolvedObject obj, ITableMetadataSource source, CancellationToken lifetime, Action<string, Exception> onError)
-            : base(Strings.Get("Tab_Indexes"), false, obj, source, lifetime, onError)
+        public IndexesTab(ResolvedObject obj, ITableMetadataSource source, IInspectorHost host, CancellationToken lifetime, Action<string, Exception> onError)
+            : base(Strings.Get("Tab_Indexes"), false, obj, source, host, lifetime, onError)
         {
         }
     }
 
-    public sealed class ConstraintRow
+    public sealed class ConstraintRow : IScriptRow
     {
-        public ConstraintRow(ConstraintInfo c)
+        public ConstraintRow(ResolvedObject table, ConstraintInfo c)
         {
+            Script = ScriptBuilder.Constraint(table, c);
             Name = c.Name;
             Kind = c.Kind == ConstraintKind.Check ? "CHECK" : "DEFAULT";
             Column = c.Column ?? string.Empty;
@@ -209,17 +264,16 @@ namespace SsmsToolkit.Presentation.TableInspector
         public string Column { get; }
         public string Definition { get; }
         public string State { get; }
+        public string Script { get; }
     }
 
-    public sealed class ConstraintsTab : InspectorTab
+    public sealed class ConstraintsTab : ScriptListTab
     {
-        private readonly ResolvedObject _obj;
         private readonly ITableMetadataSource _source;
 
-        public ConstraintsTab(ResolvedObject obj, ITableMetadataSource source, CancellationToken lifetime, Action<string, Exception> onError)
-            : base(Strings.Get("Tab_Constraints"), lifetime, onError)
+        public ConstraintsTab(ResolvedObject obj, ITableMetadataSource source, IInspectorHost host, CancellationToken lifetime, Action<string, Exception> onError)
+            : base(Strings.Get("Tab_Constraints"), obj, host, lifetime, onError)
         {
-            _obj = obj;
             _source = source;
         }
 
@@ -227,19 +281,21 @@ namespace SsmsToolkit.Presentation.TableInspector
 
         protected override async Task LoadCoreAsync(CancellationToken ct)
         {
-            var list = await _source.GetConstraintsAsync(_obj, ct);
+            var list = await _source.GetConstraintsAsync(Object, ct);
+            Selected = null;
             Items.Clear();
             foreach (var c in list)
             {
-                Items.Add(new ConstraintRow(c));
+                Items.Add(new ConstraintRow(Object, c));
             }
         }
     }
 
-    public sealed class ForeignKeyRow
+    public sealed class ForeignKeyRow : IScriptRow
     {
         public ForeignKeyRow(ForeignKeyInfo fk, bool outgoing)
         {
+            Script = ScriptBuilder.ForeignKey(fk);
             Name = fk.Name;
             OtherTable = outgoing ? fk.ReferencedTable : fk.ParentTable;
             OtherTableDisplay = OtherTable.Schema + "." + OtherTable.Name;
@@ -276,18 +332,19 @@ namespace SsmsToolkit.Presentation.TableInspector
         public string OnDelete { get; }
         public string OnUpdate { get; }
         public string State { get; }
+        public string Script { get; }
     }
 
-    public sealed class ForeignKeysTab : InspectorTab
+    public sealed class ForeignKeysTab : ScriptListTab
     {
-        private readonly ResolvedObject _obj;
         private readonly ITableMetadataSource _source;
         private int _count;
+        private ForeignKeyRow _selectedOutgoing;
+        private ForeignKeyRow _selectedIncoming;
 
         public ForeignKeysTab(ResolvedObject obj, ITableMetadataSource source, IInspectorHost host, CancellationToken lifetime, Action<string, Exception> onError)
-            : base(Strings.Get("Tab_ForeignKeys"), lifetime, onError)
+            : base(Strings.Get("Tab_ForeignKeys"), obj, host, lifetime, onError)
         {
-            _obj = obj;
             _source = source;
             OpenTableCommand = new AsyncCommand(
                 p => p is ForeignKeyRow row ? host.OpenTableAsync(row.OtherTable) : Task.CompletedTask,
@@ -300,6 +357,33 @@ namespace SsmsToolkit.Presentation.TableInspector
 
         public ICommand OpenTableCommand { get; }
 
+        /// <summary>Selection in the outgoing grid; selecting here clears the incoming grid's selection.</summary>
+        public ForeignKeyRow SelectedOutgoing
+        {
+            get => _selectedOutgoing;
+            set
+            {
+                if (Set(ref _selectedOutgoing, value) && value != null)
+                {
+                    Selected = value;
+                    SelectedIncoming = null;
+                }
+            }
+        }
+
+        public ForeignKeyRow SelectedIncoming
+        {
+            get => _selectedIncoming;
+            set
+            {
+                if (Set(ref _selectedIncoming, value) && value != null)
+                {
+                    Selected = value;
+                    SelectedOutgoing = null;
+                }
+            }
+        }
+
         public int Count
         {
             get => _count;
@@ -308,7 +392,10 @@ namespace SsmsToolkit.Presentation.TableInspector
 
         protected override async Task LoadCoreAsync(CancellationToken ct)
         {
-            var list = await _source.GetForeignKeysAsync(_obj, ct);
+            var list = await _source.GetForeignKeysAsync(Object, ct);
+            Selected = null;
+            SelectedOutgoing = null;
+            SelectedIncoming = null;
             Outgoing.Clear();
             Incoming.Clear();
             foreach (var fk in list)

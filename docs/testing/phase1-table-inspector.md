@@ -56,6 +56,7 @@ WHERE p.Id > 0
 - [ ] **Anahtarlar:** yalnızca PK ve UNIQUE constraint'ler (PK, UQ), tipleri ve kolonları.
 - [ ] **İndeksler:** yalnızca diğer indeksler; PK/UQ burada tekrar görünmüyor. Anahtar ve include kolonları, filtre.
 - [ ] **Constraint'ler:** CHECK ve DEFAULT constraint'ler; ad, kolon (tablo seviyesi CHECK'te boş), tanım, durum (kapalı / güvenilmez / sistem adı).
+- [ ] **SQL paneli:** Kolonlar, Anahtarlar, İndeksler, Constraint'ler ve Foreign Key'ler sekmelerinde bir satır seç → altta o nesnenin scripti (ör. `CREATE NONCLUSTERED INDEX ...`, `ALTER TABLE ... ADD CONSTRAINT ...`). Ayraç sürüklenerek panel büyütülüp küçültülebiliyor. *Kopyala* ve *Yeni Sorguda Aç* çalışıyor. FK sekmesinde giden ve gelen listeler aynı paneli kullanıyor.
 - [ ] **Foreign Key'ler:** giden ve gelen FK'lar. Tablo adına tıklayınca o tablo yeni sekmede açılıyor.
 - [ ] **Veri:** ilk 200 satır. Kolon başlığına tık → sunucuda sıralıyor (ok işareti, ikinci tık ters sıralama).
 - [ ] **Veri / WHERE:** `Id < 10` + Enter → filtreli. `1=1; DELETE FROM x` → hata mesajı, sorgu **çalışmaz**.

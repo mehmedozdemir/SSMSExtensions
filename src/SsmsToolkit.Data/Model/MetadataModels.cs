@@ -114,7 +114,13 @@ namespace SsmsToolkit.Data.Model
         public bool IsUnique { get; set; }
         public bool IsDisabled { get; set; }
         public string FilterDefinition { get; set; }
-        public List<string> KeyColumns { get; } = new List<string>();
+        /// <summary>Key columns in key order.</summary>
+        public List<IndexKeyColumn> KeyColumnDetails { get; } = new List<IndexKeyColumn>();
+
+        /// <summary>Display form derived from <see cref="KeyColumnDetails"/>, e.g. "CustomerId DESC".</summary>
+        public IReadOnlyList<string> KeyColumns =>
+            KeyColumnDetails.ConvertAll(k => k.Descending ? k.Name + " DESC" : k.Name);
+
         public List<string> IncludedColumns { get; } = new List<string>();
 
         /// <summary>True for indexes that enforce a PRIMARY KEY or UNIQUE constraint (shown under "Keys").</summary>
@@ -135,6 +141,18 @@ namespace SsmsToolkit.Data.Model
                 return IsUnique ? "UNIQUE" : "INDEX";
             }
         }
+    }
+
+    public sealed class IndexKeyColumn
+    {
+        public IndexKeyColumn(string name, bool descending)
+        {
+            Name = name;
+            Descending = descending;
+        }
+
+        public string Name { get; }
+        public bool Descending { get; }
     }
 
     public enum ConstraintKind

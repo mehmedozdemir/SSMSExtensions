@@ -206,14 +206,13 @@ namespace SsmsToolkit.Data.Metadata
                         list.Add(current);
                     }
 
-                    var column = r.GetString(10) + (r.GetBoolean(9) ? " DESC" : string.Empty);
                     if (r.GetBoolean(8))
                     {
                         current.IncludedColumns.Add(r.GetString(10));
                     }
                     else
                     {
-                        current.KeyColumns.Add(column);
+                        current.KeyColumnDetails.Add(new IndexKeyColumn(r.GetString(10), r.GetBoolean(9)));
                     }
                 }
                 return list;

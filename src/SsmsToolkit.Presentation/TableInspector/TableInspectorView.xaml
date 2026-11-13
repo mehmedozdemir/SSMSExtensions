@@ -13,6 +13,39 @@
                 <ResourceDictionary Source="pack://application:,,,/SsmsToolkit.Presentation;component/Theme/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <!-- Script panel under a list. DataContext: ScriptListTab. -->
+            <DataTemplate x:Key="ScriptPanel">
+                <DockPanel>
+                    <DockPanel DockPanel.Dock="Top" Margin="8,4,8,2">
+                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                            <Button Content="{l:Loc Common_Copy}" Command="{Binding CopyScriptCommand}" />
+                            <Button Content="{l:Loc Common_OpenInQuery}" Command="{Binding OpenScriptCommand}" />
+                        </StackPanel>
+                        <TextBlock Text="{l:Loc Script_Title}" FontWeight="SemiBold" VerticalAlignment="Center" />
+                        <TextBlock Text="{l:Loc Script_Note}" Style="{StaticResource MutedText}" VerticalAlignment="Center" Margin="10,0,0,0"
+                                   TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
+                    </DockPanel>
+                    <Grid>
+                        <TextBox Style="{StaticResource CodeText}" Text="{Binding SelectedScript, Mode=OneWay}" />
+                        <TextBlock Text="{l:Loc Script_Hint}" Style="{StaticResource MutedText}" Margin="12,8"
+                                   Visibility="{Binding Selected, Converter={StaticResource HasValueToVisibility}, ConverterParameter=Invert}" />
+                    </Grid>
+                </DockPanel>
+            </DataTemplate>
+
+            <Style x:Key="ScriptSplitter" TargetType="GridSplitter">
+                <Setter Property="Height" Value="5" />
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="ResizeDirection" Value="Rows" />
+                <Setter Property="Background" Value="{DynamicResource {x:Static t:ThemeKeys.Border}}" />
+            </Style>
+
+            <Style x:Key="ScriptListGrid" TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="SelectionMode" Value="Single" />
+                <Setter Property="SelectionUnit" Value="FullRow" />
+            </Style>
+
             <!-- Summary -->
             <DataTemplate DataType="{x:Type ti:SummaryTab}">
                 <ContentControl Style="{StaticResource TabBody}">
@@ -28,108 +61,152 @@
             <!-- Columns -->
             <DataTemplate DataType="{x:Type ti:ColumnsTab}">
                 <ContentControl Style="{StaticResource TabBody}">
-                    <DataGrid ItemsSource="{Binding Columns}" BorderThickness="0" FrozenColumnCount="2">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="#" Binding="{Binding Ordinal}" />
-                            <DataGridTextColumn Header="{l:Loc Col_Name}" Binding="{Binding Name}" FontWeight="SemiBold" />
-                            <DataGridTextColumn Header="{l:Loc Col_Type}" Binding="{Binding DataType}" />
-                            <DataGridTextColumn Header="{l:Loc Col_PrimaryKey}" Binding="{Binding IsPrimaryKey, Converter={StaticResource BoolToMark}}" />
-                            <DataGridTextColumn Header="{l:Loc Col_Nullable}" Binding="{Binding IsNullable, Converter={StaticResource BoolToMark}}" />
-                            <DataGridTextColumn Header="{l:Loc Col_Identity}" Binding="{Binding IdentityDefinition}" />
-                            <DataGridTextColumn Header="{l:Loc Col_Default}" Binding="{Binding DefaultDefinition}" />
-                            <DataGridTextColumn Header="{l:Loc Col_Computed}" Binding="{Binding ComputedDefinition}" />
-                            <DataGridTextColumn Header="{l:Loc Col_Collation}" Binding="{Binding Collation}" />
-                            <DataGridTextColumn Header="{l:Loc Col_Description}" Binding="{Binding Description}" Width="*" MinWidth="120" />
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" MinHeight="80" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="150" MinHeight="60" />
+                        </Grid.RowDefinitions>
+                        <DataGrid Style="{StaticResource ScriptListGrid}" ItemsSource="{Binding Columns}" SelectedItem="{Binding Selected}" FrozenColumnCount="2">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="#" Binding="{Binding Info.Ordinal}" />
+                                <DataGridTextColumn Header="{l:Loc Col_Name}" Binding="{Binding Info.Name}" FontWeight="SemiBold" />
+                                <DataGridTextColumn Header="{l:Loc Col_Type}" Binding="{Binding Info.DataType}" />
+                                <DataGridTextColumn Header="{l:Loc Col_PrimaryKey}" Binding="{Binding Info.IsPrimaryKey, Converter={StaticResource BoolToMark}}" />
+                                <DataGridTextColumn Header="{l:Loc Col_Nullable}" Binding="{Binding Info.IsNullable, Converter={StaticResource BoolToMark}}" />
+                                <DataGridTextColumn Header="{l:Loc Col_Identity}" Binding="{Binding Info.IdentityDefinition}" />
+                                <DataGridTextColumn Header="{l:Loc Col_Default}" Binding="{Binding Info.DefaultDefinition}" />
+                                <DataGridTextColumn Header="{l:Loc Col_Computed}" Binding="{Binding Info.ComputedDefinition}" />
+                                <DataGridTextColumn Header="{l:Loc Col_Collation}" Binding="{Binding Info.Collation}" />
+                                <DataGridTextColumn Header="{l:Loc Col_Description}" Binding="{Binding Info.Description}" Width="*" MinWidth="120" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <GridSplitter Grid.Row="1" Style="{StaticResource ScriptSplitter}" />
+                        <ContentControl Grid.Row="2" Content="{Binding}" ContentTemplate="{StaticResource ScriptPanel}" />
+                    </Grid>
                 </ContentControl>
             </DataTemplate>
 
             <!-- Keys (PRIMARY KEY / UNIQUE constraints) -->
             <DataTemplate DataType="{x:Type ti:KeysTab}">
                 <ContentControl Style="{StaticResource TabBody}">
-                    <DataGrid ItemsSource="{Binding Items}" BorderThickness="0">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="{l:Loc Col_Name}" Binding="{Binding Name}" FontWeight="SemiBold" />
-                            <DataGridTextColumn Header="{l:Loc Col_Kind}" Binding="{Binding Kind}" />
-                            <DataGridTextColumn Header="{l:Loc Col_IndexType}" Binding="{Binding Type}" />
-                            <DataGridTextColumn Header="{l:Loc Col_Columns}" Binding="{Binding KeyColumns}" />
-                            <DataGridTextColumn Header="{l:Loc Col_Disabled}" Binding="{Binding IsDisabled, Converter={StaticResource BoolToMark}}" Width="*" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </ContentControl>
-            </DataTemplate>
-
-            <!-- Constraints (CHECK / DEFAULT) -->
-            <DataTemplate DataType="{x:Type ti:ConstraintsTab}">
-                <ContentControl Style="{StaticResource TabBody}">
-                    <DataGrid ItemsSource="{Binding Items}" BorderThickness="0">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="{l:Loc Col_Name}" Binding="{Binding Name}" FontWeight="SemiBold" />
-                            <DataGridTextColumn Header="{l:Loc Col_Kind}" Binding="{Binding Kind}" />
-                            <DataGridTextColumn Header="{l:Loc Col_Column}" Binding="{Binding Column}" />
-                            <DataGridTextColumn Header="{l:Loc Col_Definition}" Binding="{Binding Definition}" MaxWidth="600" />
-                            <DataGridTextColumn Header="{l:Loc Col_State}" Binding="{Binding State}" Width="*" />
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" MinHeight="80" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="150" MinHeight="60" />
+                        </Grid.RowDefinitions>
+                        <DataGrid Style="{StaticResource ScriptListGrid}" ItemsSource="{Binding Items}" SelectedItem="{Binding Selected}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{l:Loc Col_Name}" Binding="{Binding Name}" FontWeight="SemiBold" />
+                                <DataGridTextColumn Header="{l:Loc Col_Kind}" Binding="{Binding Kind}" />
+                                <DataGridTextColumn Header="{l:Loc Col_IndexType}" Binding="{Binding Type}" />
+                                <DataGridTextColumn Header="{l:Loc Col_Columns}" Binding="{Binding KeyColumns}" />
+                                <DataGridTextColumn Header="{l:Loc Col_Disabled}" Binding="{Binding IsDisabled, Converter={StaticResource BoolToMark}}" Width="*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <GridSplitter Grid.Row="1" Style="{StaticResource ScriptSplitter}" />
+                        <ContentControl Grid.Row="2" Content="{Binding}" ContentTemplate="{StaticResource ScriptPanel}" />
+                    </Grid>
                 </ContentControl>
             </DataTemplate>
 
             <!-- Indexes (not backing a constraint) -->
             <DataTemplate DataType="{x:Type ti:IndexesTab}">
                 <ContentControl Style="{StaticResource TabBody}">
-                    <DataGrid ItemsSource="{Binding Items}" BorderThickness="0">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="{l:Loc Col_Name}" Binding="{Binding Name}" FontWeight="SemiBold" />
-                            <DataGridTextColumn Header="{l:Loc Col_Kind}" Binding="{Binding Kind}" />
-                            <DataGridTextColumn Header="{l:Loc Col_IndexType}" Binding="{Binding Type}" />
-                            <DataGridTextColumn Header="{l:Loc Col_KeyColumns}" Binding="{Binding KeyColumns}" />
-                            <DataGridTextColumn Header="{l:Loc Col_IncludedColumns}" Binding="{Binding IncludedColumns}" />
-                            <DataGridTextColumn Header="{l:Loc Col_Filter}" Binding="{Binding Filter}" />
-                            <DataGridTextColumn Header="{l:Loc Col_Disabled}" Binding="{Binding IsDisabled, Converter={StaticResource BoolToMark}}" Width="*" />
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" MinHeight="80" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="150" MinHeight="60" />
+                        </Grid.RowDefinitions>
+                        <DataGrid Style="{StaticResource ScriptListGrid}" ItemsSource="{Binding Items}" SelectedItem="{Binding Selected}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{l:Loc Col_Name}" Binding="{Binding Name}" FontWeight="SemiBold" />
+                                <DataGridTextColumn Header="{l:Loc Col_Kind}" Binding="{Binding Kind}" />
+                                <DataGridTextColumn Header="{l:Loc Col_IndexType}" Binding="{Binding Type}" />
+                                <DataGridTextColumn Header="{l:Loc Col_KeyColumns}" Binding="{Binding KeyColumns}" />
+                                <DataGridTextColumn Header="{l:Loc Col_IncludedColumns}" Binding="{Binding IncludedColumns}" />
+                                <DataGridTextColumn Header="{l:Loc Col_Filter}" Binding="{Binding Filter}" />
+                                <DataGridTextColumn Header="{l:Loc Col_Disabled}" Binding="{Binding IsDisabled, Converter={StaticResource BoolToMark}}" Width="*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <GridSplitter Grid.Row="1" Style="{StaticResource ScriptSplitter}" />
+                        <ContentControl Grid.Row="2" Content="{Binding}" ContentTemplate="{StaticResource ScriptPanel}" />
+                    </Grid>
                 </ContentControl>
             </DataTemplate>
 
-            <!-- Foreign keys -->
-            <DataTemplate x:Key="ForeignKeyGrid">
-                <DataGrid ItemsSource="{Binding}" BorderThickness="0" SelectionUnit="FullRow">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="{l:Loc Col_Name}" Binding="{Binding Name}" />
-                        <DataGridTextColumn Header="{l:Loc Col_Columns}" Binding="{Binding Columns}" />
-                        <DataGridTemplateColumn Header="{l:Loc Col_Table}">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Style="{StaticResource LinkButton}" Content="{Binding OtherTableDisplay}"
-                                            Command="{Binding DataContext.OpenTableCommand, RelativeSource={RelativeSource AncestorType=ContentControl, AncestorLevel=2}}"
-                                            CommandParameter="{Binding}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="{l:Loc Col_ReferencedColumns}" Binding="{Binding OtherColumns}" />
-                        <DataGridTextColumn Header="{l:Loc Col_OnDelete}" Binding="{Binding OnDelete}" />
-                        <DataGridTextColumn Header="{l:Loc Col_OnUpdate}" Binding="{Binding OnUpdate}" />
-                        <DataGridTextColumn Header="{l:Loc Col_State}" Binding="{Binding State}" Width="*" />
-                    </DataGrid.Columns>
-                </DataGrid>
+            <!-- Constraints (CHECK / DEFAULT) -->
+            <DataTemplate DataType="{x:Type ti:ConstraintsTab}">
+                <ContentControl Style="{StaticResource TabBody}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" MinHeight="80" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="150" MinHeight="60" />
+                        </Grid.RowDefinitions>
+                        <DataGrid Style="{StaticResource ScriptListGrid}" ItemsSource="{Binding Items}" SelectedItem="{Binding Selected}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{l:Loc Col_Name}" Binding="{Binding Name}" FontWeight="SemiBold" />
+                                <DataGridTextColumn Header="{l:Loc Col_Kind}" Binding="{Binding Kind}" />
+                                <DataGridTextColumn Header="{l:Loc Col_Column}" Binding="{Binding Column}" />
+                                <DataGridTextColumn Header="{l:Loc Col_Definition}" Binding="{Binding Definition}" MaxWidth="600" />
+                                <DataGridTextColumn Header="{l:Loc Col_State}" Binding="{Binding State}" Width="*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <GridSplitter Grid.Row="1" Style="{StaticResource ScriptSplitter}" />
+                        <ContentControl Grid.Row="2" Content="{Binding}" ContentTemplate="{StaticResource ScriptPanel}" />
+                    </Grid>
+                </ContentControl>
+            </DataTemplate>
+
+            <!-- Foreign keys: two grids (outgoing / incoming) sharing one script panel -->
+            <DataTemplate x:Key="ForeignKeyTableCell">
+                <Button Style="{StaticResource LinkButton}" Content="{Binding OtherTableDisplay}"
+                        Command="{Binding DataContext.OpenTableCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                        CommandParameter="{Binding}" />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type ti:ForeignKeysTab}">
                 <ContentControl Style="{StaticResource TabBody}">
-                    <Grid Margin="8">
+                    <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" MinHeight="60" />
+                            <RowDefinition Height="*" MinHeight="50" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" MinHeight="60" />
+                            <RowDefinition Height="*" MinHeight="50" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="150" MinHeight="60" />
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Style="{StaticResource MutedText}" Text="{l:Loc Fk_OpenHint}" />
-                        <TextBlock Grid.Row="1" Style="{StaticResource SectionHeader}" Text="{l:Loc Fk_Outgoing}" />
-                        <ContentControl Grid.Row="2" Content="{Binding Outgoing}" ContentTemplate="{StaticResource ForeignKeyGrid}" />
-                        <TextBlock Grid.Row="3" Style="{StaticResource SectionHeader}" Text="{l:Loc Fk_Incoming}" />
-                        <ContentControl Grid.Row="4" Content="{Binding Incoming}" ContentTemplate="{StaticResource ForeignKeyGrid}" />
+                        <TextBlock Grid.Row="0" Style="{StaticResource MutedText}" Text="{l:Loc Fk_OpenHint}" Margin="8,6,8,0" />
+                        <TextBlock Grid.Row="1" Style="{StaticResource SectionHeader}" Text="{l:Loc Fk_Outgoing}" Margin="8,6,8,4" />
+                        <DataGrid Grid.Row="2" Style="{StaticResource ScriptListGrid}" ItemsSource="{Binding Outgoing}" SelectedItem="{Binding SelectedOutgoing}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{l:Loc Col_Name}" Binding="{Binding Name}" />
+                                <DataGridTextColumn Header="{l:Loc Col_Columns}" Binding="{Binding Columns}" />
+                                <DataGridTemplateColumn Header="{l:Loc Col_Table}" CellTemplate="{StaticResource ForeignKeyTableCell}" />
+                                <DataGridTextColumn Header="{l:Loc Col_ReferencedColumns}" Binding="{Binding OtherColumns}" />
+                                <DataGridTextColumn Header="{l:Loc Col_OnDelete}" Binding="{Binding OnDelete}" />
+                                <DataGridTextColumn Header="{l:Loc Col_OnUpdate}" Binding="{Binding OnUpdate}" />
+                                <DataGridTextColumn Header="{l:Loc Col_State}" Binding="{Binding State}" Width="*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <TextBlock Grid.Row="3" Style="{StaticResource SectionHeader}" Text="{l:Loc Fk_Incoming}" Margin="8,10,8,4" />
+                        <DataGrid Grid.Row="4" Style="{StaticResource ScriptListGrid}" ItemsSource="{Binding Incoming}" SelectedItem="{Binding SelectedIncoming}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{l:Loc Col_Name}" Binding="{Binding Name}" />
+                                <DataGridTemplateColumn Header="{l:Loc Col_Table}" CellTemplate="{StaticResource ForeignKeyTableCell}" />
+                                <DataGridTextColumn Header="{l:Loc Col_Columns}" Binding="{Binding OtherColumns}" />
+                                <DataGridTextColumn Header="{l:Loc Col_ReferencedColumns}" Binding="{Binding Columns}" />
+                                <DataGridTextColumn Header="{l:Loc Col_OnDelete}" Binding="{Binding OnDelete}" />
+                                <DataGridTextColumn Header="{l:Loc Col_OnUpdate}" Binding="{Binding OnUpdate}" />
+                                <DataGridTextColumn Header="{l:Loc Col_State}" Binding="{Binding State}" Width="*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <GridSplitter Grid.Row="5" Style="{StaticResource ScriptSplitter}" />
+                        <ContentControl Grid.Row="6" Content="{Binding}" ContentTemplate="{StaticResource ScriptPanel}" />
                     </Grid>
                 </ContentControl>
             </DataTemplate>
@@ -164,7 +241,7 @@
                         <TextBlock Text="{l:Loc Data_SortHint}" Style="{StaticResource MutedText}" />
                     </DockPanel>
                     <ContentControl Style="{StaticResource TabBody}">
-                        <DataGrid x:Name="DataGrid" ItemsSource="{Binding Rows}" AutoGenerateColumns="True" BorderThickness="0,1,0,1"
+                        <DataGrid ItemsSource="{Binding Rows}" AutoGenerateColumns="True" BorderThickness="0,1,0,1"
                                   CanUserSortColumns="True" MaxColumnWidth="400"
                                   AutoGeneratingColumn="OnDataAutoGeneratingColumn" Sorting="OnDataSorting" />
                     </ContentControl>

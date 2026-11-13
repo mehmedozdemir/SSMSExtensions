@@ -74,13 +74,13 @@ namespace SsmsToolkit.Playground
         {
             await Task.Delay(_delayMs, ct);
             var pk = new IndexInfo { IndexId = 1, Name = "PK_" + obj.Name, TypeDescription = "CLUSTERED", IsPrimaryKey = true, IsUnique = true };
-            pk.KeyColumns.Add("Id");
+            pk.KeyColumnDetails.Add(new IndexKeyColumn("Id", false));
             var ix = new IndexInfo { IndexId = 2, Name = "IX_" + obj.Name + "_Personel", TypeDescription = "NONCLUSTERED" };
-            ix.KeyColumns.Add("PersonelId");
-            ix.KeyColumns.Add("ValidFrom DESC");
+            ix.KeyColumnDetails.Add(new IndexKeyColumn("PersonelId", false));
+            ix.KeyColumnDetails.Add(new IndexKeyColumn("ValidFrom", true));
             ix.IncludedColumns.Add("CardId");
             var uq = new IndexInfo { IndexId = 3, Name = "UQ_CardNumber", TypeDescription = "NONCLUSTERED", IsUnique = true, IsUniqueConstraint = true, FilterDefinition = "([CardNumber] IS NOT NULL)" };
-            uq.KeyColumns.Add("CardNumber");
+            uq.KeyColumnDetails.Add(new IndexKeyColumn("CardNumber", false));
             return new[] { pk, ix, uq };
         }
 

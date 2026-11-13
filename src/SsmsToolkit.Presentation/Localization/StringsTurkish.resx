@@ -133,4 +133,7 @@ MIT Lisansı</value></data>
   <data name="Col_Column" xml:space="preserve"><value>Kolon</value></data>
   <data name="Col_Definition" xml:space="preserve"><value>Tanım</value></data>
   <data name="Constraint_SystemNamed" xml:space="preserve"><value>sistem tarafından adlandırılmış</value></data>
+  <data name="Script_Title" xml:space="preserve"><value>SQL</value></data>
+  <data name="Script_Hint" xml:space="preserve"><value>SQL scriptini görmek için bir satır seçin.</value></data>
+  <data name="Script_Note" xml:space="preserve"><value>Depolama seçenekleri (FILLFACTOR, sıkıştırma, filegroup) yok; tablonun tam scripti DDL sekmesinde.</value></data>
 </root>

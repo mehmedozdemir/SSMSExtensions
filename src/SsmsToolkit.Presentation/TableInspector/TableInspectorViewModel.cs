@@ -35,10 +35,10 @@ namespace SsmsToolkit.Presentation.TableInspector
             var token = _lifetime.Token;
 
             Summary = new SummaryTab(obj, source, token, onError);
-            Columns = new ColumnsTab(obj, source, token, onError);
-            Keys = new KeysTab(obj, source, token, onError);
-            Indexes = new IndexesTab(obj, source, token, onError);
-            Constraints = new ConstraintsTab(obj, source, token, onError);
+            Columns = new ColumnsTab(obj, source, host, token, onError);
+            Keys = new KeysTab(obj, source, host, token, onError);
+            Indexes = new IndexesTab(obj, source, host, token, onError);
+            Constraints = new ConstraintsTab(obj, source, host, token, onError);
             ForeignKeys = new ForeignKeysTab(obj, source, host, token, onError);
             Data = new DataTab(obj, source, host, options, token, onError);
             Ddl = new DdlTab(obj, source, host, token, onError);
