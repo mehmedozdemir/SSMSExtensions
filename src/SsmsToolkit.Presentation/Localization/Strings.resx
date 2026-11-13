@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Tab_Summary" xml:space="preserve"><value>Summary</value></data>
+  <data name="Tab_Columns" xml:space="preserve"><value>Columns</value></data>
+  <data name="Tab_Indexes" xml:space="preserve"><value>Indexes &amp; Keys</value></data>
+  <data name="Tab_ForeignKeys" xml:space="preserve"><value>Foreign Keys</value></data>
+  <data name="Tab_Data" xml:space="preserve"><value>Data</value></data>
+  <data name="Tab_Ddl" xml:space="preserve"><value>DDL</value></data>
+  <data name="Common_Loading" xml:space="preserve"><value>Loading…</value></data>
+  <data name="Common_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Common_Refresh" xml:space="preserve"><value>Refresh</value></data>
+  <data name="Common_Copy" xml:space="preserve"><value>Copy</value></data>
+  <data name="Common_OpenInQuery" xml:space="preserve"><value>Open in New Query</value></data>
+  <data name="Common_Cancelled" xml:space="preserve"><value>Cancelled.</value></data>
+  <data name="Common_Yes" xml:space="preserve"><value>Yes</value></data>
+  <data name="Header_Table" xml:space="preserve"><value>Table</value></data>
+  <data name="Header_View" xml:space="preserve"><value>View</value></data>
+  <data name="Header_ProductionWarning" xml:space="preserve"><value>PRODUCTION SERVER: {0}</value></data>
+  <data name="Prop_Server" xml:space="preserve"><value>Server</value></data>
+  <data name="Prop_Database" xml:space="preserve"><value>Database</value></data>
+  <data name="Prop_Schema" xml:space="preserve"><value>Schema</value></data>
+  <data name="Prop_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Prop_Type" xml:space="preserve"><value>Type</value></data>
+  <data name="Prop_Rows" xml:space="preserve"><value>Rows (approximate)</value></data>
+  <data name="Prop_TotalSize" xml:space="preserve"><value>Reserved size</value></data>
+  <data name="Prop_UsedSize" xml:space="preserve"><value>Used size</value></data>
+  <data name="Prop_ColumnCount" xml:space="preserve"><value>Columns</value></data>
+  <data name="Prop_IndexCount" xml:space="preserve"><value>Indexes</value></data>
+  <data name="Prop_Created" xml:space="preserve"><value>Created</value></data>
+  <data name="Prop_Modified" xml:space="preserve"><value>Modified</value></data>
+  <data name="Prop_Description" xml:space="preserve"><value>Description</value></data>
+  <data name="Prop_Synonym" xml:space="preserve"><value>Opened via synonym</value></data>
+  <data name="Col_Property" xml:space="preserve"><value>Property</value></data>
+  <data name="Col_Value" xml:space="preserve"><value>Value</value></data>
+  <data name="Col_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Col_Type" xml:space="preserve"><value>Type</value></data>
+  <data name="Col_Nullable" xml:space="preserve"><value>Null</value></data>
+  <data name="Col_PrimaryKey" xml:space="preserve"><value>PK</value></data>
+  <data name="Col_Identity" xml:space="preserve"><value>Identity</value></data>
+  <data name="Col_Default" xml:space="preserve"><value>Default</value></data>
+  <data name="Col_Computed" xml:space="preserve"><value>Computed</value></data>
+  <data name="Col_Collation" xml:space="preserve"><value>Collation</value></data>
+  <data name="Col_Description" xml:space="preserve"><value>Description</value></data>
+  <data name="Col_Kind" xml:space="preserve"><value>Kind</value></data>
+  <data name="Col_IndexType" xml:space="preserve"><value>Index type</value></data>
+  <data name="Col_KeyColumns" xml:space="preserve"><value>Key columns</value></data>
+  <data name="Col_IncludedColumns" xml:space="preserve"><value>Included columns</value></data>
+  <data name="Col_Filter" xml:space="preserve"><value>Filter</value></data>
+  <data name="Col_Disabled" xml:space="preserve"><value>Disabled</value></data>
+  <data name="Col_Columns" xml:space="preserve"><value>Columns</value></data>
+  <data name="Col_Table" xml:space="preserve"><value>Table</value></data>
+  <data name="Col_ReferencedColumns" xml:space="preserve"><value>Referenced columns</value></data>
+  <data name="Col_OnDelete" xml:space="preserve"><value>On delete</value></data>
+  <data name="Col_OnUpdate" xml:space="preserve"><value>On update</value></data>
+  <data name="Col_State" xml:space="preserve"><value>State</value></data>
+  <data name="Fk_Outgoing" xml:space="preserve"><value>References (outgoing)</value></data>
+  <data name="Fk_Incoming" xml:space="preserve"><value>Referenced by (incoming)</value></data>
+  <data name="Fk_OpenHint" xml:space="preserve"><value>Click a table name to inspect it.</value></data>
+  <data name="Fk_None" xml:space="preserve"><value>None</value></data>
+  <data name="Fk_NotTrusted" xml:space="preserve"><value>not trusted</value></data>
+  <data name="Fk_Disabled" xml:space="preserve"><value>disabled</value></data>
+  <data name="Data_Where" xml:space="preserve"><value>WHERE</value></data>
+  <data name="Data_Top" xml:space="preserve"><value>Rows</value></data>
+  <data name="Data_Run" xml:space="preserve"><value>Run</value></data>
+  <data name="Data_Info" xml:space="preserve"><value>{0} rows · {1} ms</value></data>
+  <data name="Data_LimitReached" xml:space="preserve"><value>{0} rows (limit reached) · {1} ms</value></data>
+  <data name="Data_SortHint" xml:space="preserve"><value>Click a column header to sort on the server. Read-only.</value></data>
+  <data name="Data_ReadUncommitted" xml:space="preserve"><value>READ UNCOMMITTED</value></data>
+  <data name="Data_InvalidTop" xml:space="preserve"><value>Row limit must be between 1 and {0}.</value></data>
+  <data name="Ddl_NotLoaded" xml:space="preserve"><value>The script is generated when this tab is opened.</value></data>
+  <data name="Settings_Title" xml:space="preserve"><value>SsmsToolkit Settings</value></data>
+  <data name="Settings_Features" xml:space="preserve"><value>Features</value></data>
+  <data name="Settings_General" xml:space="preserve"><value>General</value></data>
+  <data name="Settings_Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Settings_Saved" xml:space="preserve"><value>Settings saved.</value></data>
+  <data name="Settings_SaveFailed" xml:space="preserve"><value>Settings could not be saved: {0}</value></data>
+  <data name="Settings_Enabled" xml:space="preserve"><value>Enabled</value></data>
+  <data name="Settings_LogLevel" xml:space="preserve"><value>Log level</value></data>
+  <data name="Settings_ProductionPatterns" xml:space="preserve"><value>Production server name patterns (separate with ; and use * as wildcard)</value></data>
+  <data name="Settings_Language" xml:space="preserve"><value>Language</value></data>
+  <data name="Settings_LanguageNote" xml:space="preserve"><value>Applies to windows opened after saving.</value></data>
+  <data name="Settings_NoFeatureSettings" xml:space="preserve"><value>This feature has no settings.</value></data>
+  <data name="Settings_OpenLogFolder" xml:space="preserve"><value>Open log folder</value></data>
+  <data name="Lang_Auto" xml:space="preserve"><value>Automatic (SSMS language)</value></data>
+  <data name="Lang_English" xml:space="preserve"><value>English</value></data>
+  <data name="Lang_Turkish" xml:space="preserve"><value>Türkçe</value></data>
+  <data name="LogLevel_Error" xml:space="preserve"><value>Errors only</value></data>
+  <data name="LogLevel_Warning" xml:space="preserve"><value>Warnings</value></data>
+  <data name="LogLevel_Info" xml:space="preserve"><value>Information</value></data>
+  <data name="LogLevel_Debug" xml:space="preserve"><value>Debug</value></data>
+  <data name="Feature_TableInspector_Name" xml:space="preserve"><value>Table Inspector</value></data>
+  <data name="Feature_TableInspector_Description" xml:space="preserve"><value>Ctrl+Click a table name in the query editor to see its structure, indexes, foreign keys, data and DDL.</value></data>
+  <data name="TI_RowLimit" xml:space="preserve"><value>Data tab row limit</value></data>
+  <data name="TI_Timeout" xml:space="preserve"><value>Query timeout (seconds)</value></data>
+  <data name="TI_OpenMode" xml:space="preserve"><value>Open in</value></data>
+  <data name="TI_OpenMode_Tab" xml:space="preserve"><value>New document tab</value></data>
+  <data name="TI_OpenMode_Popup" xml:space="preserve"><value>Floating window</value></data>
+  <data name="TI_Trigger" xml:space="preserve"><value>Mouse trigger</value></data>
+  <data name="TI_Trigger_CtrlClick" xml:space="preserve"><value>Ctrl + Click</value></data>
+  <data name="TI_Trigger_CtrlAltClick" xml:space="preserve"><value>Ctrl + Alt + Click</value></data>
+  <data name="TI_Trigger_Disabled" xml:space="preserve"><value>Off (context menu and shortcut only)</value></data>
+  <data name="TI_ReadUncommitted" xml:space="preserve"><value>Use READ UNCOMMITTED in the Data tab (dirty reads, no shared locks)</value></data>
+  <data name="TI_ShortcutNote" xml:space="preserve"><value>Also available: editor context menu "Inspect Table" and Ctrl+Alt+I (Tools &gt; Options &gt; Environment &gt; Keyboard, command Extensions.SsmsToolkit.InspectTable).</value></data>
+  <data name="Msg_NoName" xml:space="preserve"><value>SsmsToolkit: no table name at the cursor.</value></data>
+  <data name="Msg_Inspecting" xml:space="preserve"><value>SsmsToolkit: inspecting {0}…</value></data>
+  <data name="Msg_NotFound" xml:space="preserve"><value>SsmsToolkit: table or view not found: {0}</value></data>
+  <data name="Msg_NotTable" xml:space="preserve"><value>SsmsToolkit: {0} is not a table or view ({1}).</value></data>
+  <data name="Msg_TempUnsupported" xml:space="preserve"><value>SsmsToolkit: temp tables and table variables are not supported.</value></data>
+  <data name="Msg_LinkedServerUnsupported" xml:space="preserve"><value>SsmsToolkit: linked server names are not supported.</value></data>
+  <data name="Msg_Unsupported" xml:space="preserve"><value>SsmsToolkit: not supported: {0}</value></data>
+  <data name="Msg_NoConnection" xml:space="preserve"><value>SsmsToolkit: the query editor is not connected to a server.</value></data>
+  <data name="Msg_AuthUnsupported" xml:space="preserve"><value>SsmsToolkit: this connection's authentication type is not supported yet ({0}).</value></data>
+  <data name="Msg_Failed" xml:space="preserve"><value>SsmsToolkit: {0}</value></data>
+  <data name="Msg_FeatureDisabled" xml:space="preserve"><value>SsmsToolkit turned off "{0}" after repeated errors. Details are in the log. You can turn it back on in Settings.</value></data>
+  <data name="Msg_OpenLog" xml:space="preserve"><value>Open log</value></data>
+  <data name="Msg_OpenSettings" xml:space="preserve"><value>Settings</value></data>
+  <data name="About_Text" xml:space="preserve"><value>SsmsToolkit {0}
+
+Toggleable, multi-feature extension for SQL Server Management Studio 22.
+Not supported by Microsoft; uses undocumented SSMS internals.
+
+Host: {1}
+Logs: {2}
+Settings: {3}
+
+MIT License</value></data>
+</root>

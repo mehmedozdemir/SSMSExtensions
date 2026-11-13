@@ -1,0 +1,192 @@
+<UserControl x:Class="SsmsToolkit.Presentation.TableInspector.TableInspectorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:t="clr-namespace:SsmsToolkit.Presentation.Theme"
+             xmlns:l="clr-namespace:SsmsToolkit.Presentation.Localization"
+             xmlns:ti="clr-namespace:SsmsToolkit.Presentation.TableInspector"
+             Background="{DynamicResource {x:Static t:ThemeKeys.Background}}"
+             Foreground="{DynamicResource {x:Static t:ThemeKeys.Foreground}}"
+             FontSize="12">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/SsmsToolkit.Presentation;component/Theme/Controls.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Summary -->
+            <DataTemplate DataType="{x:Type ti:SummaryTab}">
+                <ContentControl Style="{StaticResource TabBody}">
+                    <DataGrid ItemsSource="{Binding Rows}" BorderThickness="0" Margin="8">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{l:Loc Col_Property}" Binding="{Binding Property}" Width="200" FontWeight="SemiBold" />
+                            <DataGridTextColumn Header="{l:Loc Col_Value}" Binding="{Binding Value}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ContentControl>
+            </DataTemplate>
+
+            <!-- Columns -->
+            <DataTemplate DataType="{x:Type ti:ColumnsTab}">
+                <ContentControl Style="{StaticResource TabBody}">
+                    <DataGrid ItemsSource="{Binding Columns}" BorderThickness="0" FrozenColumnCount="2">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" Binding="{Binding Ordinal}" />
+                            <DataGridTextColumn Header="{l:Loc Col_Name}" Binding="{Binding Name}" FontWeight="SemiBold" />
+                            <DataGridTextColumn Header="{l:Loc Col_Type}" Binding="{Binding DataType}" />
+                            <DataGridTextColumn Header="{l:Loc Col_PrimaryKey}" Binding="{Binding IsPrimaryKey, Converter={StaticResource BoolToMark}}" />
+                            <DataGridTextColumn Header="{l:Loc Col_Nullable}" Binding="{Binding IsNullable, Converter={StaticResource BoolToMark}}" />
+                            <DataGridTextColumn Header="{l:Loc Col_Identity}" Binding="{Binding IdentityDefinition}" />
+                            <DataGridTextColumn Header="{l:Loc Col_Default}" Binding="{Binding DefaultDefinition}" />
+                            <DataGridTextColumn Header="{l:Loc Col_Computed}" Binding="{Binding ComputedDefinition}" />
+                            <DataGridTextColumn Header="{l:Loc Col_Collation}" Binding="{Binding Collation}" />
+                            <DataGridTextColumn Header="{l:Loc Col_Description}" Binding="{Binding Description}" Width="*" MinWidth="120" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ContentControl>
+            </DataTemplate>
+
+            <!-- Indexes & keys -->
+            <DataTemplate DataType="{x:Type ti:IndexesTab}">
+                <ContentControl Style="{StaticResource TabBody}">
+                    <DataGrid ItemsSource="{Binding Indexes}" BorderThickness="0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{l:Loc Col_Name}" Binding="{Binding Name}" FontWeight="SemiBold" />
+                            <DataGridTextColumn Header="{l:Loc Col_Kind}" Binding="{Binding Kind}" />
+                            <DataGridTextColumn Header="{l:Loc Col_IndexType}" Binding="{Binding Type}" />
+                            <DataGridTextColumn Header="{l:Loc Col_KeyColumns}" Binding="{Binding KeyColumns}" />
+                            <DataGridTextColumn Header="{l:Loc Col_IncludedColumns}" Binding="{Binding IncludedColumns}" />
+                            <DataGridTextColumn Header="{l:Loc Col_Filter}" Binding="{Binding Filter}" />
+                            <DataGridTextColumn Header="{l:Loc Col_Disabled}" Binding="{Binding IsDisabled, Converter={StaticResource BoolToMark}}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ContentControl>
+            </DataTemplate>
+
+            <!-- Foreign keys -->
+            <DataTemplate x:Key="ForeignKeyGrid">
+                <DataGrid ItemsSource="{Binding}" BorderThickness="0" SelectionUnit="FullRow">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="{l:Loc Col_Name}" Binding="{Binding Name}" />
+                        <DataGridTextColumn Header="{l:Loc Col_Columns}" Binding="{Binding Columns}" />
+                        <DataGridTemplateColumn Header="{l:Loc Col_Table}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource LinkButton}" Content="{Binding OtherTableDisplay}"
+                                            Command="{Binding DataContext.OpenTableCommand, RelativeSource={RelativeSource AncestorType=ContentControl, AncestorLevel=2}}"
+                                            CommandParameter="{Binding}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="{l:Loc Col_ReferencedColumns}" Binding="{Binding OtherColumns}" />
+                        <DataGridTextColumn Header="{l:Loc Col_OnDelete}" Binding="{Binding OnDelete}" />
+                        <DataGridTextColumn Header="{l:Loc Col_OnUpdate}" Binding="{Binding OnUpdate}" />
+                        <DataGridTextColumn Header="{l:Loc Col_State}" Binding="{Binding State}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type ti:ForeignKeysTab}">
+                <ContentControl Style="{StaticResource TabBody}">
+                    <Grid Margin="8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" MinHeight="60" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" MinHeight="60" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Style="{StaticResource MutedText}" Text="{l:Loc Fk_OpenHint}" />
+                        <TextBlock Grid.Row="1" Style="{StaticResource SectionHeader}" Text="{l:Loc Fk_Outgoing}" />
+                        <ContentControl Grid.Row="2" Content="{Binding Outgoing}" ContentTemplate="{StaticResource ForeignKeyGrid}" />
+                        <TextBlock Grid.Row="3" Style="{StaticResource SectionHeader}" Text="{l:Loc Fk_Incoming}" />
+                        <ContentControl Grid.Row="4" Content="{Binding Incoming}" ContentTemplate="{StaticResource ForeignKeyGrid}" />
+                    </Grid>
+                </ContentControl>
+            </DataTemplate>
+
+            <!-- Data -->
+            <DataTemplate DataType="{x:Type ti:DataTab}">
+                <DockPanel>
+                    <Grid DockPanel.Dock="Top" Margin="8,8,8,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{l:Loc Data_Where}" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,6,0" />
+                        <TextBox Grid.Column="1" Text="{Binding Where, UpdateSourceTrigger=PropertyChanged}" FontFamily="Consolas, Courier New">
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Enter" Command="{Binding RunCommand}" />
+                            </TextBox.InputBindings>
+                        </TextBox>
+                        <TextBlock Grid.Column="2" Text="{l:Loc Data_Top}" VerticalAlignment="Center" Margin="10,0,6,0" />
+                        <TextBox Grid.Column="3" Width="70" Text="{Binding Top, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button Grid.Column="4" Content="{l:Loc Data_Run}" Command="{Binding RunCommand}" />
+                        <Button Grid.Column="5" Content="{l:Loc Common_OpenInQuery}" Command="{Binding OpenAsQueryCommand}" />
+                    </Grid>
+                    <DockPanel DockPanel.Dock="Bottom" Margin="8,4">
+                        <TextBlock DockPanel.Dock="Right" Text="{l:Loc Data_ReadUncommitted}" Foreground="#D9822B" FontWeight="SemiBold"
+                                   Visibility="{Binding ReadUncommitted, Converter={StaticResource BoolToVisibility}}" Margin="12,0,0,0" />
+                        <TextBlock DockPanel.Dock="Right" Text="{Binding Info}" Style="{StaticResource MutedText}" Margin="12,0,0,0" />
+                        <TextBlock Text="{l:Loc Data_SortHint}" Style="{StaticResource MutedText}" />
+                    </DockPanel>
+                    <ContentControl Style="{StaticResource TabBody}">
+                        <DataGrid x:Name="DataGrid" ItemsSource="{Binding Rows}" AutoGenerateColumns="True" BorderThickness="0,1,0,1"
+                                  CanUserSortColumns="True" MaxColumnWidth="400"
+                                  AutoGeneratingColumn="OnDataAutoGeneratingColumn" Sorting="OnDataSorting" />
+                    </ContentControl>
+                </DockPanel>
+            </DataTemplate>
+
+            <!-- DDL -->
+            <DataTemplate DataType="{x:Type ti:DdlTab}">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right" Margin="8,8,8,4">
+                        <Button Content="{l:Loc Common_Copy}" Command="{Binding CopyCommand}" />
+                        <Button Content="{l:Loc Common_OpenInQuery}" Command="{Binding OpenInQueryCommand}" />
+                    </StackPanel>
+                    <ContentControl Style="{StaticResource TabBody}">
+                        <TextBox Style="{StaticResource CodeText}" Text="{Binding Text, Mode=OneWay}" />
+                    </ContentControl>
+                </DockPanel>
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <DockPanel>
+        <!-- Production warning strip -->
+        <Border DockPanel.Dock="Top" Background="#B3261E" Padding="10,4"
+                Visibility="{Binding IsProduction, Converter={StaticResource BoolToVisibility}}">
+            <TextBlock Text="{Binding ProductionText}" Foreground="White" FontWeight="Bold" />
+        </Border>
+
+        <!-- Header -->
+        <Grid DockPanel.Dock="Top" Margin="12,10,12,6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Text="{Binding Title}" FontSize="18" FontWeight="SemiBold" />
+                <TextBlock Text="{Binding Subtitle}" Style="{StaticResource MutedText}" />
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="{l:Loc Common_Loading}" VerticalAlignment="Center" Margin="0,0,8,0" Style="{StaticResource MutedText}"
+                           Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+                <Button Content="{l:Loc Common_Cancel}" Command="{Binding CancelCommand}" />
+                <Button Content="{l:Loc Common_Refresh}" Command="{Binding RefreshCommand}" />
+            </StackPanel>
+        </Grid>
+
+        <TabControl ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab}">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Header}" />
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+        </TabControl>
+    </DockPanel>
+</UserControl>
