@@ -104,7 +104,7 @@
   <data name="TI_Trigger_CtrlAltClick" xml:space="preserve"><value>Ctrl + Alt + Tık</value></data>
   <data name="TI_Trigger_Disabled" xml:space="preserve"><value>Kapalı (yalnızca sağ tık menüsü ve kısayol)</value></data>
   <data name="TI_ReadUncommitted" xml:space="preserve"><value>Veri sekmesinde READ UNCOMMITTED kullan (kirli okuma, paylaşımlı kilit yok)</value></data>
-  <data name="TI_ShortcutNote" xml:space="preserve"><value>Ayrıca: editör sağ tık menüsünde "Inspect Table" ve Ctrl+Alt+I (Tools &gt; Options &gt; Environment &gt; Keyboard, komut Extensions.SsmsToolkit.InspectTable).</value></data>
+  <data name="TI_ShortcutNote" xml:space="preserve"><value>Ayrıca: editör sağ tık menüsünde "Inspect Table" ve Ctrl+K, Ctrl+T (Tools &gt; Options &gt; Environment &gt; Keyboard, komut Extensions.SsmsToolkit.InspectTable).</value></data>
   <data name="Msg_NoName" xml:space="preserve"><value>SsmsToolkit: imleçte tablo adı yok.</value></data>
   <data name="Msg_Inspecting" xml:space="preserve"><value>SsmsToolkit: {0} inceleniyor…</value></data>
   <data name="Msg_NotFound" xml:space="preserve"><value>SsmsToolkit: tablo veya view bulunamadı: {0}</value></data>

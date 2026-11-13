@@ -104,7 +104,7 @@
   <data name="TI_Trigger_CtrlAltClick" xml:space="preserve"><value>Ctrl + Alt + Click</value></data>
   <data name="TI_Trigger_Disabled" xml:space="preserve"><value>Off (context menu and shortcut only)</value></data>
   <data name="TI_ReadUncommitted" xml:space="preserve"><value>Use READ UNCOMMITTED in the Data tab (dirty reads, no shared locks)</value></data>
-  <data name="TI_ShortcutNote" xml:space="preserve"><value>Also available: editor context menu "Inspect Table" and Ctrl+Alt+I (Tools &gt; Options &gt; Environment &gt; Keyboard, command Extensions.SsmsToolkit.InspectTable).</value></data>
+  <data name="TI_ShortcutNote" xml:space="preserve"><value>Also available: editor context menu "Inspect Table" and Ctrl+K, Ctrl+T (Tools &gt; Options &gt; Environment &gt; Keyboard, command Extensions.SsmsToolkit.InspectTable).</value></data>
   <data name="Msg_NoName" xml:space="preserve"><value>SsmsToolkit: no table name at the cursor.</value></data>
   <data name="Msg_Inspecting" xml:space="preserve"><value>SsmsToolkit: inspecting {0}…</value></data>
   <data name="Msg_NotFound" xml:space="preserve"><value>SsmsToolkit: table or view not found: {0}</value></data>

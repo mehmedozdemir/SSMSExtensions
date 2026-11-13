@@ -19,40 +19,70 @@
       <Group guid="guidToolkitCmdSet" id="ToolkitMenuGroup" priority="0x0100">
         <Parent guid="guidToolkitCmdSet" id="ToolkitMenu" />
       </Group>
+      <Group guid="guidToolkitCmdSet" id="ToolkitFeatureGroup" priority="0x0050">
+        <Parent guid="guidToolkitCmdSet" id="ToolkitMenu" />
+      </Group>
+      <!-- Query editor context menu group; placed below. -->
+      <Group guid="guidToolkitCmdSet" id="EditorContextGroup" priority="0x0100" />
     </Groups>
 
     <Buttons>
-      <Button guid="guidToolkitCmdSet" id="ShowConnectionCommand" priority="0x0100" type="Button">
-        <Parent guid="guidToolkitCmdSet" id="ToolkitMenuGroup" />
+      <Button guid="guidToolkitCmdSet" id="InspectTableCommand" priority="0x0100" type="Button">
+        <Parent guid="guidToolkitCmdSet" id="ToolkitFeatureGroup" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
-          <ButtonText>Spike: Show Active Connection</ButtonText>
+          <ButtonText>Inspect Table</ButtonText>
+          <CanonicalName>SsmsToolkit.InspectTable</CanonicalName>
+          <LocCanonicalName>SsmsToolkit.InspectTable</LocCanonicalName>
         </Strings>
       </Button>
-      <Button guid="guidToolkitCmdSet" id="OpenTestWindowCommand" priority="0x0101" type="Button">
+      <Button guid="guidToolkitCmdSet" id="SettingsCommand" priority="0x0100" type="Button">
         <Parent guid="guidToolkitCmdSet" id="ToolkitMenuGroup" />
         <Strings>
-          <ButtonText>Spike: Open Test Window</ButtonText>
+          <ButtonText>Settings...</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidToolkitCmdSet" id="OpenLogFolderCommand" priority="0x0102" type="Button">
+      <Button guid="guidToolkitCmdSet" id="OpenLogFolderCommand" priority="0x0101" type="Button">
         <Parent guid="guidToolkitCmdSet" id="ToolkitMenuGroup" />
         <Strings>
           <ButtonText>Open Log Folder</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidToolkitCmdSet" id="AboutCommand" priority="0x0102" type="Button">
+        <Parent guid="guidToolkitCmdSet" id="ToolkitMenuGroup" />
+        <Strings>
+          <ButtonText>About SsmsToolkit</ButtonText>
         </Strings>
       </Button>
     </Buttons>
   </Commands>
 
   <CommandPlacements>
-    <!-- Extensions menu (VS 2019+ shell). -->
+    <!-- Extensions menu (VS 2019+ shell) and Tools menu, in case SSMS hides Extensions. -->
     <CommandPlacement guid="guidToolkitCmdSet" id="ExtensionsMenuGroup" priority="0x0600">
       <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_EXTENSIONS" />
     </CommandPlacement>
-    <!-- Tools menu as well, in case SSMS hides the Extensions menu. -->
     <CommandPlacement guid="guidToolkitCmdSet" id="ExtensionsMenuGroup" priority="0x0600">
       <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS" />
     </CommandPlacement>
+
+    <!-- Editor context menus: the standard code window menu and SSMS's query editor menu. -->
+    <CommandPlacement guid="guidToolkitCmdSet" id="EditorContextGroup" priority="0x0100">
+      <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN" />
+    </CommandPlacement>
+    <CommandPlacement guid="guidToolkitCmdSet" id="EditorContextGroup" priority="0x0100">
+      <Parent guid="guidSqlQueryEditorContext" id="IDM_SQL_QUERY_EDITOR_CONTEXT" />
+    </CommandPlacement>
+    <CommandPlacement guid="guidToolkitCmdSet" id="InspectTableCommand" priority="0x0100">
+      <Parent guid="guidToolkitCmdSet" id="EditorContextGroup" />
+    </CommandPlacement>
   </CommandPlacements>
+
+  <KeyBindings>
+    <!-- Ctrl+K, Ctrl+T (chord avoids Ctrl+Alt, which is AltGr on many keyboard layouts). -->
+    <KeyBinding guid="guidToolkitCmdSet" id="InspectTableCommand" editor="guidVSStd97" key1="K" mod1="Control" key2="T" mod2="Control" />
+  </KeyBindings>
 
   <Symbols>
     <GuidSymbol name="guidToolkitPackage" value="{f0914648-f08f-4329-b5b0-290413696d6f}" />
@@ -60,9 +90,16 @@
       <IDSymbol name="ExtensionsMenuGroup" value="0x1000" />
       <IDSymbol name="ToolkitMenu" value="0x1001" />
       <IDSymbol name="ToolkitMenuGroup" value="0x1002" />
-      <IDSymbol name="ShowConnectionCommand" value="0x0100" />
-      <IDSymbol name="OpenTestWindowCommand" value="0x0101" />
-      <IDSymbol name="OpenLogFolderCommand" value="0x0102" />
+      <IDSymbol name="ToolkitFeatureGroup" value="0x1003" />
+      <IDSymbol name="EditorContextGroup" value="0x1004" />
+      <IDSymbol name="SettingsCommand" value="0x0100" />
+      <IDSymbol name="OpenLogFolderCommand" value="0x0101" />
+      <IDSymbol name="AboutCommand" value="0x0102" />
+      <IDSymbol name="InspectTableCommand" value="0x0200" />
+    </GuidSymbol>
+    <!-- SSMS query editor context menu (used by other SSMS extensions; verified by the manual test). -->
+    <GuidSymbol name="guidSqlQueryEditorContext" value="{33F13AC3-80BB-4ECB-85BC-225435603A5E}">
+      <IDSymbol name="IDM_SQL_QUERY_EDITOR_CONTEXT" value="0x0050" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>

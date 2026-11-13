@@ -5,6 +5,22 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning: [S
 
 ## [Unreleased]
 ### Added
+- **Table Inspector** (Phase 1): Ctrl+Click a table/view name (or alias) in the query editor, the editor
+  context menu "Inspect Table", or Ctrl+K, Ctrl+T opens a details tab with Summary, Columns,
+  Indexes & Keys, Foreign Keys (click to navigate), Data (read-only TOP N, server-side sort, validated
+  WHERE filter, open as query) and DDL (SMO script, copy, open as query). Optional floating window.
+- Feature registry with per-feature on/off switch; a feature that fails repeatedly turns itself off for the
+  session and shows an info bar.
+- Settings window (Extensions > SsmsToolkit > Settings): trigger, open mode, row limit, timeout,
+  READ UNCOMMITTED, production server patterns (red warning strip), language (TR/EN), log level.
+- About command, log retention (14 days).
+- SSMS-independent `SsmsToolkit.Data` (ScriptDom name/alias resolver, catalog queries) and
+  `SsmsToolkit.Presentation` (WPF views) libraries; Playground app; unit and LocalDB integration tests.
+
+### Removed
+- Phase 0 spike commands and window.
+
+### Earlier (Phase 0)
 - Phase 0 spike: VSIX package for SSMS 22 with menu commands, document-well tool window,
   Ctrl+Click mouse processor that logs the editor content type, and active-connection probe
   (`ISqlEditorService` with `ScriptFactory` fallback) that opens its own read-only connection.
