@@ -22,7 +22,8 @@ Microsoft does not officially support SSMS extensions. Everything that touches u
 ## Tech
 - .NET Framework 4.8, C# latest, VSSDK in-proc `AsyncPackage`, WPF.
 - Manifest: `InstallationTarget Id="Microsoft.VisualStudio.Ssms" Version="[22.0,23.0)"`, `ProductArchitecture` amd64.
-- Verify in Phase 0 which VS shell version SSMS 22.12 is built on and pick the matching `Microsoft.VisualStudio.SDK` package version (`ExcludeAssets="runtime"`).
+- SSMS 22.12 runs on the **VS 18 shell** (Shell.Framework 18.0.0.0, file 18.12). Reference `Microsoft.VisualStudio.SDK` **18.11.x** with `ExcludeAssets="runtime"` — never newer than the host shell. See `docs/faz0-bulgular.md`.
+- Active connection: `ISqlEditorService` (service type `SSqlEditorService`) first, `ServiceCache.ScriptFactory.CurrentlyActiveWndConnectionInfo` as fallback — both only inside `SsmsInterop/`.
 - SSMS install root: `C:\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE`.
 
 ## Layout (target)
