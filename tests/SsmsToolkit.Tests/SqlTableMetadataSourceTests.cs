@@ -206,6 +206,21 @@ namespace SsmsToolkit.Tests
         }
 
         [LocalDbFact]
+        public async Task Table_ddl_via_smo()
+        {
+            if (!System.IO.File.Exists(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Microsoft.SqlServer.Smo.dll")))
+            {
+                return; // SMO not available on this machine (no SSMS): nothing to verify.
+            }
+
+            var ddl = await Source().GetDdlAsync(await Resolve("sales", "Order"), CancellationToken.None);
+            Assert.Contains("CREATE TABLE [sales].[Order]", ddl);
+            Assert.Contains("FK_Order_Customer", ddl);
+            Assert.Contains("IX_Order_Customer", ddl);
+            ScriptBuilderTests.AssertParses(ddl);
+        }
+
+        [LocalDbFact]
         public async Task View_ddl_is_the_module_definition()
         {
             var ddl = await Source().GetDdlAsync(await Resolve("dbo", "vCustomer"), CancellationToken.None);

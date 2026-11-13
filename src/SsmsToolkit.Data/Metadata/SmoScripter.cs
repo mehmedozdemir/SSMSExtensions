@@ -12,12 +12,10 @@ namespace SsmsToolkit.Data.Metadata
     {
         public static string ScriptTable(ConnectionTarget target, ResolvedObject obj, int timeoutSeconds)
         {
-            var connection = new ServerConnection
-            {
-                ConnectionString = target.ConnectionStringForSmo,
-                StatementTimeout = timeoutSeconds,
-                NonPooledConnection = false,
-            };
+            // Once ConnectionString is set, SMO rejects connection-string-level properties
+            // (NonPooledConnection, LoginSecure, ...); pooling etc. come from the string itself.
+            var connection = new ServerConnection { ConnectionString = target.ConnectionStringForSmo };
+            connection.StatementTimeout = timeoutSeconds;
 
             try
             {
