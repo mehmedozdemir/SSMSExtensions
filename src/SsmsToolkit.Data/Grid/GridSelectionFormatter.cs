@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using SsmsToolkit.Data.Model;
 
 namespace SsmsToolkit.Data.Grid
 {
@@ -19,11 +18,6 @@ namespace SsmsToolkit.Data.Grid
     /// <summary>Turns a grid selection into clipboard text. Pure functions; no SSMS dependency.</summary>
     public static class GridSelectionFormatter
     {
-        /// <summary>SQL Server accepts at most 1000 row value expressions per INSERT ... VALUES.</summary>
-        public const int MaxRowsPerInsert = 1000;
-
-        public const string PlaceholderTable = "[TableName]";
-
         public static string Format(GridSelectionData data, GridCopyFormat format)
         {
             if (data == null)
@@ -110,37 +104,16 @@ namespace SsmsToolkit.Data.Grid
         }
 
         /// <summary>
-        /// INSERT statements, at most <see cref="MaxRowsPerInsert"/> rows each. rowversion/timestamp columns are skipped
-        /// (the server generates them). The table comes from the result schema when all columns share one source table;
-        /// otherwise a placeholder is used.
+        /// Multi-row INSERT statements (1000 rows each) into the source table from the result schema, or a placeholder.
+        /// The "INSERT statements" dialog uses <see cref="InsertScriptBuilder"/> directly with the user's options.
         /// </summary>
-        public static string ToInsert(GridSelectionData data)
-        {
-            var columns = Enumerable.Range(0, data.Columns.Count)
-                .Where(i => !IsRowVersion(data.Columns[i].SqlTypeName))
-                .ToList();
-            if (columns.Count == 0)
+        public static string ToInsert(GridSelectionData data) =>
+            InsertScriptBuilder.Build(data.Columns, data.Rows, new InsertScriptOptions
             {
-                return string.Empty;
-            }
-
-            var header = "INSERT INTO " + TargetTable(data.Columns) + " ("
-                         + string.Join(", ", columns.Select(i => ObjectName.QuoteIdentifier(data.Columns[i].Name))) + ")\r\nVALUES\r\n";
-            var sb = new StringBuilder();
-            for (int start = 0; start < data.Rows.Count; start += MaxRowsPerInsert)
-            {
-                sb.Append(header);
-                int end = Math.Min(start + MaxRowsPerInsert, data.Rows.Count);
-                for (int r = start; r < end; r++)
-                {
-                    var row = data.Rows[r];
-                    sb.Append("    (")
-                      .Append(string.Join(", ", columns.Select(i => SqlLiteral.Format(row[i], data.Columns[i].SqlTypeName))))
-                      .Append(r == end - 1 ? ");\r\n" : "),\r\n");
-                }
-            }
-            return sb.ToString();
-        }
+                TableName = InsertScriptBuilder.DefaultTableName(data.Columns),
+                RowsPerStatement = InsertScriptOptions.MaxRowsPerStatement,
+                ExcludeGeneratedColumns = false,
+            });
 
         /// <summary>
         /// "IN (...)" with the distinct non-NULL values of the selection, in selection order (NULL never matches IN).
@@ -185,20 +158,6 @@ namespace SsmsToolkit.Data.Grid
             }
             return sb.Append(')').ToString();
         }
-
-        private static string TargetTable(IReadOnlyList<ResultColumn> columns)
-        {
-            var tables = columns.Select(c => (c.BaseSchema, c.BaseTable)).Distinct().ToList();
-            if (tables.Count == 1 && tables[0].BaseTable != null)
-            {
-                return ObjectName.QuoteIdentifier(tables[0].BaseSchema ?? "dbo") + "." + ObjectName.QuoteIdentifier(tables[0].BaseTable);
-            }
-            return PlaceholderTable;
-        }
-
-        private static bool IsRowVersion(string sqlTypeName) =>
-            string.Equals(sqlTypeName, "timestamp", StringComparison.OrdinalIgnoreCase)
-            || string.Equals(sqlTypeName, "rowversion", StringComparison.OrdinalIgnoreCase);
 
         private static string CsvField(string text, char separator)
         {

@@ -37,11 +37,27 @@ Her biri için seç → kopyala → yeni bir sorgu penceresine veya Not Defteri'
 - [ ] **CSV:** başlık satırı var; `tricky_text` çift tırnakla sarılı ve içteki `"` ikilenmiş; NULL boş; tarih `2026-...T...` biçiminde.
 - [ ] **JSON:** sayılar tırnaksız, `is_ms_shipped` `true/false`, `null_col` `null`, metin kaçışları doğru.
 - [ ] **Markdown:** tablo bir Markdown önizlemesinde (ör. VS Code) düzgün görünüyor; sayısal kolonlar sağa yaslı.
-- [ ] **INSERT:** `INSERT INTO [TableName] (...) VALUES (...)`. `O''Brien` kaçışı, `N'...'` metin, tarih `'...'`, `0x00FF` binary. Yapıştırılan script **parse** ediliyor (Ctrl+F5).
 - [ ] **IN (...):** tek kolon (ör. `object_id`) seçince `IN (1, 2, ...)`; tekrar edenler bir kez; NULL yok. Metin kolonunda `IN (N'a', N'b')`.
 - [ ] Kolonları sürükleyip sırasını değiştir → kopyalanan kolon sırası grid'deki sırayla aynı.
 - [ ] Birden çok sonuç seti (iki SELECT) → ikinci grid'de seçim → kopyalanan veri ikinci grid'den.
 - [ ] Hiç hücre seçmeden (veya sadece satır numarası kolonu) → "Önce bir sonuç grid'inde hücre seçin".
+
+## B2. INSERT ifadeleri penceresi
+
+Tek tablodan bir sorgu çalıştır (ör. `SELECT TOP (50) * FROM dbo.BirTablo`), birkaç satır seç → sağ tık → *Copy As (SsmsToolkit) > INSERT Statements...*
+
+- [ ] Pencere açılıyor, tema SSMS ile uyumlu (koyu/açık).
+- [ ] **Hedef tablo** sorgudaki tabloyla dolu geliyor; açılır listede sorgudaki diğer FROM tabloları var; elle değiştirilebiliyor (ör. `dbo.Kopya`) ve önizleme ~0,3 sn sonra güncelleniyor.
+- [ ] **Satırlar:** *Seçili hücreler* ve *Sonucun tamamı* arasında geçiş önizlemeyi değiştiriyor.
+- [ ] **INSERT başına satır** 1 → her satıra bir `INSERT`; 100 → çok satırlı `VALUES`.
+- [ ] Identity kolonlu tabloda: *Identity / hesaplanan kolonları hariç tut* işaretliyken identity kolonu yok; işareti kaldırınca var ve *SET IDENTITY_INSERT ON/OFF ile sar* seçilebiliyor.
+- [ ] *Adları [ ] ile tırnakla* kapatılınca köşeli parantezler kalkıyor.
+- [ ] Metin `N'...'`, tarih `'...'`, `O''Brien` kaçışı, binary `0x...`, NULL doğru. Script **parse** ediliyor (Ctrl+F5).
+- [ ] **Kopyala** → panoda tam script; durum satırında "N satır panoya kopyalandı".
+- [ ] **Yeni Sorguda Aç** → yeni sorgu penceresi aynı sunucu ve veritabanına **bağlı** açılıyor, script içinde.
+- [ ] **Dosyaya Kaydet...** → önerilen ad tablo adından (`dbo.Kopya.sql`); dosya UTF-8, Türkçe karakterler bozulmuyor.
+- [ ] **İlerleme:** büyük bir sonuçta (ör. `SELECT * FROM sys.all_columns`, *Sonucun tamamı*) Kopyala → ilerleme çubuğu ve "Oluşturuluyor... x / y satır"; SSMS donmuyor; **İptal** çalışıyor.
+- [ ] 5.000.000 hücreden büyük sonuçta uyarı çıkıyor, script oluşturulmuyor.
 
 ## C. Seçim istatistikleri (durum çubuğu)
 
@@ -61,7 +77,8 @@ Her biri için seç → kopyala → yeni bir sorgu penceresine veya Not Defteri'
 
 ## Bilinen sınırlar
 
-- INSERT'te tablo adı sonuçtan bilinmiyorsa `[TableName]` yazılır; yapıştırdıktan sonra değiştirin.
+- INSERT penceresinde tablo adı önerisi sorgu metninden gelir; sorgu birden çok tablo okuyorsa ilki seçilir, listeden değiştirin. Ad boşsa `[TableName]` yazılır.
+- Identity / hesaplanan kolon bilgisi SSMS'in sonuç şemasından gelir; SSMS bu bilgiyi vermezse kolon normal kolon gibi görünür.
 - Değerler SSMS'in grid'de tuttuğu haliyle kopyalanır: SSMS ayarındaki "en fazla karakter" sınırını aşan uzun metinler kesik gelir.
 - Birden çok ayrı blok seçilirse (Ctrl ile), seçili satır ve kolonların kesişimi kopyalanır.
 - 500.000 hücreden büyük seçim kopyalanmaz.

@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Microsoft.SqlServer.Management.QueryExecution;
 using Microsoft.SqlServer.Management.UI.Grid;
 using SsmsToolkit.Data.Grid;
+using SsmsToolkit.Presentation.ResultGrid;
 
 namespace SsmsToolkit.SsmsInterop
 {
@@ -74,6 +75,66 @@ namespace SsmsToolkit.SsmsInterop
                 rows.Add(values);
             }
             return new GridSelectionData(columns, rows);
+        }
+
+        /// <summary>
+        /// Lazy row source over the selection (selected columns × selected rows), or null when nothing is selected.
+        /// Rows are read from the grid storage only when asked for, so large results are not copied up front.
+        /// </summary>
+        public static IGridRowSource CreateSelectionSource(GridControl grid)
+        {
+            var layout = Layout.For(grid);
+            if (layout == null || layout.Blocks.Count == 0)
+            {
+                return null;
+            }
+
+            var storageColumns = layout.Blocks.SelectMany(b => b.Columns).Distinct().OrderBy(c => SafeUiIndex(grid, c)).ToArray();
+            return new RowSource(layout, storageColumns, MergedRows(layout.Blocks).ToArray());
+        }
+
+        /// <summary>Lazy row source over the whole result set (all data columns in display order).</summary>
+        public static IGridRowSource CreateAllRowsSource(GridControl grid)
+        {
+            var layout = Layout.For(grid);
+            if (layout == null)
+            {
+                return null;
+            }
+
+            var storageColumns = layout.AllStorageColumns().OrderBy(c => SafeUiIndex(grid, c)).ToArray();
+            return new RowSource(layout, storageColumns, null);
+        }
+
+        private sealed class RowSource : IGridRowSource
+        {
+            private readonly Layout _layout;
+            private readonly int[] _storageColumns;
+            private readonly long[] _rows;
+
+            public RowSource(Layout layout, int[] storageColumns, long[] rows)
+            {
+                _layout = layout;
+                _storageColumns = storageColumns;
+                _rows = rows;
+                Columns = storageColumns.Select(layout.Column).ToList();
+                RowCount = rows?.LongLength ?? layout.ResultSet.TotalNumberOfRows;
+            }
+
+            public IReadOnlyList<ResultColumn> Columns { get; }
+
+            public long RowCount { get; }
+
+            public object[] ReadRow(long index)
+            {
+                long row = _rows == null ? index : _rows[index];
+                var values = new object[_storageColumns.Length];
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = _layout.ResultSet.GetCellData(row, _storageColumns[i]);
+                }
+                return values;
+            }
         }
 
         /// <summary>Statistics over the selected cells; stops after <paramref name="maxCells"/> cells.</summary>
@@ -207,7 +268,11 @@ namespace SsmsToolkit.SsmsInterop
                     Text(schema, "DataTypeName"),
                     Value(schema, "DataType") as Type,
                     Text(schema, "BaseSchemaName"),
-                    Text(schema, "BaseTableName"));
+                    Text(schema, "BaseTableName"))
+                {
+                    IsIdentity = Flag(schema, "IsIdentity") || Flag(schema, "IsAutoIncrement"),
+                    IsComputed = Flag(schema, "IsExpression"),
+                };
                 _columns[storageColumn] = column;
                 return column;
             }
@@ -216,6 +281,11 @@ namespace SsmsToolkit.SsmsInterop
                 row != null && row.Table.Columns.Contains(column) && !(row[column] is DBNull) ? row[column] : null;
 
             private static string Text(DataRow row, string column) => Value(row, column) as string;
+
+            private static bool Flag(DataRow row, string column) => Value(row, column) is bool b && b;
+
+            /// <summary>Every data column's storage index.</summary>
+            public IEnumerable<int> AllStorageColumns() => Enumerable.Range(_offset, ResultSet.NumberOfDataColumns);
         }
     }
 }

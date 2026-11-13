@@ -6,9 +6,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning: [S
 ## [Unreleased]
 ### Added
 - **Result Grid Tools** (Phase 3.1, off by default; turn on in Settings): right-click the SSMS results grid >
-  *Copy As (SsmsToolkit)* to copy the selection as CSV, JSON, Markdown, INSERT statements (1000 rows per
-  statement, rowversion skipped) or a distinct `IN (...)` list. Selecting several cells shows count, distinct,
-  sum, average, min and max in the status bar.
+  *Copy As (SsmsToolkit)* to copy the selection as CSV, JSON, Markdown or a distinct `IN (...)` list.
+  Selecting several cells shows count, distinct, sum, average, min and max in the status bar.
+- **INSERT statements dialog** (*Copy As > INSERT Statements...*): editable target table (suggested from the
+  result schema and the query's FROM tables), selected cells or the whole result, rows per INSERT (1-1000),
+  exclude identity/computed columns or wrap with `SET IDENTITY_INSERT`, optional `[ ]` quoting, live preview,
+  progress bar with cancel, and output to the clipboard, a new connected query window or a `.sql` file.
 
 ### Changed
 - The editor context menu id used for "Inspect Table" (`0x50`) is now confirmed from SSMS 22.12's SQLEditors.dll.

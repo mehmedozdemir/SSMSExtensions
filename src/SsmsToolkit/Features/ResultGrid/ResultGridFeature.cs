@@ -1,13 +1,20 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using Microsoft.SqlServer.Management.UI.Grid;
+using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Text;
 using SsmsToolkit.Core;
 using SsmsToolkit.Data.Grid;
+using SsmsToolkit.Data.Parsing;
+using SsmsToolkit.Package;
 using SsmsToolkit.Presentation.Localization;
+using SsmsToolkit.Presentation.ResultGrid;
 using SsmsToolkit.SsmsInterop;
 using SsmsToolkit.UI;
 
@@ -102,6 +109,63 @@ namespace SsmsToolkit.Features.ResultGrid
             catch (Exception ex)
             {
                 _registry.ReportFailure(FeatureId, "Copy as " + format, ex);
+                await Notifications.StatusAsync(Strings.Get("Msg_GridCopyFailed"));
+            }
+        }
+
+        /// <summary>
+        /// Opens the "INSERT statements" dialog for the focused grid: target table (suggested from the result schema and
+        /// the query text), options, preview, and output to the clipboard, a new query window or a file. Never throws.
+        /// </summary>
+        public async Task ShowInsertDialogAsync(ToolkitPackage package)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            try
+            {
+                var grid = ResultGridInterop.GetFocusedResultsGrid() ?? (ResultGridInterop.IsResultsGrid(_grid) ? _grid : null);
+                var all = grid == null ? null : ResultGridInterop.CreateAllRowsSource(grid);
+                if (all == null || all.RowCount == 0)
+                {
+                    await Notifications.StatusAsync(Strings.Get("Msg_GridNoSelection"));
+                    return;
+                }
+                var selection = ResultGridInterop.CreateSelectionSource(grid);
+
+                // The query editor that owns the grid: its text suggests table names, its moniker gives the connection.
+                string moniker = null;
+                var candidates = new List<string>();
+                var fromSchema = InsertScriptBuilder.DefaultTableName(all.Columns);
+                if (fromSchema != null)
+                {
+                    candidates.Add(fromSchema);
+                }
+                try
+                {
+                    var view = await ActiveEditor.GetActiveSqlViewAsync(package);
+                    if (view != null)
+                    {
+                        var documents = (await package.GetServiceAsync(typeof(SComponentModel)) as IComponentModel)?.GetService<ITextDocumentFactoryService>();
+                        moniker = ActiveEditor.GetDocumentMoniker(view, documents);
+                        var script = view.TextSnapshot.GetText();
+                        candidates.AddRange(SqlNameResolver.FindSelectSources(script).Select(InsertScriptBuilder.DisplayName));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Debug("Table name suggestions unavailable: " + ex.Message);
+                }
+
+                var dialog = new InsertScriptDialog(async text =>
+                {
+                    var connection = await package.Connections.GetAsync(moniker);
+                    await QueryWindowService.OpenAsync(connection, text, connection?.Database);
+                });
+                var vm = new InsertScriptViewModel(selection ?? all, selection == null ? null : all, candidates, dialog);
+                dialog.Show(vm);
+            }
+            catch (Exception ex)
+            {
+                _registry.ReportFailure(FeatureId, "INSERT dialog", ex);
                 await Notifications.StatusAsync(Strings.Get("Msg_GridCopyFailed"));
             }
         }

@@ -104,7 +104,7 @@
         <CommandFlag>DynamicVisibility</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
-          <ButtonText>INSERT Statements</ButtonText>
+          <ButtonText>INSERT Statements...</ButtonText>
           <CanonicalName>SsmsToolkit.GridCopyAsInsert</CanonicalName>
           <LocCanonicalName>SsmsToolkit.GridCopyAsInsert</LocCanonicalName>
         </Strings>

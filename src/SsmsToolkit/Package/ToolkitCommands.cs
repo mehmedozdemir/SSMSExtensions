@@ -45,13 +45,16 @@ namespace SsmsToolkit.Package
             AddGridCopy(package, commands, PackageIds.GridCopyCsvCommand, GridCopyFormat.Csv);
             AddGridCopy(package, commands, PackageIds.GridCopyJsonCommand, GridCopyFormat.Json);
             AddGridCopy(package, commands, PackageIds.GridCopyMarkdownCommand, GridCopyFormat.Markdown);
-            AddGridCopy(package, commands, PackageIds.GridCopyInsertCommand, GridCopyFormat.Insert);
+            AddGridCommand(package, commands, PackageIds.GridCopyInsertCommand, () => package.ResultGrid.ShowInsertDialogAsync(package));
             AddGridCopy(package, commands, PackageIds.GridCopyInListCommand, GridCopyFormat.InList);
         }
 
-        private static void AddGridCopy(ToolkitPackage package, OleMenuCommandService commands, int id, GridCopyFormat format)
+        private static void AddGridCopy(ToolkitPackage package, OleMenuCommandService commands, int id, GridCopyFormat format) =>
+            AddGridCommand(package, commands, id, () => package.ResultGrid.CopyAsAsync(format));
+
+        private static void AddGridCommand(ToolkitPackage package, OleMenuCommandService commands, int id, Func<Task> action)
         {
-            var cmd = Add(commands, id, () => package.ResultGrid.CopyAsAsync(format));
+            var cmd = Add(commands, id, action);
             cmd.BeforeQueryStatus += (s, e) =>
             {
                 // Hidden while the feature is off; an empty "Copy As" submenu is hidden by the shell.

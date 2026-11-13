@@ -26,6 +26,12 @@ namespace SsmsToolkit.Data.Grid
         public string BaseSchema { get; }
 
         public string BaseTable { get; }
+
+        /// <summary>IDENTITY column (schema "IsIdentity" / "IsAutoIncrement").</summary>
+        public bool IsIdentity { get; set; }
+
+        /// <summary>Computed column or expression (schema "IsExpression"); cannot be inserted.</summary>
+        public bool IsComputed { get; set; }
     }
 
     /// <summary>

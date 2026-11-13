@@ -158,4 +158,31 @@ MIT License</value></data>
   <data name="Msg_GridNoSelection" xml:space="preserve"><value>Select cells in a results grid first.</value></data>
   <data name="Msg_GridTooLarge" xml:space="preserve"><value>The selection is too large to copy ({0} cells; limit {1}).</value></data>
   <data name="Msg_GridCopyFailed" xml:space="preserve"><value>Copy failed; see the SsmsToolkit log.</value></data>
+  <data name="Insert_Title" xml:space="preserve"><value>Generate INSERT Statements</value></data>
+  <data name="Insert_Table" xml:space="preserve"><value>Target table:</value></data>
+  <data name="Insert_TableHint" xml:space="preserve"><value>schema.table — suggestions come from the result and the query text; you can type any name.</value></data>
+  <data name="Insert_Rows" xml:space="preserve"><value>Rows:</value></data>
+  <data name="Insert_SelectedRows" xml:space="preserve"><value>Selected cells ({0} rows, {1} columns)</value></data>
+  <data name="Insert_AllRows" xml:space="preserve"><value>Whole result ({0} rows, {1} columns)</value></data>
+  <data name="Insert_RowsPerStatement" xml:space="preserve"><value>Rows per INSERT:</value></data>
+  <data name="Insert_RowsPerStatementHint" xml:space="preserve"><value>1 = one statement per row; more = multi-row VALUES (max 1000).</value></data>
+  <data name="Insert_ExcludeGenerated" xml:space="preserve"><value>Exclude identity / computed columns</value></data>
+  <data name="Insert_IdentityInsert" xml:space="preserve"><value>Wrap with SET IDENTITY_INSERT ON/OFF</value></data>
+  <data name="Insert_Quote" xml:space="preserve"><value>Quote names with [ ]</value></data>
+  <data name="Insert_Preview" xml:space="preserve"><value>Preview</value></data>
+  <data name="Insert_PreviewNote" xml:space="preserve"><value>first {0} of {1} rows</value></data>
+  <data name="Insert_Copy" xml:space="preserve"><value>Copy</value></data>
+  <data name="Insert_OpenInQuery" xml:space="preserve"><value>Open in New Query</value></data>
+  <data name="Insert_Save" xml:space="preserve"><value>Save to File...</value></data>
+  <data name="Insert_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Insert_Close" xml:space="preserve"><value>Close</value></data>
+  <data name="Insert_Progress" xml:space="preserve"><value>Generating... {0} / {1} rows</value></data>
+  <data name="Insert_Copied" xml:space="preserve"><value>{0} rows copied to the clipboard.</value></data>
+  <data name="Insert_Opened" xml:space="preserve"><value>Opened in a new query window.</value></data>
+  <data name="Insert_Saved" xml:space="preserve"><value>Saved: {0}</value></data>
+  <data name="Insert_Cancelled" xml:space="preserve"><value>Cancelled.</value></data>
+  <data name="Insert_TooLarge" xml:space="preserve"><value>Too many cells (limit {0}). Select fewer rows or columns.</value></data>
+  <data name="Insert_TooLargeForEditor" xml:space="preserve"><value>The script is too large for a query window; use Save to File.</value></data>
+  <data name="Insert_Failed" xml:space="preserve"><value>Failed: {0}</value></data>
+  <data name="Insert_FileFilter" xml:space="preserve"><value>SQL files (*.sql)|*.sql|All files (*.*)|*.*</value></data>
 </root>

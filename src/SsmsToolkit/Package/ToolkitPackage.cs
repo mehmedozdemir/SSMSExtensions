@@ -34,6 +34,8 @@ namespace SsmsToolkit.Package
 
         internal ResultGridFeature ResultGrid { get; private set; }
 
+        internal SsmsConnectionProvider Connections { get; private set; }
+
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             try
@@ -43,7 +45,7 @@ namespace SsmsToolkit.Package
                 Strings.Language = settings.Language;
                 Logger.Info("Package initializing (SsmsToolkit " + typeof(ToolkitPackage).Assembly.GetName().Version + ")");
 
-                var connections = new SsmsConnectionProvider(this);
+                var connections = Connections = new SsmsConnectionProvider(this);
                 Launcher = new TableInspectorLauncher(connections, new InspectorWindowManager(this, Features), Features);
                 Features.Register(new TableInspectorFeature());
                 ResultGrid = new ResultGridFeature(Features);
