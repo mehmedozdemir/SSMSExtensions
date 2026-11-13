@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning: [SemVer](https://semver.org/).
 
 ## [Unreleased]
+
+## [0.1.0] - 2026-11-13
 ### Added
 - **Table Inspector** (Phase 1): Ctrl+Click a table/view name (or alias) in the query editor, the editor
   context menu "Inspect Table", or Ctrl+K, Ctrl+T opens a details tab with Summary, Columns,
