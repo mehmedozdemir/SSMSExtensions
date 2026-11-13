@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\SsmsToolkit.Data\SsmsToolkit.Data.csproj" />
+    <ProjectReference Include="..\..\src\SsmsToolkit.Presentation\SsmsToolkit.Presentation.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -7,6 +7,8 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using SsmsToolkit.Core;
+using SsmsToolkit.Data.Grid;
+using SsmsToolkit.Features.ResultGrid;
 using SsmsToolkit.Features.TableInspector;
 using SsmsToolkit.Presentation.Localization;
 using SsmsToolkit.SsmsInterop;
@@ -14,7 +16,10 @@ using Task = System.Threading.Tasks.Task;
 
 namespace SsmsToolkit.Package
 {
-    /// <summary>Menu commands: Settings, Open Log Folder, About, Inspect Table (context menu + Ctrl+K, Ctrl+T).</summary>
+    /// <summary>
+    /// Menu commands: Settings, Open Log Folder, About, Inspect Table (context menu + Ctrl+K, Ctrl+T),
+    /// results grid "Copy As" formats.
+    /// </summary>
     internal static class ToolkitCommands
     {
         public static async Task InitializeAsync(ToolkitPackage package)
@@ -35,6 +40,25 @@ namespace SsmsToolkit.Package
             {
                 // Visible only while the feature is on; the handler checks the active editor itself.
                 inspect.Visible = inspect.Enabled = package.Features.IsActive(TableInspectorFeature.FeatureId);
+            };
+
+            AddGridCopy(package, commands, PackageIds.GridCopyCsvCommand, GridCopyFormat.Csv);
+            AddGridCopy(package, commands, PackageIds.GridCopyJsonCommand, GridCopyFormat.Json);
+            AddGridCopy(package, commands, PackageIds.GridCopyMarkdownCommand, GridCopyFormat.Markdown);
+            AddGridCommand(package, commands, PackageIds.GridCopyInsertCommand, () => package.ResultGrid.ShowInsertDialogAsync(package));
+            AddGridCopy(package, commands, PackageIds.GridCopyInListCommand, GridCopyFormat.InList);
+        }
+
+        private static void AddGridCopy(ToolkitPackage package, OleMenuCommandService commands, int id, GridCopyFormat format) =>
+            AddGridCommand(package, commands, id, () => package.ResultGrid.CopyAsAsync(format));
+
+        private static void AddGridCommand(ToolkitPackage package, OleMenuCommandService commands, int id, Func<Task> action)
+        {
+            var cmd = Add(commands, id, action);
+            cmd.BeforeQueryStatus += (s, e) =>
+            {
+                // Hidden while the feature is off; an empty "Copy As" submenu is hidden by the shell.
+                cmd.Visible = cmd.Enabled = package.Features.IsActive(ResultGridFeature.FeatureId);
             };
         }
 

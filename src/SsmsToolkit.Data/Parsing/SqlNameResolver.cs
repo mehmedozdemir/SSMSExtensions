@@ -120,6 +120,59 @@ namespace SsmsToolkit.Data.Parsing
             return ObjectName.FromParts(mp.Parts);
         }
 
+        /// <summary>
+        /// Tables and views read by the SELECT statements of a script (FROM / JOIN), in order of appearance, without
+        /// CTE names, temp tables or table variables. Empty when the script does not parse.
+        /// Used to suggest a target table for "INSERT statements" generated from a result grid.
+        /// </summary>
+        public static IReadOnlyList<ObjectName> FindSelectSources(string script)
+        {
+            if (string.IsNullOrWhiteSpace(script))
+            {
+                return Array.Empty<ObjectName>();
+            }
+
+            TSqlFragment fragment;
+            IList<ParseError> errors;
+            using (var reader = new StringReader(script))
+            {
+                fragment = new TSql170Parser(initialQuotedIdentifiers: true).Parse(reader, out errors);
+            }
+            if (fragment == null || errors.Count > 0)
+            {
+                return Array.Empty<ObjectName>();
+            }
+
+            var selects = new SelectSourceVisitor();
+            fragment.Accept(selects);
+            var result = new List<ObjectName>();
+            foreach (var table in selects.Tables.OrderBy(t => t.StartOffset))
+            {
+                var name = ToObjectName(table.SchemaObject);
+                bool single = name.Schema == null && name.Database == null && name.Server == null;
+                if (!name.IsTemporary && !(single && selects.CteNames.Contains(name.Name)))
+                {
+                    Add(result, name);
+                }
+            }
+            return result;
+        }
+
+        private sealed class SelectSourceVisitor : TSqlFragmentVisitor
+        {
+            public List<NamedTableReference> Tables { get; } = new List<NamedTableReference>();
+
+            public HashSet<string> CteNames { get; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            public override void Visit(SelectStatement node)
+            {
+                var inner = new CollectingVisitor();
+                node.Accept(inner);
+                Tables.AddRange(inner.Tables);
+                CteNames.UnionWith(inner.CteNames);
+            }
+        }
+
         // ---------------------------------------------------------------- parser path
 
         /// <returns>Candidates, or null if the batch does not parse.</returns>

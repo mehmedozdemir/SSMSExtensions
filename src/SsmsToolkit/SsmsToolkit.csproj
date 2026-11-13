@@ -61,8 +61,10 @@
     <Compile Include="SsmsInterop\ActiveEditor.cs" />
     <Compile Include="SsmsInterop\EditorConnection.cs" />
     <Compile Include="SsmsInterop\ObjectExplorerInterop.cs" />
+    <Compile Include="SsmsInterop\ResultGridInterop.cs" />
     <Compile Include="SsmsInterop\QueryWindowService.cs" />
     <Compile Include="SsmsInterop\SsmsConnectionProvider.cs" />
+    <Compile Include="Features\ResultGrid\ResultGridFeature.cs" />
     <Compile Include="Features\TableInspector\InspectorWindowManager.cs" />
     <Compile Include="Features\TableInspector\LinkHoverAdornment.cs" />
     <Compile Include="Features\TableInspector\TableInspectorFeature.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="Features\TableInspector\TableInspectorMouseProcessor.cs" />
     <Compile Include="Features\TableInspector\TableInspectorToolWindow.cs" />
     <Compile Include="Features\TableInspector\VsInspectorHost.cs" />
+    <Compile Include="UI\InsertScriptDialog.cs" />
     <Compile Include="UI\Notifications.cs" />
     <Compile Include="UI\SettingsToolWindow.cs" />
     <Compile Include="UI\VsTheme.cs" />
@@ -138,6 +141,14 @@
     </Reference>
     <Reference Include="Microsoft.SqlServer.Management.Sdk.SqlStudio">
       <HintPath>$(SsmsRefDir)Microsoft.SqlServer.Management.Sdk.SqlStudio.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.GridControl">
+      <HintPath>$(SsmsRefDir)Microsoft.SqlServer.GridControl.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SQLEditors">
+      <HintPath>$(SsmsRefDir)SQLEditors.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

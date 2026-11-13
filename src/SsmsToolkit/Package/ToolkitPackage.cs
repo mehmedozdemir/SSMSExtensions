@@ -5,6 +5,7 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using SsmsToolkit.Core;
+using SsmsToolkit.Features.ResultGrid;
 using SsmsToolkit.Features.TableInspector;
 using SsmsToolkit.Presentation.Localization;
 using SsmsToolkit.SsmsInterop;
@@ -31,6 +32,10 @@ namespace SsmsToolkit.Package
 
         internal TableInspectorLauncher Launcher { get; private set; }
 
+        internal ResultGridFeature ResultGrid { get; private set; }
+
+        internal SsmsConnectionProvider Connections { get; private set; }
+
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             try
@@ -40,9 +45,11 @@ namespace SsmsToolkit.Package
                 Strings.Language = settings.Language;
                 Logger.Info("Package initializing (SsmsToolkit " + typeof(ToolkitPackage).Assembly.GetName().Version + ")");
 
-                var connections = new SsmsConnectionProvider(this);
+                var connections = Connections = new SsmsConnectionProvider(this);
                 Launcher = new TableInspectorLauncher(connections, new InspectorWindowManager(this, Features), Features);
                 Features.Register(new TableInspectorFeature());
+                ResultGrid = new ResultGridFeature(Features);
+                Features.Register(ResultGrid);
                 Features.FeatureAutoDisabled += OnFeatureAutoDisabled;
 
                 await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);

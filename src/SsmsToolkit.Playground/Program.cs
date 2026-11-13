@@ -17,7 +17,7 @@ namespace SsmsToolkit.Playground
 {
     /// <summary>
     /// Usage:
-    ///   SsmsToolkit.Playground.exe [--dark] [--lang tr|en] [--tab N] [--settings]
+    ///   SsmsToolkit.Playground.exe [--dark] [--lang tr|en] [--tab N] [--settings] [--insert [--rows N]]
     ///                              [--fake | --cs "connection string"] [--table dbo.Name]
     /// Without --cs, sample data is used.
     /// </summary>
@@ -38,6 +38,10 @@ namespace SsmsToolkit.Playground
             {
                 window = CreateSettingsWindow();
             }
+            else if (args.Contains("--insert"))
+            {
+                window = InsertScriptPlayground.CreateWindow(int.TryParse(Arg(args, "--rows"), out var rows) ? rows : 5000);
+            }
             else
             {
                 var cs = Arg(args, "--cs");
@@ -50,7 +54,33 @@ namespace SsmsToolkit.Playground
             }
 
             window.Background = (System.Windows.Media.Brush)app.Resources[ThemeKeys.Background];
+            var snapshot = Arg(args, "--snapshot");
+            if (snapshot != null)
+            {
+                // Renders the window content to a PNG in-process (works without a visible desktop) and exits.
+                window.ContentRendered += async (s, e) =>
+                {
+                    await Task.Delay(int.TryParse(Arg(args, "--wait"), out var ms) ? ms : 1500);
+                    SaveSnapshot((FrameworkElement)window.Content, snapshot);
+                    app.Shutdown();
+                };
+            }
             app.Run(window);
+        }
+
+        private static void SaveSnapshot(FrameworkElement element, string path)
+        {
+            var dpi = System.Windows.Media.VisualTreeHelper.GetDpi(element);
+            var bitmap = new System.Windows.Media.Imaging.RenderTargetBitmap(
+                (int)Math.Ceiling(element.ActualWidth * dpi.DpiScaleX), (int)Math.Ceiling(element.ActualHeight * dpi.DpiScaleY),
+                dpi.PixelsPerInchX, dpi.PixelsPerInchY, System.Windows.Media.PixelFormats.Pbgra32);
+            bitmap.Render(element);
+            var encoder = new System.Windows.Media.Imaging.PngBitmapEncoder();
+            encoder.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(bitmap));
+            using (var stream = System.IO.File.Create(path))
+            {
+                encoder.Save(stream);
+            }
         }
 
         private static string Arg(string[] args, string name)
@@ -65,7 +95,7 @@ namespace SsmsToolkit.Playground
             var features = new[]
             {
                 new FeatureItemViewModel("table-inspector", Strings.Get("Feature_TableInspector_Name"), Strings.Get("Feature_TableInspector_Description"), true, ti),
-                new FeatureItemViewModel("result-grid", "Result Grid Tools", "(Phase 3 placeholder)", false, null),
+                new FeatureItemViewModel("result-grid", Strings.Get("Feature_ResultGrid_Name"), Strings.Get("Feature_ResultGrid_Description"), false, null),
             };
             var vm = new SettingsViewModel(features, s => null, () => { })
             {

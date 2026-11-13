@@ -145,4 +145,44 @@ MIT Lisansı</value></data>
   <data name="Dep_Hint" xml:space="preserve"><value>sys.sql_expression_dependencies kaynaklı; dinamik SQL izlenmez. İncelemek için tablo veya view adına tıklayın.</value></data>
   <data name="Dep_Missing" xml:space="preserve"><value>(bulunamadı)</value></data>
   <data name="Dep_NoDefinition" xml:space="preserve"><value>tanım yok (modül değil, şifreli veya VIEW DEFINITION yetkisi yok)</value></data>
+  <data name="Feature_ResultGrid_Name" xml:space="preserve"><value>Sonuç Grid Araçları</value></data>
+  <data name="Feature_ResultGrid_Description" xml:space="preserve"><value>SSMS sonuç grid'inde sağ tık &gt; Copy As (SsmsToolkit) ile seçimi CSV, JSON, Markdown, INSERT ifadeleri veya IN (...) listesi olarak kopyalayın. Birden çok hücre seçince durum çubuğunda adet, farklı, toplam, ortalama, min ve maks görünür.</value></data>
+  <data name="Stats_Count" xml:space="preserve"><value>Adet</value></data>
+  <data name="Stats_Distinct" xml:space="preserve"><value>Farklı</value></data>
+  <data name="Stats_Sum" xml:space="preserve"><value>Toplam</value></data>
+  <data name="Stats_Average" xml:space="preserve"><value>Ort.</value></data>
+  <data name="Stats_Min" xml:space="preserve"><value>Min</value></data>
+  <data name="Stats_Max" xml:space="preserve"><value>Maks</value></data>
+  <data name="Stats_Truncated" xml:space="preserve"><value>(ilk {0} hücre)</value></data>
+  <data name="Msg_GridCopied" xml:space="preserve"><value>{0} satır {1} olarak kopyalandı.</value></data>
+  <data name="Msg_GridNoSelection" xml:space="preserve"><value>Önce bir sonuç grid'inde hücre seçin.</value></data>
+  <data name="Msg_GridTooLarge" xml:space="preserve"><value>Seçim kopyalamak için çok büyük ({0} hücre; sınır {1}).</value></data>
+  <data name="Msg_GridCopyFailed" xml:space="preserve"><value>Kopyalama başarısız; SsmsToolkit log'una bakın.</value></data>
+  <data name="Insert_Title" xml:space="preserve"><value>INSERT İfadeleri Oluştur</value></data>
+  <data name="Insert_Table" xml:space="preserve"><value>Hedef tablo:</value></data>
+  <data name="Insert_TableHint" xml:space="preserve"><value>şema.tablo — öneriler sonuçtan ve sorgu metninden gelir; istediğiniz adı yazabilirsiniz.</value></data>
+  <data name="Insert_Rows" xml:space="preserve"><value>Satırlar:</value></data>
+  <data name="Insert_SelectedRows" xml:space="preserve"><value>Seçili hücreler ({0} satır, {1} kolon)</value></data>
+  <data name="Insert_AllRows" xml:space="preserve"><value>Sonucun tamamı ({0} satır, {1} kolon)</value></data>
+  <data name="Insert_RowsPerStatement" xml:space="preserve"><value>INSERT başına satır:</value></data>
+  <data name="Insert_RowsPerStatementHint" xml:space="preserve"><value>1 = her satıra bir ifade; fazlası = çok satırlı VALUES (en fazla 1000).</value></data>
+  <data name="Insert_ExcludeGenerated" xml:space="preserve"><value>Identity / hesaplanan kolonları hariç tut</value></data>
+  <data name="Insert_IdentityInsert" xml:space="preserve"><value>SET IDENTITY_INSERT ON/OFF ile sar</value></data>
+  <data name="Insert_Quote" xml:space="preserve"><value>Adları [ ] ile tırnakla</value></data>
+  <data name="Insert_Preview" xml:space="preserve"><value>Önizleme</value></data>
+  <data name="Insert_PreviewNote" xml:space="preserve"><value>{1} satırın ilk {0} satırı</value></data>
+  <data name="Insert_Copy" xml:space="preserve"><value>Kopyala</value></data>
+  <data name="Insert_OpenInQuery" xml:space="preserve"><value>Yeni Sorguda Aç</value></data>
+  <data name="Insert_Save" xml:space="preserve"><value>Dosyaya Kaydet...</value></data>
+  <data name="Insert_Cancel" xml:space="preserve"><value>İptal</value></data>
+  <data name="Insert_Close" xml:space="preserve"><value>Kapat</value></data>
+  <data name="Insert_Progress" xml:space="preserve"><value>Oluşturuluyor... {0} / {1} satır</value></data>
+  <data name="Insert_Copied" xml:space="preserve"><value>{0} satır panoya kopyalandı.</value></data>
+  <data name="Insert_Opened" xml:space="preserve"><value>Yeni sorgu penceresinde açıldı.</value></data>
+  <data name="Insert_Saved" xml:space="preserve"><value>Kaydedildi: {0}</value></data>
+  <data name="Insert_Cancelled" xml:space="preserve"><value>İptal edildi.</value></data>
+  <data name="Insert_TooLarge" xml:space="preserve"><value>Çok fazla hücre (sınır {0}). Daha az satır veya kolon seçin.</value></data>
+  <data name="Insert_TooLargeForEditor" xml:space="preserve"><value>Script sorgu penceresi için çok büyük; Dosyaya Kaydet'i kullanın.</value></data>
+  <data name="Insert_Failed" xml:space="preserve"><value>Başarısız: {0}</value></data>
+  <data name="Insert_FileFilter" xml:space="preserve"><value>SQL dosyaları (*.sql)|*.sql|Tüm dosyalar (*.*)|*.*</value></data>
 </root>
