@@ -36,11 +36,13 @@ namespace SsmsToolkit.Presentation.TableInspector
 
             Summary = new SummaryTab(obj, source, token, onError);
             Columns = new ColumnsTab(obj, source, token, onError);
+            Keys = new KeysTab(obj, source, token, onError);
             Indexes = new IndexesTab(obj, source, token, onError);
+            Constraints = new ConstraintsTab(obj, source, token, onError);
             ForeignKeys = new ForeignKeysTab(obj, source, host, token, onError);
             Data = new DataTab(obj, source, host, options, token, onError);
             Ddl = new DdlTab(obj, source, host, token, onError);
-            Tabs = new InspectorTab[] { Summary, Columns, Indexes, ForeignKeys, Data, Ddl };
+            Tabs = new InspectorTab[] { Summary, Columns, Keys, Indexes, Constraints, ForeignKeys, Data, Ddl };
 
             foreach (var t in Tabs)
             {
@@ -68,7 +70,9 @@ namespace SsmsToolkit.Presentation.TableInspector
 
         public SummaryTab Summary { get; }
         public ColumnsTab Columns { get; }
+        public KeysTab Keys { get; }
         public IndexesTab Indexes { get; }
+        public ConstraintsTab Constraints { get; }
         public ForeignKeysTab ForeignKeys { get; }
         public DataTab Data { get; }
         public DdlTab Ddl { get; }
@@ -99,7 +103,9 @@ namespace SsmsToolkit.Presentation.TableInspector
             return Task.WhenAll(
                 SafeAsync(Summary.EnsureLoadedAsync()),
                 SafeAsync(Columns.EnsureLoadedAsync()),
+                SafeAsync(Keys.EnsureLoadedAsync()),
                 SafeAsync(Indexes.EnsureLoadedAsync()),
+                SafeAsync(Constraints.EnsureLoadedAsync()),
                 SafeAsync(ForeignKeys.EnsureLoadedAsync()));
         }
 

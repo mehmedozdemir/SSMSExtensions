@@ -6,7 +6,9 @@
   <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
   <data name="Tab_Summary" xml:space="preserve"><value>Summary</value></data>
   <data name="Tab_Columns" xml:space="preserve"><value>Columns</value></data>
-  <data name="Tab_Indexes" xml:space="preserve"><value>Indexes &amp; Keys</value></data>
+  <data name="Tab_Keys" xml:space="preserve"><value>Keys</value></data>
+  <data name="Tab_Indexes" xml:space="preserve"><value>Indexes</value></data>
+  <data name="Tab_Constraints" xml:space="preserve"><value>Constraints</value></data>
   <data name="Tab_ForeignKeys" xml:space="preserve"><value>Foreign Keys</value></data>
   <data name="Tab_Data" xml:space="preserve"><value>Data</value></data>
   <data name="Tab_Ddl" xml:space="preserve"><value>DDL</value></data>
@@ -128,4 +130,7 @@ Logs: {2}
 Settings: {3}
 
 MIT License</value></data>
+  <data name="Col_Column" xml:space="preserve"><value>Column</value></data>
+  <data name="Col_Definition" xml:space="preserve"><value>Definition</value></data>
+  <data name="Constraint_SystemNamed" xml:space="preserve"><value>system-generated name</value></data>
 </root>

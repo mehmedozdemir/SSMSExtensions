@@ -113,11 +113,13 @@ Ctrl+Sol Tık (SQL editörü)
 |---|---|---|---|
 | **Özet** | Schema, tip, satır sayısı (yaklaşık), boyut, oluşturma/değişme tarihi, açıklama | `sys.objects`, `sys.dm_db_partition_stats`, extended properties | 1 |
 | **Kolonlar** | Ad, tip(uzunluk), NULL, default, identity, computed, collation, PK işareti, açıklama | `sys.columns`, `sys.types`, `sys.default_constraints`, `sys.extended_properties` | 1 |
-| **İndeksler & Anahtarlar** | PK/UQ/indeksler, kolon sırası, include kolonları, filtre, tip | `sys.indexes`, `sys.index_columns` | 1 |
+| **Anahtarlar** | PK ve UNIQUE constraint'ler, kolonlar, clustered/nonclustered | `sys.indexes`, `sys.index_columns` | 1 |
+| **İndeksler** | Constraint'e bağlı olmayan indeksler: kolon sırası, include kolonları, filtre, tip | `sys.indexes`, `sys.index_columns` | 1 |
+| **Constraint'ler** | CHECK ve DEFAULT constraint'ler: ad, kolon, tanım, kapalı/güvenilmez | `sys.check_constraints`, `sys.default_constraints` | 1 |
 | **Foreign Key'ler** | Giden ve gelen FK'lar. Hedef tabloya tıklanınca o tablo açılır | `sys.foreign_keys`, `sys.foreign_key_columns` | 1 |
 | **Veri** | `TOP N` grid (salt okunur), kolon başlığına göre sıralama, basit WHERE filtresi, "Sorgu olarak aç" | Kendi bağlantı, parametreli | 1 |
 | **DDL** | `CREATE TABLE` scripti, kopyala / yeni sorgu penceresinde aç | SMO `Scripter` (SSMS içinde mevcut) | 1 |
-| **Constraint'ler / Trigger'lar** | Check, default, trigger listesi ve tanımı | `sys.check_constraints`, `sys.triggers`, `sys.sql_modules` | 2 |
+| **Trigger'lar** | Trigger listesi ve tanımı | `sys.triggers`, `sys.sql_modules` | 2 |
 | **Bağımlılıklar** | Bu tabloyu kullanan SP/view/function'lar ve tablonun bağımlılıkları | `sys.sql_expression_dependencies` | 2 |
 | **İstatistikler / Partition** | İsteğe bağlı | `sys.stats`, `sys.partitions` | 3 |
 
@@ -166,7 +168,7 @@ Teknik not: Grid'e erişim `Microsoft.SqlServer.GridControl` ve yansıma (reflec
 |---|---|---|
 | **0 — Spike (doğrulama)** | Boş paket SSMS 22.12'de yükleniyor mu? SQL editöründe mouse processor tetikleniyor mu (content type)? Aktif bağlantı ve DB okunabiliyor mu (SQL login + Windows auth)? Doküman alanında tool window açılıyor mu? | 4 sorunun hepsine "evet" ise devam edilir. Değilse alternatif yol (ör. sadece sağ tık/kısayol) değerlendirilir. **1–2 gün** |
 | **1 — Altyapı + Table Inspector MVP** | Feature registry, ayarlar penceresi, log; Ctrl+Tık + sağ tık + kısayol; sekmeler: Özet, Kolonlar, İndeksler, FK, Veri, DDL | `FMS - Test` üzerinde `PersonelCardDetails` tıklanınca detay ekranı açılıyor. |
-| **2 — Zenginleştirme** | Hover alt çizgi, alias çözümleme iyileştirmeleri, FK'dan tabloya gezinme, Constraint/Trigger/Bağımlılık sekmeleri, Object Explorer sağ tık menüsünde "Tabloyu İncele" | |
+| **2 — Zenginleştirme** | Hover alt çizgi, alias çözümleme iyileştirmeleri, Trigger/Bağımlılık sekmeleri, Object Explorer sağ tık menüsünde "Tabloyu İncele" | |
 | **3 — Result Grid modülü** | Kopyalama formatları, seçim istatistikleri | Varsayılan kapalı özellik olarak gelir. |
 | **Sürekli** | SSMS güncellemesi sonrası smoke test listesi | |
 
@@ -192,7 +194,7 @@ Teknik not: Grid'e erişim `Microsoft.SqlServer.GridControl` ve yansıma (reflec
 |---|---|---|
 | 1 | İsim | **SsmsToolkit** |
 | 2 | Açılış şekli | Varsayılan **yeni doküman sekmesi**; ayardan **popup** seçilebilir |
-| 3 | Faz 1 sekmeleri | Özet, Kolonlar, İndeksler, FK, Veri, DDL |
+| 3 | Faz 1 sekmeleri | Özet, Kolonlar, Anahtarlar, İndeksler, Constraint'ler, FK, Veri, DDL (2026-11-13: Anahtar/İndeks ayrımı ve Constraint sekmesi Faz 2'den Faz 1'e alındı; FK'dan tabloya gezinme de Faz 1'de yapıldı) |
 | 4 | Veri sekmesi | **Salt okunur**; ayarlanabilir satır limiti, varsayılan **200** (`TOP (@n)`) |
 | 5 | Hedef sürüm | Yalnızca **SSMS 22** (`[22.0,23.0)`) |
 | 6 | Dağıtım | Şimdilik kişisel/ekip; **ileride açık kaynak**. Kod, yorum ve commit'ler İngilizce; kullanıcıya görünen metinler kaynak dosyasında (TR/EN eklenebilir). Lisans: **MIT** (değiştirilebilir) |

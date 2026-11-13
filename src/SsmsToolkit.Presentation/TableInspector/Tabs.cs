@@ -131,27 +131,107 @@ namespace SsmsToolkit.Presentation.TableInspector
         public bool IsDisabled { get; }
     }
 
-    public sealed class IndexesTab : InspectorTab
+    /// <summary>
+    /// Indexes from sys.indexes, split in two tabs: <see cref="KeysTab"/> (PRIMARY KEY / UNIQUE constraints)
+    /// and <see cref="IndexesTab"/> (all other indexes), so a constraint's backing index is not listed twice.
+    /// </summary>
+    public abstract class IndexListTab : InspectorTab
+    {
+        private readonly ResolvedObject _obj;
+        private readonly ITableMetadataSource _source;
+        private readonly bool _constraints;
+
+        protected IndexListTab(string header, bool constraints, ResolvedObject obj, ITableMetadataSource source,
+                               CancellationToken lifetime, Action<string, Exception> onError)
+            : base(header, lifetime, onError)
+        {
+            _obj = obj;
+            _source = source;
+            _constraints = constraints;
+        }
+
+        public ObservableCollection<IndexRow> Items { get; } = new ObservableCollection<IndexRow>();
+
+        protected override async Task LoadCoreAsync(CancellationToken ct)
+        {
+            var list = await _source.GetIndexesAsync(_obj, ct);
+            Items.Clear();
+            foreach (var i in list.Where(i => i.IsConstraint == _constraints))
+            {
+                Items.Add(new IndexRow(i));
+            }
+        }
+    }
+
+    public sealed class KeysTab : IndexListTab
+    {
+        public KeysTab(ResolvedObject obj, ITableMetadataSource source, CancellationToken lifetime, Action<string, Exception> onError)
+            : base(Strings.Get("Tab_Keys"), true, obj, source, lifetime, onError)
+        {
+        }
+    }
+
+    public sealed class IndexesTab : IndexListTab
+    {
+        public IndexesTab(ResolvedObject obj, ITableMetadataSource source, CancellationToken lifetime, Action<string, Exception> onError)
+            : base(Strings.Get("Tab_Indexes"), false, obj, source, lifetime, onError)
+        {
+        }
+    }
+
+    public sealed class ConstraintRow
+    {
+        public ConstraintRow(ConstraintInfo c)
+        {
+            Name = c.Name;
+            Kind = c.Kind == ConstraintKind.Check ? "CHECK" : "DEFAULT";
+            Column = c.Column ?? string.Empty;
+            Definition = c.Definition;
+
+            var states = new List<string>();
+            if (c.IsDisabled)
+            {
+                states.Add(Strings.Get("Fk_Disabled"));
+            }
+            if (c.IsNotTrusted)
+            {
+                states.Add(Strings.Get("Fk_NotTrusted"));
+            }
+            if (c.IsSystemNamed)
+            {
+                states.Add(Strings.Get("Constraint_SystemNamed"));
+            }
+            State = string.Join(", ", states);
+        }
+
+        public string Name { get; }
+        public string Kind { get; }
+        public string Column { get; }
+        public string Definition { get; }
+        public string State { get; }
+    }
+
+    public sealed class ConstraintsTab : InspectorTab
     {
         private readonly ResolvedObject _obj;
         private readonly ITableMetadataSource _source;
 
-        public IndexesTab(ResolvedObject obj, ITableMetadataSource source, CancellationToken lifetime, Action<string, Exception> onError)
-            : base(Strings.Get("Tab_Indexes"), lifetime, onError)
+        public ConstraintsTab(ResolvedObject obj, ITableMetadataSource source, CancellationToken lifetime, Action<string, Exception> onError)
+            : base(Strings.Get("Tab_Constraints"), lifetime, onError)
         {
             _obj = obj;
             _source = source;
         }
 
-        public ObservableCollection<IndexRow> Indexes { get; } = new ObservableCollection<IndexRow>();
+        public ObservableCollection<ConstraintRow> Items { get; } = new ObservableCollection<ConstraintRow>();
 
         protected override async Task LoadCoreAsync(CancellationToken ct)
         {
-            var list = await _source.GetIndexesAsync(_obj, ct);
-            Indexes.Clear();
-            foreach (var i in list)
+            var list = await _source.GetConstraintsAsync(_obj, ct);
+            Items.Clear();
+            foreach (var c in list)
             {
-                Indexes.Add(new IndexRow(i));
+                Items.Add(new ConstraintRow(c));
             }
         }
     }

@@ -126,6 +126,34 @@ namespace SsmsToolkit.Tests
         }
 
         [LocalDbFact]
+        public async Task Indexes_are_marked_as_constraints_or_plain()
+        {
+            var ix = await Source().GetIndexesAsync(await Resolve("dbo", "Customer"), CancellationToken.None);
+            Assert.Equal(new[] { "PK_Customer", "UQ_Customer_Email" }, ix.Where(i => i.IsConstraint).Select(i => i.Name));
+            Assert.Equal("UQ", ix.Single(i => i.Name == "UQ_Customer_Email").Kind);
+        }
+
+        [LocalDbFact]
+        public async Task Check_and_default_constraints()
+        {
+            var cs = await Source().GetConstraintsAsync(await Resolve("dbo", "Customer"), CancellationToken.None);
+
+            var check = cs.Single(c => c.Kind == ConstraintKind.Check);
+            Assert.Equal("CK_Customer_Balance", check.Name);
+            Assert.Equal("Balance", check.Column);
+            Assert.Equal("([Balance]>=(0))", check.Definition);
+            Assert.False(check.IsNotTrusted);
+
+            var defaults = cs.Where(c => c.Kind == ConstraintKind.Default).ToList();
+            Assert.Equal(new[] { "DF_Customer_Balance", "DF_Customer_CreatedAt" }, defaults.Select(d => d.Name));
+            Assert.Equal("((0))", defaults[0].Definition);
+
+            var tableLevel = (await Source().GetConstraintsAsync(await Resolve("sales", "Order"), CancellationToken.None)).Single();
+            Assert.Null(tableLevel.Column);
+            Assert.True(tableLevel.IsNotTrusted);
+        }
+
+        [LocalDbFact]
         public async Task Foreign_keys_outgoing_incoming_and_self()
         {
             var fks = await Source().GetForeignKeysAsync(await Resolve("sales", "Order"), CancellationToken.None);

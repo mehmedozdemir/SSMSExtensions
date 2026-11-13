@@ -7,7 +7,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning: [S
 ### Added
 - **Table Inspector** (Phase 1): Ctrl+Click a table/view name (or alias) in the query editor, the editor
   context menu "Inspect Table", or Ctrl+K, Ctrl+T opens a details tab with Summary, Columns,
-  Indexes & Keys, Foreign Keys (click to navigate), Data (read-only TOP N, server-side sort, validated
+  Keys (PK/UNIQUE), Indexes, Constraints (CHECK/DEFAULT), Foreign Keys (click to navigate), Data (read-only TOP N, server-side sort, validated
   WHERE filter, open as query) and DDL (SMO script, copy, open as query). Optional floating window.
 - Feature registry with per-feature on/off switch; a feature that fails repeatedly turns itself off for the
   session and shows an info bar.

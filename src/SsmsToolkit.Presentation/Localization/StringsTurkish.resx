@@ -6,7 +6,9 @@
   <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
   <data name="Tab_Summary" xml:space="preserve"><value>Özet</value></data>
   <data name="Tab_Columns" xml:space="preserve"><value>Kolonlar</value></data>
-  <data name="Tab_Indexes" xml:space="preserve"><value>İndeksler &amp; Anahtarlar</value></data>
+  <data name="Tab_Keys" xml:space="preserve"><value>Anahtarlar</value></data>
+  <data name="Tab_Indexes" xml:space="preserve"><value>İndeksler</value></data>
+  <data name="Tab_Constraints" xml:space="preserve"><value>Constraint'ler</value></data>
   <data name="Tab_ForeignKeys" xml:space="preserve"><value>Foreign Key'ler</value></data>
   <data name="Tab_Data" xml:space="preserve"><value>Veri</value></data>
   <data name="Tab_Ddl" xml:space="preserve"><value>DDL</value></data>
@@ -128,4 +130,7 @@ Log'lar: {2}
 Ayarlar: {3}
 
 MIT Lisansı</value></data>
+  <data name="Col_Column" xml:space="preserve"><value>Kolon</value></data>
+  <data name="Col_Definition" xml:space="preserve"><value>Tanım</value></data>
+  <data name="Constraint_SystemNamed" xml:space="preserve"><value>sistem tarafından adlandırılmış</value></data>
 </root>

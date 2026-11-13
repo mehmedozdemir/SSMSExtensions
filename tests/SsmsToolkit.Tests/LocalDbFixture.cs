@@ -117,6 +117,8 @@ CREATE TABLE sales.[Order] (
 );
 GO
 ALTER TABLE sales.[Order] ADD CONSTRAINT FK_Order_Parent FOREIGN KEY (ParentOrderId) REFERENCES sales.[Order](Id);
+ALTER TABLE dbo.Customer ADD CONSTRAINT CK_Customer_Balance CHECK (Balance >= 0);
+ALTER TABLE sales.[Order] WITH NOCHECK ADD CONSTRAINT CK_Order_Ids CHECK (Id > 0 AND CustomerId > 0);
 CREATE INDEX IX_Order_Customer ON sales.[Order] (CustomerId DESC) INCLUDE (Total) WHERE Total > 0;
 EXEC sys.sp_addextendedproperty N'MS_Description', N'Customers table', N'SCHEMA', N'dbo', N'TABLE', N'Customer';
 EXEC sys.sp_addextendedproperty N'MS_Description', N'Display name', N'SCHEMA', N'dbo', N'TABLE', N'Customer', N'COLUMN', N'Name';

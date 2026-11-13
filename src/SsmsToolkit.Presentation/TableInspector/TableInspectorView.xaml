@@ -45,10 +45,40 @@
                 </ContentControl>
             </DataTemplate>
 
-            <!-- Indexes & keys -->
+            <!-- Keys (PRIMARY KEY / UNIQUE constraints) -->
+            <DataTemplate DataType="{x:Type ti:KeysTab}">
+                <ContentControl Style="{StaticResource TabBody}">
+                    <DataGrid ItemsSource="{Binding Items}" BorderThickness="0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{l:Loc Col_Name}" Binding="{Binding Name}" FontWeight="SemiBold" />
+                            <DataGridTextColumn Header="{l:Loc Col_Kind}" Binding="{Binding Kind}" />
+                            <DataGridTextColumn Header="{l:Loc Col_IndexType}" Binding="{Binding Type}" />
+                            <DataGridTextColumn Header="{l:Loc Col_Columns}" Binding="{Binding KeyColumns}" />
+                            <DataGridTextColumn Header="{l:Loc Col_Disabled}" Binding="{Binding IsDisabled, Converter={StaticResource BoolToMark}}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ContentControl>
+            </DataTemplate>
+
+            <!-- Constraints (CHECK / DEFAULT) -->
+            <DataTemplate DataType="{x:Type ti:ConstraintsTab}">
+                <ContentControl Style="{StaticResource TabBody}">
+                    <DataGrid ItemsSource="{Binding Items}" BorderThickness="0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{l:Loc Col_Name}" Binding="{Binding Name}" FontWeight="SemiBold" />
+                            <DataGridTextColumn Header="{l:Loc Col_Kind}" Binding="{Binding Kind}" />
+                            <DataGridTextColumn Header="{l:Loc Col_Column}" Binding="{Binding Column}" />
+                            <DataGridTextColumn Header="{l:Loc Col_Definition}" Binding="{Binding Definition}" MaxWidth="600" />
+                            <DataGridTextColumn Header="{l:Loc Col_State}" Binding="{Binding State}" Width="*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ContentControl>
+            </DataTemplate>
+
+            <!-- Indexes (not backing a constraint) -->
             <DataTemplate DataType="{x:Type ti:IndexesTab}">
                 <ContentControl Style="{StaticResource TabBody}">
-                    <DataGrid ItemsSource="{Binding Indexes}" BorderThickness="0">
+                    <DataGrid ItemsSource="{Binding Items}" BorderThickness="0">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="{l:Loc Col_Name}" Binding="{Binding Name}" FontWeight="SemiBold" />
                             <DataGridTextColumn Header="{l:Loc Col_Kind}" Binding="{Binding Kind}" />

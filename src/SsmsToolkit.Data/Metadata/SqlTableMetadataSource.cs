@@ -220,6 +220,28 @@ namespace SsmsToolkit.Data.Metadata
             });
         }
 
+        public Task<IReadOnlyList<ConstraintInfo>> GetConstraintsAsync(ResolvedObject obj, CancellationToken ct)
+        {
+            return QueryAsync<IReadOnlyList<ConstraintInfo>>(obj, MetadataQueries.Constraints, ct, r =>
+            {
+                var list = new List<ConstraintInfo>();
+                while (r.Read())
+                {
+                    list.Add(new ConstraintInfo
+                    {
+                        Kind = r.GetInt32(0) == 0 ? ConstraintKind.Check : ConstraintKind.Default,
+                        Name = r.GetString(1),
+                        Column = r.IsDBNull(2) ? null : r.GetString(2),
+                        Definition = r.IsDBNull(3) ? null : r.GetString(3),
+                        IsDisabled = r.GetBoolean(4),
+                        IsNotTrusted = r.GetBoolean(5),
+                        IsSystemNamed = r.GetBoolean(6),
+                    });
+                }
+                return list;
+            });
+        }
+
         public Task<IReadOnlyList<ForeignKeyInfo>> GetForeignKeysAsync(ResolvedObject obj, CancellationToken ct)
         {
             return QueryAsync<IReadOnlyList<ForeignKeyInfo>>(obj, MetadataQueries.ForeignKeys, ct, r =>

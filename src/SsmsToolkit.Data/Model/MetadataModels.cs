@@ -117,7 +117,45 @@ namespace SsmsToolkit.Data.Model
         public List<string> KeyColumns { get; } = new List<string>();
         public List<string> IncludedColumns { get; } = new List<string>();
 
-        public string Kind => IsPrimaryKey ? "PK" : IsUniqueConstraint ? "UQ" : IsUnique ? "UNIQUE" : "INDEX";
+        /// <summary>True for indexes that enforce a PRIMARY KEY or UNIQUE constraint (shown under "Keys").</summary>
+        public bool IsConstraint => IsPrimaryKey || IsUniqueConstraint;
+
+        public string Kind
+        {
+            get
+            {
+                if (IsPrimaryKey)
+                {
+                    return "PK";
+                }
+                if (IsUniqueConstraint)
+                {
+                    return "UQ";
+                }
+                return IsUnique ? "UNIQUE" : "INDEX";
+            }
+        }
+    }
+
+    public enum ConstraintKind
+    {
+        Check,
+        Default,
+    }
+
+    /// <summary>A CHECK or DEFAULT constraint. (PK/UNIQUE are in <see cref="IndexInfo"/>, foreign keys in <see cref="ForeignKeyInfo"/>.)</summary>
+    public sealed class ConstraintInfo
+    {
+        public ConstraintKind Kind { get; set; }
+        public string Name { get; set; }
+
+        /// <summary>The column, or null for a table-level CHECK constraint.</summary>
+        public string Column { get; set; }
+
+        public string Definition { get; set; }
+        public bool IsDisabled { get; set; }
+        public bool IsNotTrusted { get; set; }
+        public bool IsSystemNamed { get; set; }
     }
 
     public sealed class ForeignKeyInfo

@@ -84,6 +84,18 @@ namespace SsmsToolkit.Playground
             return new[] { pk, ix, uq };
         }
 
+        public async Task<IReadOnlyList<ConstraintInfo>> GetConstraintsAsync(ResolvedObject obj, CancellationToken ct)
+        {
+            await Task.Delay(_delayMs, ct);
+            return new[]
+            {
+                new ConstraintInfo { Kind = ConstraintKind.Check, Name = "CK_" + obj.Name + "_Validity", Definition = "([ValidTo] IS NULL OR [ValidTo]>[ValidFrom])" },
+                new ConstraintInfo { Kind = ConstraintKind.Check, Name = "CK_" + obj.Name + "_CardNumber", Column = "CardNumber", Definition = "(len([CardNumber])>=(8))", IsNotTrusted = true },
+                new ConstraintInfo { Kind = ConstraintKind.Default, Name = "DF_" + obj.Name + "_IsActive", Column = "IsActive", Definition = "((1))" },
+                new ConstraintInfo { Kind = ConstraintKind.Default, Name = "DF__Personel__Valid__4A8310C6", Column = "ValidFrom", Definition = "(sysutcdatetime())", IsSystemNamed = true },
+            };
+        }
+
         public async Task<IReadOnlyList<ForeignKeyInfo>> GetForeignKeysAsync(ResolvedObject obj, CancellationToken ct)
         {
             await Task.Delay(_delayMs, ct);

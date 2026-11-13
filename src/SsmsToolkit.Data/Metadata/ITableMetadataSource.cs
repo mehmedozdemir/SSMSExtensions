@@ -22,6 +22,9 @@ namespace SsmsToolkit.Data.Metadata
 
         Task<IReadOnlyList<IndexInfo>> GetIndexesAsync(ResolvedObject obj, CancellationToken ct);
 
+        /// <summary>CHECK and DEFAULT constraints.</summary>
+        Task<IReadOnlyList<ConstraintInfo>> GetConstraintsAsync(ResolvedObject obj, CancellationToken ct);
+
         Task<IReadOnlyList<ForeignKeyInfo>> GetForeignKeysAsync(ResolvedObject obj, CancellationToken ct);
 
         Task<DataPage> GetDataAsync(DataQuery query, CancellationToken ct);

@@ -53,7 +53,9 @@ WHERE p.Id > 0
 
 - [ ] **Özet:** sunucu, DB, şema, tip, yaklaşık satır sayısı, boyut, tarih, açıklama.
 - [ ] **Kolonlar:** tip (`nvarchar(50)` gibi), PK ✓, Null ✓, identity, default, computed, açıklama.
-- [ ] **İndeksler & Anahtarlar:** PK/UQ/indeksler, anahtar ve include kolonları, filtre.
+- [ ] **Anahtarlar:** yalnızca PK ve UNIQUE constraint'ler (PK, UQ), tipleri ve kolonları.
+- [ ] **İndeksler:** yalnızca diğer indeksler; PK/UQ burada tekrar görünmüyor. Anahtar ve include kolonları, filtre.
+- [ ] **Constraint'ler:** CHECK ve DEFAULT constraint'ler; ad, kolon (tablo seviyesi CHECK'te boş), tanım, durum (kapalı / güvenilmez / sistem adı).
 - [ ] **Foreign Key'ler:** giden ve gelen FK'lar. Tablo adına tıklayınca o tablo yeni sekmede açılıyor.
 - [ ] **Veri:** ilk 200 satır. Kolon başlığına tık → sunucuda sıralıyor (ok işareti, ikinci tık ters sıralama).
 - [ ] **Veri / WHERE:** `Id < 10` + Enter → filtreli. `1=1; DELETE FROM x` → hata mesajı, sorgu **çalışmaz**.

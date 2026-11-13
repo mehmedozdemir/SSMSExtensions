@@ -64,6 +64,21 @@ JOIN sys.columns c ON c.object_id = ic.object_id AND c.column_id = ic.column_id
 WHERE i.object_id = @id AND i.index_id > 0
 ORDER BY i.is_primary_key DESC, i.index_id, ic.is_included_column, ic.key_ordinal, ic.index_column_id;";
 
+        public const string Constraints = @"
+SET NOCOUNT ON;
+SELECT CAST(0 AS int) AS kind, cc.name, c.name AS column_name, cc.definition,
+       cc.is_disabled, cc.is_not_trusted, cc.is_system_named
+FROM sys.check_constraints cc
+LEFT JOIN sys.columns c ON c.object_id = cc.parent_object_id AND c.column_id = cc.parent_column_id
+WHERE cc.parent_object_id = @id
+UNION ALL
+SELECT CAST(1 AS int), dc.name, c.name, dc.definition,
+       CAST(0 AS bit), CAST(0 AS bit), dc.is_system_named
+FROM sys.default_constraints dc
+JOIN sys.columns c ON c.object_id = dc.parent_object_id AND c.column_id = dc.parent_column_id
+WHERE dc.parent_object_id = @id
+ORDER BY kind, name;";
+
         public const string ForeignKeys = @"
 SET NOCOUNT ON;
 SELECT fk.object_id AS fk_id, fk.name, fk.parent_object_id, fk.referenced_object_id,
