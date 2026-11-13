@@ -26,6 +26,7 @@ Microsoft does not officially support SSMS extensions. Everything that touches u
 - Active connection: `ISqlEditorService` (service type `SSqlEditorService`) first, `ServiceCache.ScriptFactory.CurrentlyActiveWndConnectionInfo` as fallback — both only inside `SsmsInterop/`.
 - Object Explorer: selection via `IObjectExplorerService`, context menu via `IContextService.ObjectExplorerContext.CurrentContextChanged` + `HierarchyObject.AddChild(ToolsMenuItemBase)` — undocumented, isolated in `SsmsInterop/ObjectExplorerInterop.cs`, fails once and stays off.
 - Results grid: the focused `GridControl` (public type) and its `IGridResultSet` storage; context menu `{33F13AC3-80BB-4ECB-85BC-225435603A5E}:0x70` (editor menu: same GUID, `0x50`) — read from SQLEditors.dll IL, undocumented; isolated in `SsmsInterop/ResultGridInterop.cs`.
+- Object Explorer also adds "Database Dashboard" on database nodes (same `HierarchyObject.AddChild` path as "Inspect Table").
 - SSMS install root: `C:\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE`.
 
 ## Layout

@@ -185,4 +185,103 @@ MIT Lisansı</value></data>
   <data name="Insert_TooLargeForEditor" xml:space="preserve"><value>Script sorgu penceresi için çok büyük; Dosyaya Kaydet'i kullanın.</value></data>
   <data name="Insert_Failed" xml:space="preserve"><value>Başarısız: {0}</value></data>
   <data name="Insert_FileFilter" xml:space="preserve"><value>SQL dosyaları (*.sql)|*.sql|Tüm dosyalar (*.*)|*.*</value></data>
+  <data name="Common_No" xml:space="preserve"><value>Hayır</value></data>
+  <data name="Feature_Dashboard_Name" xml:space="preserve"><value>Veritabanı Paneli</value></data>
+  <data name="Feature_Dashboard_Description" xml:space="preserve"><value>Object Explorer'da bir veritabanına sağ tık &gt; Database Dashboard (veya aktif sorgu penceresinin veritabanı için Extensions &gt; SsmsToolkit &gt; Database Dashboard): boyut ve dosyalar, en büyük tablolar, yedek geçmişinden büyüme, sağlık kontrolleri ve son değişen nesneler. Salt okunur.</value></data>
+  <data name="Dash_Title" xml:space="preserve"><value>{0} — Panel</value></data>
+  <data name="Dash_Updated" xml:space="preserve"><value>Güncellendi: {0}</value></data>
+  <data name="Dash_Failed" xml:space="preserve"><value>Yüklenemedi: {0}</value></data>
+  <data name="Dash_Tab_Overview" xml:space="preserve"><value>Genel Bakış</value></data>
+  <data name="Dash_Tab_Storage" xml:space="preserve"><value>Depolama</value></data>
+  <data name="Dash_Tab_Health" xml:space="preserve"><value>Sağlık</value></data>
+  <data name="Dash_Tab_Objects" xml:space="preserve"><value>Nesneler</value></data>
+  <data name="Dash_Card_Size" xml:space="preserve"><value>Toplam boyut</value></data>
+  <data name="Dash_Card_Files" xml:space="preserve"><value>{0} dosya</value></data>
+  <data name="Dash_Card_Data" xml:space="preserve"><value>Veri dosyaları</value></data>
+  <data name="Dash_Card_Log" xml:space="preserve"><value>Log</value></data>
+  <data name="Dash_Card_UsedOf" xml:space="preserve"><value>{1} içinde {0} dolu</value></data>
+  <data name="Dash_Card_Recovery" xml:space="preserve"><value>Recovery model</value></data>
+  <data name="Dash_Card_Compat" xml:space="preserve"><value>Uyumluluk seviyesi</value></data>
+  <data name="Dash_Card_ServerCompat" xml:space="preserve"><value>sunucu {0} destekliyor</value></data>
+  <data name="Dash_Card_Health" xml:space="preserve"><value>Sağlık</value></data>
+  <data name="Dash_Health_Summary" xml:space="preserve"><value>{0} kritik, {1} uyarı</value></data>
+  <data name="Dash_Health_AllGood" xml:space="preserve"><value>Sorun yok</value></data>
+  <data name="Dash_Health_Open" xml:space="preserve"><value>Ayrıntıları göster</value></data>
+  <data name="Dash_Files" xml:space="preserve"><value>Dosyalar</value></data>
+  <data name="Dash_Properties" xml:space="preserve"><value>Özellikler</value></data>
+  <data name="Dash_Col_File" xml:space="preserve"><value>Dosya</value></data>
+  <data name="Dash_Col_Size" xml:space="preserve"><value>Boyut</value></data>
+  <data name="Dash_Col_Used" xml:space="preserve"><value>Dolu</value></data>
+  <data name="Dash_Col_Growth" xml:space="preserve"><value>Büyüme</value></data>
+  <data name="Dash_Col_Max" xml:space="preserve"><value>Maks. boyut</value></data>
+  <data name="Dash_Col_Path" xml:space="preserve"><value>Yol</value></data>
+  <data name="Dash_NoGrowth" xml:space="preserve"><value>yok</value></data>
+  <data name="Dash_Unlimited" xml:space="preserve"><value>sınırsız</value></data>
+  <data name="Dash_Prop_State" xml:space="preserve"><value>Durum</value></data>
+  <data name="Dash_Prop_Owner" xml:space="preserve"><value>Sahip</value></data>
+  <data name="Dash_Prop_Created" xml:space="preserve"><value>Oluşturulma</value></data>
+  <data name="Dash_Prop_UserAccess" xml:space="preserve"><value>Kullanıcı erişimi</value></data>
+  <data name="Dash_Prop_ReadOnly" xml:space="preserve"><value>Salt okunur</value></data>
+  <data name="Dash_Prop_AutoStats" xml:space="preserve"><value>İstatistik otomatik oluştur / güncelle</value></data>
+  <data name="Dash_Tables" xml:space="preserve"><value>En büyük tablolar</value></data>
+  <data name="Dash_TablesNote" xml:space="preserve"><value>ayrılan alana göre ilk {0}; satır sayıları yaklaşıktır; incelemek için ada tıklayın</value></data>
+  <data name="Dash_Col_Rows" xml:space="preserve"><value>Satır</value></data>
+  <data name="Dash_Col_Reserved" xml:space="preserve"><value>Ayrılan (MB)</value></data>
+  <data name="Dash_Col_Data" xml:space="preserve"><value>Veri (MB)</value></data>
+  <data name="Dash_Col_Index" xml:space="preserve"><value>İndeks (MB)</value></data>
+  <data name="Dash_Col_Unused" xml:space="preserve"><value>Boş (MB)</value></data>
+  <data name="Dash_History" xml:space="preserve"><value>Zaman içinde boyut (full yedekler, son 365 gün)</value></data>
+  <data name="Dash_HistoryEmpty" xml:space="preserve"><value>Son 365 günde full yedek yok.</value></data>
+  <data name="Dash_HistoryRange" xml:space="preserve"><value>{0} → {1} ({2} yedek günü). Tarih için çubuğun üzerine gelin.</value></data>
+  <data name="Dash_HistoryUnavailable" xml:space="preserve"><value>Yedek geçmişi (msdb) okunamıyor: {0}</value></data>
+  <data name="Dash_ObjectCounts" xml:space="preserve"><value>Nesne sayıları</value></data>
+  <data name="Dash_Recent" xml:space="preserve"><value>Son değişen nesneler</value></data>
+  <data name="Dash_Col_Modified" xml:space="preserve"><value>Değiştirilme</value></data>
+  <data name="Dash_Col_Created" xml:space="preserve"><value>Oluşturulma</value></data>
+  <data name="Dash_Details" xml:space="preserve"><value>Ayrıntılar</value></data>
+  <data name="Health_Unavailable" xml:space="preserve"><value>Kontrol edilemedi: {0}</value></data>
+  <data name="Health_More" xml:space="preserve"><value>+ {0} tane daha</value></data>
+  <data name="Health_Backups" xml:space="preserve"><value>Yedekler</value></data>
+  <data name="Health_Backups_NoFull" xml:space="preserve"><value>msdb'de hiç full yedek kaydı yok.</value></data>
+  <data name="Health_Backups_Old" xml:space="preserve"><value>Son full/differential yedek {0} önce alınmış.</value></data>
+  <data name="Health_Backups_Ok" xml:space="preserve"><value>Son full/differential yedek {0} önce.</value></data>
+  <data name="Health_Backups_NoLog" xml:space="preserve"><value>Recovery model {0} ama hiç log yedeği yok; log büyümeye devam eder.</value></data>
+  <data name="Health_Backups_OldLog" xml:space="preserve"><value>Recovery model {0}; son log yedeği {1} önce alınmış.</value></data>
+  <data name="Health_Backups_NotApplicable" xml:space="preserve"><value>tempdb için geçerli değil.</value></data>
+  <data name="Health_Log" xml:space="preserve"><value>Transaction log</value></data>
+  <data name="Health_Log_FullAndWaiting" xml:space="preserve"><value>Log %{0} dolu ve yeniden kullanılamıyor: {1}.</value></data>
+  <data name="Health_Log_Waiting" xml:space="preserve"><value>Log'un yeniden kullanımı bekliyor: {0} (%{1} dolu).</value></data>
+  <data name="Health_Log_Ok" xml:space="preserve"><value>Log %{0} dolu.</value></data>
+  <data name="Health_Vlf" xml:space="preserve"><value>Sanal log dosyaları (VLF)</value></data>
+  <data name="Health_Vlf_High" xml:space="preserve"><value>{0} VLF: recovery ve restore'u yavaşlatır. Log'u daha büyük adımlarla büyütün.</value></data>
+  <data name="Health_Vlf_Elevated" xml:space="preserve"><value>{0} VLF.</value></data>
+  <data name="Health_Vlf_Ok" xml:space="preserve"><value>{0} VLF.</value></data>
+  <data name="Health_Settings" xml:space="preserve"><value>Veritabanı ayarları</value></data>
+  <data name="Health_Settings_Issues" xml:space="preserve"><value>Bakılmaya değer {0} ayar.</value></data>
+  <data name="Health_Settings_Ok" xml:space="preserve"><value>Olağandışı ayar yok.</value></data>
+  <data name="Health_Files" xml:space="preserve"><value>Dosya büyümesi ve sınırlar</value></data>
+  <data name="Health_Files_Issues" xml:space="preserve"><value>Bakılmaya değer {0} dosya ayarı.</value></data>
+  <data name="Health_Files_Ok" xml:space="preserve"><value>Büyüme ayarları uygun görünüyor.</value></data>
+  <data name="Health_Identity" xml:space="preserve"><value>Identity kolonları</value></data>
+  <data name="Health_Identity_Near" xml:space="preserve"><value>{0} identity kolonu tipinin üst sınırının %80'ini aşmış.</value></data>
+  <data name="Health_Identity_Ok" xml:space="preserve"><value>Tüm identity kolonları üst sınırdan uzak.</value></data>
+  <data name="Health_NoPrimaryKey" xml:space="preserve"><value>Primary key'i olmayan tablolar</value></data>
+  <data name="Health_NoPrimaryKey_Found" xml:space="preserve"><value>{0} tablonun primary key'i yok.</value></data>
+  <data name="Health_NoPrimaryKey_Ok" xml:space="preserve"><value>Tüm tabloların primary key'i var.</value></data>
+  <data name="Health_Heaps" xml:space="preserve"><value>Heap'ler (clustered index yok)</value></data>
+  <data name="Health_Heaps_Found" xml:space="preserve"><value>{0} tablo heap.</value></data>
+  <data name="Health_Heaps_Ok" xml:space="preserve"><value>Heap yok.</value></data>
+  <data name="Health_Untrusted" xml:space="preserve"><value>Güvenilmeyen veya kapalı constraint'ler</value></data>
+  <data name="Health_Untrusted_Found" xml:space="preserve"><value>{0} FK/CHECK constraint güvenilmiyor veya kapalı; optimizer bunlara güvenemez.</value></data>
+  <data name="Health_Untrusted_Ok" xml:space="preserve"><value>Tüm constraint'ler güvenilir.</value></data>
+  <data name="Health_StaleStats" xml:space="preserve"><value>İstatistikler</value></data>
+  <data name="Health_StaleStats_Found" xml:space="preserve"><value>1000+ satırlı tablolarda {0} istatistikte son güncellemeden beri satırların %20'sinden fazlası değişmiş.</value></data>
+  <data name="Health_StaleStats_Ok" xml:space="preserve"><value>Büyük tablolarda bayat istatistik yok.</value></data>
+  <data name="Health_Orphaned" xml:space="preserve"><value>Sahipsiz kullanıcılar</value></data>
+  <data name="Health_Orphaned_Found" xml:space="preserve"><value>{0} kullanıcının eşleşen sunucu login'i yok.</value></data>
+  <data name="Health_Orphaned_Ok" xml:space="preserve"><value>Sahipsiz kullanıcı yok.</value></data>
+  <data name="Msg_NoDatabase" xml:space="preserve"><value>Önce Object Explorer'da bir veritabanı seçin veya bağlı bir sorgu penceresi açın.</value></data>
+  <data name="Dash_Age_Days" xml:space="preserve"><value>{0} gün</value></data>
+  <data name="Dash_Age_Hours" xml:space="preserve"><value>{0} saat</value></data>
+  <data name="Dash_Age_Minutes" xml:space="preserve"><value>{0} dakika</value></data>
 </root>

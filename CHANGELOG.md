@@ -4,6 +4,17 @@ All notable changes to this project are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versioning: [SemVer](https://semver.org/).
 
 ## [Unreleased]
+### Added
+- **Database Dashboard** (Phase D1, read-only): right-click a database in Object Explorer > *Database Dashboard*,
+  or *Extensions > SsmsToolkit > Database Dashboard* for the Object Explorer selection / the active query window's
+  database. Tabs: *Overview* (size, data/log usage, recovery model, compatibility, health summary, files,
+  properties), *Storage* (largest tables with rows/reserved/data/index/unused, click to inspect; size over time
+  from msdb full backup history), *Health* (backups, log reuse, VLFs, settings, file growth, identity columns near
+  their maximum, tables without PK, heaps, untrusted/disabled constraints, stale statistics, orphaned users) and
+  *Objects* (counts by type, recently changed objects). Each check runs on its own; a check the login has no
+  permission for shows "could not check" instead of failing the page.
+- Playground: `--dashboard [--cs ...] [--tab N]` and `--snapshot file.png` (renders without a desktop).
+
 
 ## [0.3.0] - 2026-11-13
 ### Added

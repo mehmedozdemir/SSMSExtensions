@@ -30,12 +30,15 @@ namespace SsmsToolkit.SsmsInterop
     internal static class ObjectExplorerInterop
     {
         private const string MenuItemKey = "SsmsToolkit.InspectTable";
+        private const string DashboardMenuItemKey = "SsmsToolkit.DatabaseDashboard";
 
         // SQL Server Database Engine server type (RegSvrEnum), used to open a connected query window.
         private static readonly Guid SqlServerType = new Guid("8c91a03d-f9b4-46c0-a305-b5dcc79ff907");
 
         private static readonly ConditionalWeakTable<object, object> MenusWithItem = new ConditionalWeakTable<object, object>();
+        private static readonly ConditionalWeakTable<object, object> MenusWithDashboard = new ConditionalWeakTable<object, object>();
         private static Action<ObjectExplorerTarget> _onInspect;
+        private static Action<EditorConnection> _onDashboard;
         private static bool _menuFailed;
 
         /// <summary>True when a tool window (e.g. Object Explorer), not a document, has focus.</summary>
@@ -66,11 +69,31 @@ namespace SsmsToolkit.SsmsInterop
             return count == 1 && nodes != null && nodes.Length > 0 ? ToTarget(nodes[0]) : null;
         }
 
-        /// <summary>Adds "Inspect Table" to table/view context menus. Safe to call once; failures only disable the menu item.</summary>
-        public static void RegisterContextMenu(Action<ObjectExplorerTarget> onInspect)
+        /// <summary>
+        /// The database of the selected Object Explorer node (the database itself or any object under it), with a
+        /// connection to it; null when the node is not inside a database.
+        /// </summary>
+        public static async Task<EditorConnection> GetSelectedDatabaseAsync(IAsyncServiceProvider services)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            if (!(await services.GetServiceAsync(typeof(IObjectExplorerService)) is IObjectExplorerService explorer))
+            {
+                return null;
+            }
+
+            explorer.GetSelectedNodes(out int count, out INodeInformation[] nodes);
+            return count == 1 && nodes != null && nodes.Length > 0 ? ToDatabaseConnection(nodes[0]) : null;
+        }
+
+        /// <summary>
+        /// Adds "Inspect Table" to table/view context menus and "Database Dashboard" to database context menus.
+        /// Safe to call once; failures only disable the menu items.
+        /// </summary>
+        public static void RegisterContextMenu(Action<ObjectExplorerTarget> onInspect, Action<EditorConnection> onDashboard)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
             _onInspect = onInspect;
+            _onDashboard = onDashboard;
             try
             {
                 if (!(ServiceCache.ServiceProvider?.GetService(typeof(IContextService)) is IContextService contextService)
@@ -100,15 +123,21 @@ namespace SsmsToolkit.SsmsInterop
             {
                 foreach (var node in e.ChangedNodes.OfType<INodeInformation>())
                 {
-                    if (!IsTableOrView(node.UrnPath))
+                    if (IsTableOrView(node.UrnPath))
                     {
-                        continue;
+                        if (node.GetService(typeof(IMenuHandler)) is HierarchyObject menu && !MenusWithItem.TryGetValue(menu, out _))
+                        {
+                            menu.AddChild(MenuItemKey, new InspectTableMenuItem());
+                            MenusWithItem.Add(menu, null);
+                        }
                     }
-
-                    if (node.GetService(typeof(IMenuHandler)) is HierarchyObject menu && !MenusWithItem.TryGetValue(menu, out _))
+                    else if (IsDatabase(node.UrnPath) && _onDashboard != null)
                     {
-                        menu.AddChild(MenuItemKey, new InspectTableMenuItem());
-                        MenusWithItem.Add(menu, null);
+                        if (node.GetService(typeof(IMenuHandler)) is HierarchyObject menu && !MenusWithDashboard.TryGetValue(menu, out _))
+                        {
+                            menu.AddChild(DashboardMenuItemKey, new DashboardMenuItem());
+                            MenusWithDashboard.Add(menu, null);
+                        }
                     }
                 }
             }
@@ -122,6 +151,20 @@ namespace SsmsToolkit.SsmsInterop
 
         private static bool IsTableOrView(string urnPath) =>
             urnPath != null && (urnPath.EndsWith("/Table", StringComparison.Ordinal) || urnPath.EndsWith("/View", StringComparison.Ordinal));
+
+        private static bool IsDatabase(string urnPath) =>
+            urnPath != null && urnPath.EndsWith("Server/Database", StringComparison.Ordinal);
+
+        private static EditorConnection ToDatabaseConnection(INodeInformation node)
+        {
+            if (string.IsNullOrEmpty(node?.Context) || node.UrnPath == null || node.UrnPath.IndexOf("/Database", StringComparison.Ordinal) < 0)
+            {
+                return null;
+            }
+
+            var database = new Urn(node.Context).GetAttribute("Name", "Database");
+            return string.IsNullOrEmpty(database) ? null : ToConnection(node.Connection as SqlConnectionInfo, database);
+        }
 
         private static ObjectExplorerTarget ToTarget(INodeInformation node)
         {
@@ -248,6 +291,33 @@ namespace SsmsToolkit.SsmsInterop
             }
 
             public override object Clone() => new InspectTableMenuItem();
+        }
+
+        /// <summary>"Database Dashboard" on database nodes.</summary>
+        private sealed class DashboardMenuItem : ToolsMenuItemBase
+        {
+            public DashboardMenuItem()
+            {
+                Text = "Database Dashboard";
+            }
+
+            protected override void Invoke()
+            {
+                try
+                {
+                    var connection = ToDatabaseConnection(Parent);
+                    if (connection != null)
+                    {
+                        _onDashboard?.Invoke(connection);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Warn("Object Explorer 'Database Dashboard' failed", ex);
+                }
+            }
+
+            public override object Clone() => new DashboardMenuItem();
         }
     }
 }

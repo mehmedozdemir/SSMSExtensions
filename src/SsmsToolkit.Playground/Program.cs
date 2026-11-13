@@ -4,10 +4,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using SsmsToolkit.Data.Dashboard;
 using SsmsToolkit.Data.Metadata;
 using SsmsToolkit.Data.Model;
 using SsmsToolkit.Data.Parsing;
 using SsmsToolkit.Data.Sql;
+using SsmsToolkit.Presentation.Dashboard;
 using SsmsToolkit.Presentation.Localization;
 using SsmsToolkit.Presentation.Settings;
 using SsmsToolkit.Presentation.TableInspector;
@@ -17,7 +19,7 @@ namespace SsmsToolkit.Playground
 {
     /// <summary>
     /// Usage:
-    ///   SsmsToolkit.Playground.exe [--dark] [--lang tr|en] [--tab N] [--settings] [--insert [--rows N]]
+    ///   SsmsToolkit.Playground.exe [--dark] [--lang tr|en] [--tab N] [--settings] [--insert [--rows N]] [--dashboard [--cs ...] [--tab N]] [--snapshot file.png [--wait ms]]
     ///                              [--fake | --cs "connection string"] [--table dbo.Name]
     /// Without --cs, sample data is used.
     /// </summary>
@@ -37,6 +39,10 @@ namespace SsmsToolkit.Playground
             if (args.Contains("--settings"))
             {
                 window = CreateSettingsWindow();
+            }
+            else if (args.Contains("--dashboard"))
+            {
+                window = CreateDashboardWindow(Arg(args, "--cs"), int.TryParse(Arg(args, "--tab"), out var dashTab) ? dashTab : 0);
             }
             else if (args.Contains("--insert"))
             {
@@ -62,10 +68,37 @@ namespace SsmsToolkit.Playground
                 {
                     await Task.Delay(int.TryParse(Arg(args, "--wait"), out var ms) ? ms : 1500);
                     SaveSnapshot((FrameworkElement)window.Content, snapshot);
-                    app.Shutdown();
+                    // Exit hard: pooled SQL connections can keep a plain Shutdown waiting.
+                    Environment.Exit(0);
                 };
             }
             app.Run(window);
+        }
+
+        private static Window CreateDashboardWindow(string connectionString, int tab)
+        {
+            IDatabaseDashboardSource source = connectionString == null
+                ? (IDatabaseDashboardSource)new FakeDashboardSource()
+                : new SqlDatabaseDashboardSource(new ConnectionTarget(connectionString, null, null));
+            var vm = new DatabaseDashboardViewModel(source, new DashboardHost(), source.ServerName.IndexOf("prod", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                SelectedTab = tab,
+            };
+            var window = new Window { Title = vm.Title + " — Playground", Width = 1150, Height = 760, Content = new DatabaseDashboardView { DataContext = vm } };
+            window.Loaded += async (s, e) => await vm.StartAsync();
+            window.Closed += (s, e) => vm.Dispose();
+            return window;
+        }
+
+        private sealed class DashboardHost : IDashboardHost
+        {
+            public Task InspectTableAsync(string schema, string name)
+            {
+                MessageBox.Show(schema + "." + name, "Inspect table");
+                return Task.CompletedTask;
+            }
+
+            public void ReportError(string context, Exception exception) => Console.Error.WriteLine(context + ": " + exception);
         }
 
         private static void SaveSnapshot(FrameworkElement element, string path)

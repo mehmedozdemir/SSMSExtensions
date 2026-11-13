@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using SsmsToolkit.Core;
 using SsmsToolkit.Data.Grid;
+using SsmsToolkit.Features.Dashboard;
 using SsmsToolkit.Features.ResultGrid;
 using SsmsToolkit.Features.TableInspector;
 using SsmsToolkit.Presentation.Localization;
@@ -40,6 +41,12 @@ namespace SsmsToolkit.Package
             {
                 // Visible only while the feature is on; the handler checks the active editor itself.
                 inspect.Visible = inspect.Enabled = package.Features.IsActive(TableInspectorFeature.FeatureId);
+            };
+
+            var dashboard = Add(commands, PackageIds.DatabaseDashboardCommand, () => OpenDashboardAsync(package));
+            dashboard.BeforeQueryStatus += (s, e) =>
+            {
+                dashboard.Visible = dashboard.Enabled = package.Features.IsActive(DatabaseDashboardFeature.FeatureId);
             };
 
             AddGridCopy(package, commands, PackageIds.GridCopyCsvCommand, GridCopyFormat.Csv);
@@ -95,6 +102,27 @@ namespace SsmsToolkit.Package
             }, new CommandID(PackageGuids.CommandSet, id));
             commands.AddCommand(cmd);
             return cmd;
+        }
+
+        /// <summary>Object Explorer selection (any node inside a database) or the active query window's database.</summary>
+        private static async Task OpenDashboardAsync(ToolkitPackage package)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            EditorConnection connection = null;
+            if (ObjectExplorerInterop.IsToolWindowActive())
+            {
+                connection = await ObjectExplorerInterop.GetSelectedDatabaseAsync(package);
+            }
+            if (connection == null)
+            {
+                var view = await ActiveEditor.GetActiveSqlViewAsync(package);
+                if (view != null)
+                {
+                    var documents = (await package.GetServiceAsync(typeof(SComponentModel)) as IComponentModel)?.GetService<ITextDocumentFactoryService>();
+                    connection = await package.Connections.GetAsync(ActiveEditor.GetDocumentMoniker(view, documents));
+                }
+            }
+            await package.Dashboard.OpenAsync(connection);
         }
 
         private static async Task InspectAtCaretAsync(ToolkitPackage package)

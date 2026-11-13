@@ -5,6 +5,7 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using SsmsToolkit.Core;
+using SsmsToolkit.Features.Dashboard;
 using SsmsToolkit.Features.ResultGrid;
 using SsmsToolkit.Features.TableInspector;
 using SsmsToolkit.Presentation.Localization;
@@ -21,6 +22,7 @@ namespace SsmsToolkit.Package
     [ProvideAutoLoad(VSConstants.UICONTEXT.NoSolution_string, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.ShellInitialized_string, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideToolWindow(typeof(TableInspectorToolWindow), Style = VsDockStyle.MDI, MultiInstances = true, Transient = true)]
+    [ProvideToolWindow(typeof(DashboardToolWindow), Style = VsDockStyle.MDI, MultiInstances = true, Transient = true)]
     [ProvideToolWindow(typeof(SettingsToolWindow), Style = VsDockStyle.MDI, MultiInstances = false, Transient = true)]
     public sealed class ToolkitPackage : AsyncPackage
     {
@@ -36,6 +38,8 @@ namespace SsmsToolkit.Package
 
         internal SsmsConnectionProvider Connections { get; private set; }
 
+        internal DatabaseDashboardFeature Dashboard { get; private set; }
+
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             try
@@ -50,13 +54,15 @@ namespace SsmsToolkit.Package
                 Features.Register(new TableInspectorFeature());
                 ResultGrid = new ResultGridFeature(Features);
                 Features.Register(ResultGrid);
+                Dashboard = new DatabaseDashboardFeature(this, Features, () => Launcher);
+                Features.Register(Dashboard);
                 Features.FeatureAutoDisabled += OnFeatureAutoDisabled;
 
                 await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
                 VsTheme.Apply();
                 await ToolkitCommands.InitializeAsync(this);
                 await Features.ApplyAsync(settings);
-                ObjectExplorerInterop.RegisterContextMenu(OnObjectExplorerInspect);
+                ObjectExplorerInterop.RegisterContextMenu(OnObjectExplorerInspect, OnObjectExplorerDashboard);
 
                 Instance = this;
                 Logger.Info("Package loaded.\r\n" + EnvironmentReport.Build());
@@ -125,6 +131,18 @@ namespace SsmsToolkit.Package
 
 #pragma warning disable VSSDK007 // Fire-and-forget; InspectObjectExplorerAsync catches and reports everything.
             _ = JoinableTaskFactory.RunAsync(() => Launcher.InspectObjectExplorerAsync(target));
+#pragma warning restore VSSDK007
+        }
+
+        private void OnObjectExplorerDashboard(EditorConnection connection)
+        {
+            if (!Features.IsActive(DatabaseDashboardFeature.FeatureId))
+            {
+                return;
+            }
+
+#pragma warning disable VSSDK007 // Fire-and-forget; OpenAsync catches and reports everything.
+            _ = JoinableTaskFactory.RunAsync(() => Dashboard.OpenAsync(connection));
 #pragma warning restore VSSDK007
         }
 
