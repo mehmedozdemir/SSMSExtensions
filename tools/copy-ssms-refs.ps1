@@ -34,6 +34,7 @@ $assemblies = @(
     'Microsoft.SqlServer.GridControl.dll',
     'Microsoft.SqlServer.Smo.dll',
     'Microsoft.SqlServer.Management.Sdk.Sfc.dll',
+    'Microsoft.SqlServer.SqlEnum.dll',
     'Microsoft.Data.SqlClient.dll',
     'Extensions\Application\SQLEditors.dll',
     'Extensions\Application\Microsoft.SqlServer.TransactSql.ScriptDom.dll'

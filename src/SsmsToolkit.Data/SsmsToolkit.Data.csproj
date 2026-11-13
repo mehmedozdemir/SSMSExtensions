@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- SSMS-independent: metadata/data queries and T-SQL name resolution. Unit-testable without SSMS. -->
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <RootNamespace>SsmsToolkit.Data</RootNamespace>
+    <Nullable>disable</Nullable>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="SsmsToolkit.Tests" />
+  </ItemGroup>
+
+  <!-- Loaded from SSMS at runtime: compile-time references only (CLAUDE.md rule 6). -->
+  <ItemGroup>
+    <Reference Include="Microsoft.Data.SqlClient">
+      <HintPath>$(SsmsRefDir)Microsoft.Data.SqlClient.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.TransactSql.ScriptDom">
+      <HintPath>$(SsmsRefDir)Microsoft.SqlServer.TransactSql.ScriptDom.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Smo">
+      <HintPath>$(SsmsRefDir)Microsoft.SqlServer.Smo.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.ConnectionInfo">
+      <HintPath>$(SsmsRefDir)Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc">
+      <HintPath>$(SsmsRefDir)Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.SqlEnum">
+      <HintPath>$(SsmsRefDir)Microsoft.SqlServer.SqlEnum.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Common" />
+  </ItemGroup>
+</Project>
