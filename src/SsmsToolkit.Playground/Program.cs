@@ -115,6 +115,8 @@ namespace SsmsToolkit.Playground
                             case IndexListTab i: i.Selected = i.Items.FirstOrDefault(); break;
                             case ConstraintsTab k: k.Selected = k.Items.FirstOrDefault(); break;
                             case ForeignKeysTab f: f.SelectedOutgoing = f.Outgoing.FirstOrDefault(); break;
+                            case TriggersTab t: t.Selected = t.Items.FirstOrDefault(); break;
+                            case DependenciesTab d: d.SelectedUsedBy = d.UsedBy.FirstOrDefault(); break;
                         }
                     }
                 };

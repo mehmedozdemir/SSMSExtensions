@@ -22,7 +22,7 @@
                             <Button Content="{l:Loc Common_OpenInQuery}" Command="{Binding OpenScriptCommand}" />
                         </StackPanel>
                         <TextBlock Text="{l:Loc Script_Title}" FontWeight="SemiBold" VerticalAlignment="Center" />
-                        <TextBlock Text="{l:Loc Script_Note}" Style="{StaticResource MutedText}" VerticalAlignment="Center" Margin="10,0,0,0"
+                        <TextBlock Text="{Binding ScriptNote}" Style="{StaticResource MutedText}" VerticalAlignment="Center" Margin="10,0,0,0"
                                    TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
                     </DockPanel>
                     <Grid>
@@ -203,6 +203,74 @@
                                 <DataGridTextColumn Header="{l:Loc Col_OnDelete}" Binding="{Binding OnDelete}" />
                                 <DataGridTextColumn Header="{l:Loc Col_OnUpdate}" Binding="{Binding OnUpdate}" />
                                 <DataGridTextColumn Header="{l:Loc Col_State}" Binding="{Binding State}" Width="*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <GridSplitter Grid.Row="5" Style="{StaticResource ScriptSplitter}" />
+                        <ContentControl Grid.Row="6" Content="{Binding}" ContentTemplate="{StaticResource ScriptPanel}" />
+                    </Grid>
+                </ContentControl>
+            </DataTemplate>
+
+            <!-- Triggers -->
+            <DataTemplate DataType="{x:Type ti:TriggersTab}">
+                <ContentControl Style="{StaticResource TabBody}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" MinHeight="80" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="220" MinHeight="60" />
+                        </Grid.RowDefinitions>
+                        <DataGrid Style="{StaticResource ScriptListGrid}" ItemsSource="{Binding Items}" SelectedItem="{Binding Selected}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{l:Loc Col_Name}" Binding="{Binding Name}" FontWeight="SemiBold" />
+                                <DataGridTextColumn Header="{l:Loc Col_Timing}" Binding="{Binding Timing}" />
+                                <DataGridTextColumn Header="{l:Loc Col_Events}" Binding="{Binding Events}" />
+                                <DataGridTextColumn Header="{l:Loc Col_Disabled}" Binding="{Binding IsDisabled, Converter={StaticResource BoolToMark}}" Width="*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <GridSplitter Grid.Row="1" Style="{StaticResource ScriptSplitter}" />
+                        <ContentControl Grid.Row="2" Content="{Binding}" ContentTemplate="{StaticResource ScriptPanel}" />
+                    </Grid>
+                </ContentControl>
+            </DataTemplate>
+
+            <!-- Dependencies: objects that use this one / objects this one uses -->
+            <DataTemplate x:Key="DependencyNameCell">
+                <Grid>
+                    <Button Style="{StaticResource LinkButton}" Content="{Binding Display}"
+                            Command="{Binding DataContext.OpenTableCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                            CommandParameter="{Binding}"
+                            Visibility="{Binding IsTableOrView, Converter={StaticResource BoolToVisibility}}" />
+                    <TextBlock Text="{Binding Display}"
+                               Visibility="{Binding IsTableOrView, Converter={StaticResource BoolToVisibility}, ConverterParameter=Invert}" />
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type ti:DependenciesTab}">
+                <ContentControl Style="{StaticResource TabBody}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" MinHeight="50" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" MinHeight="50" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="200" MinHeight="60" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Style="{StaticResource MutedText}" Text="{l:Loc Dep_Hint}" Margin="8,6,8,0" />
+                        <TextBlock Grid.Row="1" Style="{StaticResource SectionHeader}" Text="{l:Loc Dep_UsedBy}" Margin="8,6,8,4" />
+                        <DataGrid Grid.Row="2" Style="{StaticResource ScriptListGrid}" ItemsSource="{Binding UsedBy}" SelectedItem="{Binding SelectedUsedBy}">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="{l:Loc Col_Name}" CellTemplate="{StaticResource DependencyNameCell}" />
+                                <DataGridTextColumn Header="{l:Loc Col_Type}" Binding="{Binding Type}" Width="*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <TextBlock Grid.Row="3" Style="{StaticResource SectionHeader}" Text="{l:Loc Dep_Uses}" Margin="8,10,8,4" />
+                        <DataGrid Grid.Row="4" Style="{StaticResource ScriptListGrid}" ItemsSource="{Binding Uses}" SelectedItem="{Binding SelectedUses}">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="{l:Loc Col_Name}" CellTemplate="{StaticResource DependencyNameCell}" />
+                                <DataGridTextColumn Header="{l:Loc Col_Type}" Binding="{Binding Type}" Width="*" />
                             </DataGrid.Columns>
                         </DataGrid>
                         <GridSplitter Grid.Row="5" Style="{StaticResource ScriptSplitter}" />

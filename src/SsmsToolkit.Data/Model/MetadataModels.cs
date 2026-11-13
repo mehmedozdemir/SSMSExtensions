@@ -176,6 +176,45 @@ namespace SsmsToolkit.Data.Model
         public bool IsSystemNamed { get; set; }
     }
 
+    public sealed class TriggerInfo
+    {
+        public string Name { get; set; }
+
+        /// <summary>e.g. "INSERT, UPDATE".</summary>
+        public string Events { get; set; }
+
+        public bool IsInsteadOf { get; set; }
+        public bool IsDisabled { get; set; }
+
+        /// <summary>CREATE TRIGGER text, or null if encrypted / no VIEW DEFINITION permission.</summary>
+        public string Definition { get; set; }
+    }
+
+    public enum DependencyDirection
+    {
+        /// <summary>Another object references the inspected one (e.g. a procedure reading this table).</summary>
+        UsedBy,
+
+        /// <summary>The inspected object references another one (e.g. a view's base tables).</summary>
+        Uses,
+    }
+
+    public sealed class DependencyInfo
+    {
+        public DependencyDirection Direction { get; set; }
+        public ObjectName Name { get; set; }
+
+        /// <summary>sys.objects.type (trimmed), e.g. "U", "V", "P"; null if the referenced object does not exist.</summary>
+        public string TypeCode { get; set; }
+
+        public string TypeDescription { get; set; }
+
+        /// <summary>Module text for procedures, functions, views, triggers; otherwise null.</summary>
+        public string Definition { get; set; }
+
+        public bool IsTableOrView => TypeCode == "U" || TypeCode == "V";
+    }
+
     public sealed class ForeignKeyInfo
     {
         public string Name { get; set; }

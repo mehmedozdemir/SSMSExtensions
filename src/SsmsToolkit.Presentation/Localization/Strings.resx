@@ -136,4 +136,13 @@ MIT License</value></data>
   <data name="Script_Title" xml:space="preserve"><value>SQL</value></data>
   <data name="Script_Hint" xml:space="preserve"><value>Select a row to see its SQL script.</value></data>
   <data name="Script_Note" xml:space="preserve"><value>Storage options (FILLFACTOR, compression, filegroup) are omitted; the DDL tab has the full table script.</value></data>
+  <data name="Tab_Triggers" xml:space="preserve"><value>Triggers</value></data>
+  <data name="Tab_Dependencies" xml:space="preserve"><value>Dependencies</value></data>
+  <data name="Col_Timing" xml:space="preserve"><value>Timing</value></data>
+  <data name="Col_Events" xml:space="preserve"><value>Events</value></data>
+  <data name="Dep_UsedBy" xml:space="preserve"><value>Used by (objects that reference this one)</value></data>
+  <data name="Dep_Uses" xml:space="preserve"><value>Uses (objects this one references)</value></data>
+  <data name="Dep_Hint" xml:space="preserve"><value>From sys.sql_expression_dependencies; dynamic SQL is not tracked. Click a table or view to inspect it.</value></data>
+  <data name="Dep_Missing" xml:space="preserve"><value>(not found)</value></data>
+  <data name="Dep_NoDefinition" xml:space="preserve"><value>no definition (not a module, encrypted, or no VIEW DEFINITION permission)</value></data>
 </root>

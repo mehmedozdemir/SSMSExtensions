@@ -79,6 +79,46 @@ JOIN sys.columns c ON c.object_id = dc.parent_object_id AND c.column_id = dc.par
 WHERE dc.parent_object_id = @id
 ORDER BY kind, name;";
 
+        public const string Triggers = @"
+SET NOCOUNT ON;
+SELECT t.name, t.is_disabled, t.is_instead_of_trigger,
+       STUFF((SELECT N', ' + te.type_desc FROM sys.trigger_events te
+              WHERE te.object_id = t.object_id ORDER BY te.type FOR XML PATH(''), TYPE).value('.', 'nvarchar(max)'), 1, 2, N'') AS events,
+       OBJECT_DEFINITION(t.object_id) AS definition
+FROM sys.triggers t
+WHERE t.parent_id = @id
+ORDER BY t.name;";
+
+        /// <summary>
+        /// Objects that reference @id ("used by") and objects @id references ("uses").
+        /// One-part names inside modules are caller-dependent (referenced_id is NULL), so they are matched by name too.
+        /// TOP keeps very popular tables from returning thousands of module definitions.
+        /// </summary>
+        public const string Dependencies = @"
+SET NOCOUNT ON;
+DECLARE @schema sysname = OBJECT_SCHEMA_NAME(@id), @name sysname = OBJECT_NAME(@id);
+SELECT TOP (500) 0 AS direction, NULL AS db, s.name AS schema_name, o.name, RTRIM(o.type) AS type, o.type_desc,
+       OBJECT_DEFINITION(o.object_id) AS definition
+FROM sys.objects o
+JOIN sys.schemas s ON s.schema_id = o.schema_id
+WHERE o.object_id <> @id
+  AND o.object_id IN (
+        SELECT d.referencing_id FROM sys.sql_expression_dependencies d
+        WHERE d.referencing_class = 1
+          AND (d.referenced_id = @id
+               OR (d.referenced_id IS NULL AND d.referenced_entity_name = @name
+                   AND (d.referenced_schema_name IS NULL OR d.referenced_schema_name = @schema)
+                   AND (d.referenced_database_name IS NULL OR d.referenced_database_name = DB_NAME())
+                   AND d.referenced_server_name IS NULL)))
+UNION ALL
+SELECT TOP (500) 1, d.referenced_database_name, COALESCE(OBJECT_SCHEMA_NAME(d.referenced_id), d.referenced_schema_name),
+       d.referenced_entity_name, RTRIM(o.type), o.type_desc, OBJECT_DEFINITION(d.referenced_id)
+FROM (SELECT DISTINCT referenced_id, referenced_database_name, referenced_schema_name, referenced_entity_name
+      FROM sys.sql_expression_dependencies
+      WHERE referencing_id = @id AND referencing_class = 1 AND referenced_class = 1 AND referenced_server_name IS NULL) d
+LEFT JOIN sys.objects o ON o.object_id = d.referenced_id
+ORDER BY 1, 3, 4;";
+
         public const string ForeignKeys = @"
 SET NOCOUNT ON;
 SELECT fk.object_id AS fk_id, fk.name, fk.parent_object_id, fk.referenced_object_id,

@@ -144,6 +144,24 @@ Ctrl+Sol Tık (SQL editörü)
 
 Teknik not: Grid'e erişim `Microsoft.SqlServer.GridControl` ve yansıma (reflection) ile olur. SSMSPlus bunu SSMS 22'de yapıyor. Bu kısım en kırılgan alan olduğu için ayrı bir özellik modülü olur ve varsayılan olarak kapalı başlar.
 
+### 5.1 Kendi sonuç grid'imiz (tasarım — **ertelendi**, 2026-11-13)
+
+İstek: SSMS result grid'inde olmayan sıralama, filtreleme, sayfalama, seçimde gruplama/toplama, FK hücresinden hedef kayda gitme ve düzenleme.
+
+- **SSMS'in grid'ini değiştirmek yok:** İç WinForms kontrolü; yansıma ile değiştirmek her güncellemede kırılır ve SSMS'i çökertebilir.
+- **Yaklaşım:** "Run in SsmsToolkit Grid" komutu, seçili sorguyu veya batch'i kendi bağlantımızla çalıştırır ve sonucu kendi WPF sekmemizde gösterir.
+  - Sıralama, filtre, arama ve sayfalama istemci tarafında yapılır.
+  - Seçim istatistikleri ve gruplama paneli olur.
+  - Çoklu sonuç setleri ayrı alt sekmelerde gösterilir.
+  - FK navigasyonu: kolonun kaynak tablo/kolon bilgisi `GetSchemaTable` ile alınır, FK bulunur ve Inspector'ın Veri sekmesi `WHERE` ile açılır.
+- **Sınırlar:**
+  - Sorgu SSMS oturumunda değil kendi bağlantımızda çalışır; #temp tablolar, değişkenler, açık transaction ve SET ayarları görünmez.
+  - v1'de yalnızca SELECT çalıştırılır.
+  - Mesajlar ve execution plan SSMS'te kalır.
+- **Düzenleme:** Ayrı karar gerektirir, çünkü salt-okunur kuralını değiştirir. Koşullar: varsayılan kapalı, üretim sunucularında engelli, tek tablo + PK zorunlu, SQL önizlemesi gösterilir, değişiklikler tek transaction'da uygulanır.
+- **Önerilen sıra:** 3a sonuç sekmesi → 3b FK navigasyonu ve gruplama → 3c düzenleme.
+- **Durum:** Kullanıcı kararıyla ertelendi; önce Faz 2 yapılacak.
+
 ---
 
 ## 6. Geliştirme ortamı gereksinimleri (senin PC'n)
@@ -168,7 +186,7 @@ Teknik not: Grid'e erişim `Microsoft.SqlServer.GridControl` ve yansıma (reflec
 |---|---|---|
 | **0 — Spike (doğrulama)** | Boş paket SSMS 22.12'de yükleniyor mu? SQL editöründe mouse processor tetikleniyor mu (content type)? Aktif bağlantı ve DB okunabiliyor mu (SQL login + Windows auth)? Doküman alanında tool window açılıyor mu? | 4 sorunun hepsine "evet" ise devam edilir. Değilse alternatif yol (ör. sadece sağ tık/kısayol) değerlendirilir. **1–2 gün** |
 | **1 — Altyapı + Table Inspector MVP** | Feature registry, ayarlar penceresi, log; Ctrl+Tık + sağ tık + kısayol; sekmeler: Özet, Kolonlar, İndeksler, FK, Veri, DDL | `FMS - Test` üzerinde `PersonelCardDetails` tıklanınca detay ekranı açılıyor. |
-| **2 — Zenginleştirme** | Hover alt çizgi, alias çözümleme iyileştirmeleri, Trigger/Bağımlılık sekmeleri, Object Explorer sağ tık menüsünde "Tabloyu İncele" | |
+| **2 — Zenginleştirme** | Hover alt çizgi, Trigger ve Bağımlılık sekmeleri, Object Explorer sağ tık menüsünde "Inspect Table" (+ OE seçiliyken kısayol), koyu temada scrollbar'lar | Test listesi: `docs/testing/phase2-enrichment.md` |
 | **3 — Result Grid modülü** | Kopyalama formatları, seçim istatistikleri | Varsayılan kapalı özellik olarak gelir. |
 | **Sürekli** | SSMS güncellemesi sonrası smoke test listesi | |
 
